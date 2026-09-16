@@ -94,6 +94,31 @@ Si può immaginare la bobina come una superficie attraversata da linee di campo 
 
 Questa variazione ciclica genera una tensione che cambia nel tempo, dando origine alla **corrente alternata**.
 
+A questo punto può sorgere una domanda:
+
+> **Se per generare tensione basta far ruotare un campo magnetico davanti alle bobine, perché per produrre grandi quantità di energia elettrica serve fornire molta energia meccanica alla turbina?**
+
+Finché ai morsetti dell'alternatore non è collegato alcun utilizzatore, viene generata una tensione ma circola pochissima corrente. Il rotore può quindi essere mantenuto in movimento con uno sforzo relativamente ridotto, necessario soprattutto a compensare gli attriti e le altre perdite della macchina.
+
+Quando invece l'alternatore alimenta un carico, negli avvolgimenti dello statore comincia a circolare corrente. Questa corrente genera a sua volta un **campo magnetico** che, per la **legge di Lenz**, si oppone alla variazione del flusso magnetico che l'ha prodotta. Si genera quindi una **coppia resistente** che tende a frenare il rotore.
+
+Più potenza elettrica viene richiesta all'alternatore, maggiore è la corrente che deve fornire e maggiore diventa questa opposizione alla rotazione. Per mantenere il rotore alla stessa velocità, la turbina deve quindi esercitare una coppia maggiore e fornire più potenza meccanica.
+
+La relazione fondamentale è:
+
+
+$$P_{meccanica}=\tau\cdot\omega$$
+
+dove ($\tau$) è la coppia applicata all'albero e ($\omega$) la velocità angolare.
+
+Idealmente, la potenza elettrica prodotta corrisponde alla potenza meccanica fornita:
+
+$$P_{elettrica}\approx P_{meccanica}$$
+
+Nella realtà la potenza meccanica richiesta è leggermente maggiore, perché una parte dell'energia viene persa sotto forma di calore, attrito e altre dissipazioni.
+
+Questo spiega un fatto fondamentale: **l'alternatore non crea energia**. Il campo magnetico permette di trasformare energia meccanica in energia elettrica; quando si richiede più energia elettrica, la sorgente primaria deve fornire più energia alla turbina.
+
 Gli avvolgimenti dello statore non sono costituiti da poche bobine isolate, ma da molte bobine distribuite lungo la circonferenza e inserite nelle cave dello statore. Ogni bobina occupa due zone dello statore, spesso opposte, in modo da intercettare efficacemente il campo magnetico.
 
 Dire che i due lati della bobina sono in posizioni opposte non significa che "si annullano". Significa che i due tratti attivi del filo si trovano in due zone diverse del campo magnetico rotante. Su entrambi i lati il campo variabile induce una tensione; poiché i due lati sono collegati tra loro nello stesso avvolgimento, e orientati in modo opportuno, queste tensioni **si sommano** ai capi della bobina invece di annullarsi.

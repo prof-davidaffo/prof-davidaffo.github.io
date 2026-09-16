@@ -139,6 +139,10 @@ print("La media è:", media)
 Il risultato finale è un programma eseguibile che accetta tre numeri in input, calcola la media e la stampa.
 L'obiettivo di un programmatore non è soltanto quello di risolvere un problema con una serie di istruzioni, ma quello di farlo nel modo più **efficiente** possibile.
 
+#### Le fasi non sono contenitori separati
+Cosa succede se trovo un errore durante la fase di simulazione? Devo probabilmente tornare alla fase di analisi. Quindi capiterà varie volte durante lo sviluppo del programma, di tornare indietro a fasi già svolte.
+Con linguaggi moderni sempre più facili da utilizzare, arriveremo ad un punto in cui faremo direttamente la codifica e successivamente la simulazione, in quanto i linguaggi di programmazione offrono strumenti di debugging molto potenti, e mi permettono di correggere molto più velocemente gli errori.
+
 ---
 
 ### Come elabora le informazioni il computer
@@ -239,6 +243,100 @@ g++ file.cpp -o programma && ./programma
 > [!warning] Nota
 > Su linux, `.` significa la cartella corrente, per cui la notazione `./` significa che il file si trova dentro la cartella in cui mi trovo.
 > Il processo compilazione di progetti più complessi che includono molteplici files, solitamente in C e C++ si automatizza con un `makefile`, che sarà un argomento avanzato.
+
+#### Errori sintattici e semantici
+
+Quando il compilatore trova un errore, mostra in genere il **file**, la **riga**, la **colonna** e una descrizione del problema. Come punto di partenza consideriamo questo programma C++ corretto, che calcola la somma di due numeri:
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int a = 7;
+    int b = 5;
+    int somma = a + b;
+
+    cout << "La somma è: " << somma << '\n';
+    return 0;
+}
+```
+
+La versione C equivalente è:
+
+```c
+#include <stdio.h>
+
+int main(void) {
+    int a = 7;
+    int b = 5;
+    int somma = a + b;
+
+    printf("La somma è: %d\n", somma);
+    return 0;
+}
+```
+
+Salvato come `somma.cpp`, il programma si può compilare ed eseguire con:
+
+```bash
+g++ somma.cpp -Wall -Wextra -o somma && ./somma
+```
+
+Per la versione C, salvata come `somma.c`, il comando equivalente è:
+
+```bash
+gcc somma.c -std=c17 -Wall -Wextra -Wpedantic -o somma && ./somma
+```
+
+L'output è:
+
+```text
+La somma è: 12
+```
+
+##### Errore sintattico
+
+La **sintassi** è l'insieme delle regole che stabiliscono come devono essere scritte le istruzioni. Un errore sintattico si verifica quando il codice non rispetta la grammatica del linguaggio, per esempio se manca il punto e virgola:
+
+```cpp
+int b = 5
+int somma = a + b;
+```
+
+Una forma tipica e abbreviata del messaggio di `g++` è:
+
+```text
+somma.cpp:6:5: error: expected ',' or ';' before 'int'
+    6 |     int somma = a + b;
+      |     ^~~
+```
+
+- `somma.cpp:6:5` indica file, riga e colonna in cui il compilatore si è accorto del problema;
+- `error` indica che la compilazione non può proseguire;
+- `expected ',' or ';' before 'int'` significa che, prima della nuova dichiarazione `int`, il compilatore si aspettava un separatore valido.
+
+Il messaggio segnala la riga 6, ma la causa è alla fine della riga precedente: il compilatore può accorgersi di un errore solo quando incontra qualcosa che non riesce più a interpretare. Per correggerlo bisogna quindi aggiungere `;` dopo `int b = 5`.
+
+##### Errore semantico
+
+La **semantica** riguarda il significato del programma, cioè ciò che il programma effettivamente fa. Un errore semantico si verifica quando le istruzioni sono scritte correttamente, ma non realizzano l'operazione richiesta. Per esempio, sostituiamo per errore l'addizione con una sottrazione:
+
+```cpp
+int somma = a - b;
+```
+
+Questa istruzione rispetta tutte le regole del C++: le variabili sono dichiarate, i tipi sono compatibili e l'operatore `-` può essere applicato a due interi. Di conseguenza il compilatore **non mostra alcun errore** e crea normalmente l'eseguibile. Quando però eseguiamo il programma, otteniamo:
+
+```text
+La somma è: 2
+```
+
+Il risultato atteso era `12`, ma il programma calcola `7 - 5`. Il compilatore non può sapere che volevamo eseguire una somma: controlla che il codice rispetti le regole del linguaggio, non che risolva il problema desiderato. Per trovare questo tipo di errore bisogna quindi verificare l'output con dati di prova e confrontarlo con il risultato atteso.
+
+In questa dispensa useremo quindi **errore semantico** ed **errore logico** come sinonimi per indicare un programma formalmente valido che produce un risultato diverso da quello richiesto.
+
+I messaggi degli errori sintattici possono cambiare leggermente in base alla versione del compilatore. Inoltre, un primo errore può provocare altri messaggi a cascata: conviene correggere gli errori partendo sempre dal primo e poi ricompilare.
 
 #### Interprete  
 - Traduce ed esegue il programma **mentre lo esegue, istruzione per istruzione**.  
@@ -1606,6 +1704,7 @@ Il ciclo `for` serve quando conosco a priori quante interazioni farò (che può 
 I cicli `do-while` e `while` servono quando non conosco a priori il numero di interazioni (e dunque la condizione dipende dalle azioni dell'utente), in particolare:
 - `while` nei casi in cui non devo fare neanche una interazione se la condizione non è rispettata, poiché viene controllata prima del blocco di codice.
 - `do-while` nei casi in cui devo fare almeno una interazione prima del controllo della condizione, poiché questa viene controllata dopo il blocco di codice. Questo è particolarmente utile quando la condizione viene aggiornata direttamente all'interno del blocco di codice prima di essere inizializzata, ad esempio se devo controllare una password inserita dall'utente.
+
 #### `break` e `continue` nei cicli
 
 All'interno di un ciclo, posso utilizzare i comandi `break` e `continue` per controllare il flusso di esecuzione in modo più preciso.

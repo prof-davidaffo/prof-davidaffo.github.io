@@ -150,6 +150,9 @@ public class Main {
 
 Il risultato finale è un programma eseguibile che accetta tre numeri in input, calcola la media e la stampa.
 L'obiettivo di un programmatore non è soltanto quello di risolvere un problema con una serie di istruzioni, ma quello di farlo nel modo più **efficiente** possibile.
+#### Le fasi non sono contenitori separati
+Cosa succede se trovo un errore durante la fase di simulazione? Devo probabilmente tornare alla fase di analisi. Quindi capiterà varie volte durante lo sviluppo del programma, di tornare indietro a fasi già svolte.
+Con linguaggi moderni sempre più facili da utilizzare, arriveremo ad un punto in cui faremo direttamente la codifica e successivamente la simulazione, in quanto i linguaggi di programmazione offrono strumenti di debugging molto potenti, e mi permettono di correggere molto più velocemente gli errori.
 
 ---
 
@@ -228,6 +231,79 @@ javac Main.java && java Main
 
 > [!warning] Maiuscole e minuscole
 > Java distingue le maiuscole dalle minuscole: `Main`, `main` e `MAIN` sono nomi diversi. Anche il nome del file deve rispettare esattamente quello della classe pubblica.
+
+#### Errori sintattici e semantici
+
+Quando il compilatore trova un errore, mostra in genere il **file**, la **riga**, una descrizione del problema e il punto del codice in cui lo ha rilevato. Come punto di partenza consideriamo questo programma Java corretto, che calcola la somma di due numeri:
+
+```java
+public class Somma {
+    public static void main(String[] args) {
+        int a = 7;
+        int b = 5;
+        int somma = a + b;
+
+        System.out.println("La somma è: " + somma);
+    }
+}
+```
+
+Salvato come `Somma.java`, il programma si può compilare ed eseguire con:
+
+```bash
+javac Somma.java && java Somma
+```
+
+L'output è:
+
+```text
+La somma è: 12
+```
+
+##### Errore sintattico
+
+La **sintassi** è l'insieme delle regole che stabiliscono come devono essere scritte le istruzioni. Un errore sintattico si verifica quando il codice non rispetta la grammatica del linguaggio, per esempio se manca il punto e virgola:
+
+```java
+int b = 5 // manca ;
+int somma = a + b;
+```
+
+Una forma tipica del messaggio di `javac` è:
+
+```text
+Somma.java:4: error: ';' expected
+        int b = 5
+                 ^
+1 error
+```
+
+- `Somma.java:4` indica il file e la riga in cui il compilatore ha rilevato il problema;
+- `error` indica che la compilazione non può proseguire;
+- `';' expected` significa che il compilatore si aspettava un punto e virgola;
+- il simbolo `^` indica il punto del codice vicino all'errore.
+
+Per correggerlo bisogna aggiungere `;` dopo `int b = 5`.
+
+##### Errore semantico
+
+La **semantica** riguarda il significato del programma, cioè ciò che il programma effettivamente fa. Un errore semantico si verifica quando le istruzioni sono scritte correttamente, ma non realizzano l'operazione richiesta. Per esempio, sostituiamo per errore l'addizione con una sottrazione:
+
+```java
+int somma = a - b;
+```
+
+Questa istruzione rispetta tutte le regole di Java: le variabili sono dichiarate, i tipi sono compatibili e l'operatore `-` può essere applicato a due interi. Di conseguenza il compilatore **non mostra alcun errore** e crea normalmente il file `Somma.class`. Quando però eseguiamo il programma, otteniamo:
+
+```text
+La somma è: 2
+```
+
+Il risultato atteso era `12`, ma il programma calcola `7 - 5`. Il compilatore non può sapere che volevamo eseguire una somma: controlla che il codice rispetti le regole del linguaggio, non che risolva il problema desiderato. Per trovare questo tipo di errore bisogna quindi verificare l'output con dati di prova e confrontarlo con il risultato atteso.
+
+In questa dispensa useremo quindi **errore semantico** ed **errore logico** come sinonimi per indicare un programma formalmente valido che produce un risultato diverso da quello richiesto.
+
+I messaggi degli errori sintattici possono cambiare leggermente in base alla versione del compilatore. Inoltre, un primo errore può provocare altri messaggi a cascata: conviene correggere gli errori partendo sempre dal primo e poi ricompilare.
 
 #### Interprete e JVM
 La JVM carica e verifica il bytecode, quindi lo esegue. Le JVM moderne possono anche usare la compilazione **JIT** (*Just-In-Time*): le parti eseguite più spesso vengono tradotte in codice macchina durante l'esecuzione per migliorarne le prestazioni.
