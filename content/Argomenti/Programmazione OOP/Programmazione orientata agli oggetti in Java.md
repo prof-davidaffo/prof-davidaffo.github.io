@@ -2,9 +2,38 @@
 
 Questa dispensa parte dalle classi più semplici e arriva, un passaggio alla volta, alla costruzione di programmi formati da più oggetti. Gli argomenti vengono introdotti quando diventano utili negli esempi.
 
-Prima di affrontare gli oggetti, la dispensa riprende le conoscenze di Java necessarie per seguire gli esempi. Non si tratta di un corso completo sul linguaggio, ma di un breve ripasso. Gli esempi usano la sintassi moderna del linguaggio; conviene quindi lavorare con un JDK recente.
+Prima di affrontare gli oggetti, la dispensa riprende le conoscenze di Java necessarie per seguire gli esempi. Non si tratta di un corso completo sul linguaggio, ma di un breve ripasso. Gli esempi usano la sintassi moderna del linguaggio; conviene quindi lavorare con un JDK 17 o successivo.
 
 Le classi pubbliche sono mostrate senza `package` per non appesantire il codice. In un progetto Java, ciascuna va salvata in un file con lo stesso nome della classe.
+
+## Preparare ed eseguire gli esempi
+
+Installa un **JDK** (Java Development Kit), che comprende il compilatore `javac` e il comando `java` per avviare i programmi. Apri un terminale e controlla che entrambi siano disponibili:
+
+```text
+javac -version
+java -version
+```
+
+Se un comando non viene riconosciuto, verifica l'installazione del JDK e che la sua cartella `bin` sia nel `PATH`.
+
+Per provare un programma, salva il codice completo in un file `.java`: una classe dichiarata `public class Main` va nel file `Main.java`. Dal terminale entra nella cartella che contiene il file e digita:
+
+```text
+javac Main.java
+java Main
+```
+
+`javac` controlla e compila il sorgente, producendo `Main.class`; `java Main` esegue la classe che contiene il metodo `main`. Nel secondo comando si scrive il nome della classe **senza** `.java` o `.class`. Dopo aver modificato il sorgente, compila di nuovo prima di eseguirlo.
+
+Quando l'esempio è diviso in più file nella stessa cartella, salva ogni classe pubblica nel file corrispondente. Per esempio, con `BankAccount.java` e `Main.java`:
+
+```text
+javac BankAccount.java Main.java
+java Main
+```
+
+Molti riquadri della dispensa mostrano soltanto una parte di un programma: per provarli, inseriscili nella classe o nel metodo indicato dal testo. Più avanti, i progetti con package e librerie esterne useranno una struttura di cartelle e comandi specifici, spiegati nei rispettivi capitoli.
 
 ---
 
@@ -26,12 +55,7 @@ public class Main {
 
 Il codice va salvato nel file `Main.java`. Il metodo `main` è il punto da cui parte l'esecuzione; per ora possiamo considerare la sua intestazione come una forma fissa. `System.out.println` stampa una riga sul terminale.
 
-Dalla cartella che contiene il file, il programma può essere compilato ed eseguito con:
-
-```text
-javac Main.java
-java Main
-```
+Dalla cartella che contiene il file, compila ed esegui il programma con i comandi mostrati in **Preparare ed eseguire gli esempi**.
 
 Java distingue le lettere maiuscole dalle minuscole. Le istruzioni terminano con `;`, mentre le parentesi graffe delimitano i blocchi di codice.
 
