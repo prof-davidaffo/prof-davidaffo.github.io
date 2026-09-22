@@ -1,5 +1,3 @@
-# Programmazione orientata agli oggetti in Java
-
 Questa dispensa parte dalle classi più semplici e arriva, un passaggio alla volta, alla costruzione di programmi formati da più oggetti. Gli argomenti vengono introdotti quando diventano utili negli esempi.
 
 Prima di affrontare gli oggetti, la dispensa riprende le conoscenze di Java necessarie per seguire gli esempi. Non si tratta di un corso completo sul linguaggio, ma di un breve ripasso. Gli esempi usano la sintassi moderna del linguaggio; conviene quindi lavorare con un JDK 17 o successivo.
@@ -25,6 +23,12 @@ java Main
 ```
 
 `javac` controlla e compila il sorgente, producendo `Main.class`; `java Main` esegue la classe che contiene il metodo `main`. Nel secondo comando si scrive il nome della classe **senza** `.java` o `.class`. Dopo aver modificato il sorgente, compila di nuovo prima di eseguirlo.
+
+Posso anche compilare ed eseguire direttamente scrivendo semplicemente
+
+```
+java Main.java
+```
 
 Quando l'esempio è diviso in più file nella stessa cartella, salva ogni classe pubblica nel file corrispondente. Per esempio, con `BankAccount.java` e `Main.java`:
 
