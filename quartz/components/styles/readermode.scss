@@ -21,14 +21,31 @@
   }
 }
 
-:root[reader-mode="on"] {
+:root[reader-mode="on"] .page {
+  max-width: none;
+}
+
+:root[reader-mode="on"] .page > #quartz-body {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto auto auto;
+  grid-template-areas: "grid-header" "grid-center" "grid-footer";
+  max-width: none;
+  margin: 0 auto;
+  padding: 0 1rem;
+
   & .sidebar.left,
   & .sidebar.right {
-    opacity: 0;
-    transition: opacity 0.2s ease;
-
-    &:hover {
-      opacity: 1;
-    }
+    display: none;
   }
+
+  & .page-header {
+    margin-top: 5rem;
+  }
+}
+
+:root[reader-mode="on"] .reading-controls {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
 }

@@ -494,7 +494,7 @@ int main() {
     // cout << "Ciao!" << endl; <- questa linea di codice non viene eseguita
     /* questo è
 	un commento su più
-	linee */
+	linee */// cout << "Ciao!" << endl; <- questa linea di codice non vie
     return 0;
 }
 ```
@@ -808,7 +808,6 @@ int main() {
     cout << "L'utente ha detto: \"C++ è fantastico!\"" << endl;
 
     cout << "\nEsempio di ritorno a capo:\n";
-    cout << "12345\rABC" << endl; // Ritorna a inizio riga e sovrascrive
 
     return 0;
 }

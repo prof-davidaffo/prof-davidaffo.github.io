@@ -1,0 +1,60 @@
+.reading-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  max-width: calc(100vw - 2rem);
+  box-sizing: border-box;
+  font-size: 16px;
+  margin-left: auto;
+  margin-bottom: 1rem;
+  padding: 0.25rem 0.5rem;
+  border: 1px solid var(--lightgray);
+  border-radius: 8px;
+  background: var(--light);
+
+  & input[type="range"] {
+    width: clamp(60px, 20vw, 140px);
+    min-width: 0;
+    accent-color: var(--secondary);
+  }
+
+  & output {
+    min-width: 4ch;
+    font-variant-numeric: tabular-nums;
+  }
+
+  & input:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 2px;
+  }
+
+  & button {
+    cursor: pointer;
+    color: var(--darkgray);
+    background: none;
+    border: none;
+    min-width: 32px;
+    height: 32px;
+    font: inherit;
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--secondary);
+      outline-offset: 2px;
+    }
+  }
+
+  & .readermode[aria-pressed="true"] {
+    background: var(--highlight);
+    border-radius: 4px;
+  }
+
+  @media print {
+    display: none;
+  }
+}
