@@ -13,6 +13,7 @@ import { BuildCtx } from "../../util/ctx"
 import { QuartzComponent } from "../../components/types"
 import { normalizeResource } from "../../util/resources"
 import { componentRegistry } from "../../components/registry"
+import { containExplorerScroll } from "../../components/scripts/explorerScroll"
 import {
   googleFontHref,
   googleFontSubsetHref,
@@ -58,7 +59,8 @@ function getComponentResources(ctx: BuildCtx): ComponentResources {
     const { css, beforeDOMLoaded, afterDOMLoaded } = component
     for (const c of normalizeResource(css)) componentResources.css.add(c)
     for (const b of normalizeResource(beforeDOMLoaded)) componentResources.beforeDOMLoaded.add(b)
-    for (const a of normalizeResource(afterDOMLoaded)) componentResources.afterDOMLoaded.add(a)
+    for (const a of normalizeResource(afterDOMLoaded))
+      componentResources.afterDOMLoaded.add(containExplorerScroll(a))
   }
 
   return {

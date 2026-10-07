@@ -1010,8 +1010,6 @@ if (condizione) {
 }
 ```
 
-> [!warning] Nota
-> Quando utilizziamo delle espressioni logiche (le useremo soprattutto all'interno delle condizioni), dobbiamo ricordarci che "diverso da" si indica con `!=` e "uguale a" si indica con `==`. Il singolo `=` serve esclusivamente per fare le assegnazioni, quindi ha un significato diverso da quello matematico, che per noi è il doppio uguale.
 
 **Esempio**:  
 ```cpp
@@ -1032,6 +1030,8 @@ int main() {
 }
 ```
 
+> [!warning] Nota
+> Quando utilizziamo delle espressioni logiche (le useremo soprattutto all'interno delle condizioni), dobbiamo ricordarci che "diverso da" si indica con `!=` e "uguale a" si indica con `==`. Il singolo `=` serve esclusivamente per fare le assegnazioni, quindi ha un significato diverso da quello matematico, che per noi è il doppio uguale.
 
 > [!exercise] Esercizio
 > Cosa ti aspetti che succeda se togli il blocco `else` e metti `cout << "Il numero è dispari." << endl;` fuori dal blocco `if`?
