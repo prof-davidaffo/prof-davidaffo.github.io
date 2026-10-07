@@ -709,6 +709,18 @@ export async function loadQuartzLayout(layoutOverrides?: {
     if (!pt.footer) pt.footer = defaultLayout.footer
   }
 
+  // Keep the v4 reading zoom on notes and listing pages, including SPA navigation.
+  const { default: ReadingControls } = await import("../../components/ReadingControls")
+  const readingControls = ReadingControls()
+  for (const [pageType, pageLayout] of [
+    ["default", defaultLayout],
+    ...Object.entries(byPageType),
+  ] as [string, Partial<FullPageLayout>][]) {
+    if (pageType !== "404") {
+      pageLayout.beforeBody = [readingControls, ...(pageLayout.beforeBody ?? [])]
+    }
+  }
+
   const mergedDefaults = { ...defaultLayout, ...layoutOverrides?.defaults }
   const mergedByPageType = { ...byPageType }
   if (layoutOverrides?.byPageType) {
