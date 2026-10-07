@@ -41,6 +41,7 @@ export default (() => {
 
     return (
       <head>
+        <link rel="stylesheet" href={joinSegments(baseDir, "static/print.css")} media="print" />
         <title>{title}</title>
         <meta charSet="utf-8" />
         {coreStylesheet && <link rel="preload" href={coreStylesheet} as="style" />}
@@ -59,7 +60,10 @@ export default (() => {
         )}
         <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossOrigin="anonymous" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
+        <meta
+          name="google-site-verification"
+          content="5kcskeTULBzs7UGqTfPS4qRH1KjmTUmT2h12FRFREbc"
+        />
         <meta name="og:site_name" content={cfg.pageTitle}></meta>
         <meta property="og:title" content={title} />
         <meta property="og:type" content="website" />
@@ -104,6 +108,31 @@ export default (() => {
             return resource
           }
         })}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6244956152734111"
+          crossOrigin="anonymous"
+        />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+(function () {
+  function removeGoogleCMP() {
+    document.querySelectorAll("*").forEach(el => {
+      if (el.shadowRoot) {
+        el.shadowRoot
+          .querySelectorAll(".ipr-container")
+          .forEach(n => n.remove())
+      }
+    })
+  }
+
+  window.addEventListener("beforeprint", removeGoogleCMP)
+  window.addEventListener("afterprint", () => location.reload())
+})()
+            `,
+          }}
+        />
       </head>
     )
   }

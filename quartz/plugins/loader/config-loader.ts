@@ -711,13 +711,18 @@ export async function loadQuartzLayout(layoutOverrides?: {
 
   // Keep the v4 reading zoom on notes and listing pages, including SPA navigation.
   const { default: ReadingControls } = await import("../../components/ReadingControls")
+  const { default: PrintButton } = await import("../../components/PrintButton")
   const readingControls = ReadingControls()
+  const printButton = PrintButton()
   for (const [pageType, pageLayout] of [
     ["default", defaultLayout],
     ...Object.entries(byPageType),
   ] as [string, Partial<FullPageLayout>][]) {
     if (pageType !== "404") {
       pageLayout.beforeBody = [readingControls, ...(pageLayout.beforeBody ?? [])]
+    }
+    if (pageType === "default" || pageType === "content") {
+      pageLayout.right = [printButton, ...(pageLayout.right ?? [])]
     }
   }
 
