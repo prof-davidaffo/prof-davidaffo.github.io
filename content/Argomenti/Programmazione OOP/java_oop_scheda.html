@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Java OOP — Estensioni, Interfacce, Polimorfismo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #0f1117;
+    --bg2:      #181c27;
+    --bg3:      #1e2333;
+    --border:   #2a2f45;
+    --text:     #e8eaf2;
+    --muted:    #7a80a0;
+    --purple:   #a78bfa;
+    --purple-d: #1e1730;
+    --teal:     #34d399;
+    --teal-d:   #0d2a20;
+    --coral:    #fb7185;
+    --coral-d:  #2a0f16;
+    --blue:     #60a5fa;
+    --blue-d:   #0d1e35;
+    --amber:    #fbbf24;
+    --amber-d:  #2a1d05;
+    --green:    #86efac;
+    --kw:       #c084fc;
+    --cls:      #67e8f9;
+    --str:      #86efac;
+    --cmt:      #4b5680;
+    --num:      #fca5a1;
+    --ann:      #fbbf24;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Sora', sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    padding: 2.5rem 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  /* HEADER */
+  .header {
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
+  }
+  .header-top { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+  .header h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    color: #fff;
+  }
+  .header-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .lang-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    background: var(--purple-d);
+    color: var(--purple);
+    border: 1px solid #3d2a70;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* SEZIONI */
+  .section {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-icon {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .icon-purple { background: var(--purple-d); color: var(--purple); }
+  .icon-teal   { background: var(--teal-d);   color: var(--teal); }
+  .icon-coral  { background: var(--coral-d);  color: var(--coral); }
+  .section-title { font-size: 18px; font-weight: 600; color: #fff; }
+  .section-desc  { font-size: 12px; color: var(--muted); margin-top: 1px; }
+  .section-body  { padding: 1.25rem; }
+
+  /* DESCRIZIONE */
+  .desc {
+    font-size: 14px;
+    color: #b0b8d8;
+    line-height: 1.7;
+    margin-bottom: 1.25rem;
+  }
+  .desc strong { color: var(--text); font-weight: 600; }
+
+  /* CODE BLOCK */
+  pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    line-height: 1.85;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.25rem;
+    tab-size: 2;
+  }
+  .kw  { color: var(--kw);  font-weight: 600; }
+  .cls { color: var(--cls); }
+  .str { color: var(--str); }
+  .cmt { color: var(--cmt); font-style: italic; }
+  .num { color: var(--num); }
+  .ann { color: var(--ann); }
+
+  /* BADGES */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 1.25rem; }
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid;
+  }
+  .pill-purple { background: var(--purple-d); color: var(--purple); border-color: #3d2a70; }
+  .pill-teal   { background: var(--teal-d);   color: var(--teal);   border-color: #1a4d38; }
+  .pill-coral  { background: var(--coral-d);  color: var(--coral);  border-color: #4d1a24; }
+  .pill-blue   { background: var(--blue-d);   color: var(--blue);   border-color: #1a3558; }
+  .pill-amber  { background: var(--amber-d);  color: var(--amber);  border-color: #4d380a; }
+
+  /* DIVIDER */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 1rem 0; }
+
+  /* GRIGLIA CONFRONTO */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .compare-box {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+  }
+  .compare-box h4 {
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.6rem;
+  }
+  .compare-box ul { list-style: none; }
+  .compare-box ul li {
+    font-size: 13px;
+    color: #9aa0c0;
+    padding: 3px 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .compare-box ul li::before { font-size: 11px; flex-shrink: 0; }
+  .ok  h4 { color: var(--teal); }
+  .ok  ul li::before { content: "✓"; color: var(--teal); }
+  .nok h4 { color: var(--coral); }
+  .nok ul li::before { content: "✗"; color: var(--coral); }
+
+  /* SCHEMA GERARCHIA */
+  .schema {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    margin-bottom: 1.25rem;
+    overflow-x: auto;
+  }
+  .tree {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    min-width: 500px;
+  }
+  .node {
+    padding: 6px 20px;
+    border-radius: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid;
+    white-space: nowrap;
+  }
+  .node-purple { background: var(--purple-d); color: var(--purple); border-color: #3d2a70; }
+  .node-teal   { background: var(--teal-d);   color: var(--teal);   border-color: #1a4d38; }
+  .node-blue   { background: var(--blue-d);   color: var(--blue);   border-color: #1a3558; }
+  .node span   { font-weight: 400; font-size: 11px; opacity: 0.75; margin-left: 6px; }
+  .connector { width: 2px; height: 20px; background: var(--border); }
+  .branch-row { display: flex; gap: 40px; align-items: flex-start; justify-content: center; }
+  .branch { display: flex; flex-direction: column; align-items: center; gap: 0; }
+  .schema-note {
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--border);
+    text-align: center;
+  }
+  .schema-note code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--bg2);
+    padding: 1px 6px;
+    border-radius: 4px;
+    color: var(--cls);
+  }
+
+  /* TABELLA OVERRIDE vs OVERLOAD */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin-bottom: 1rem;
+  }
+  th {
+    background: var(--bg3);
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 8px 12px;
+    text-align: left;
+    border: 1px solid var(--border);
+  }
+  td {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    color: #b0b8d8;
+    vertical-align: top;
+  }
+  td code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--bg);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--cls);
+  }
+  td strong { color: var(--text); }
+  tr:nth-child(even) td { background: rgba(255,255,255,0.02); }
+
+  /* REGOLA EVIDENZIATA */
+  .highlight-box {
+    background: var(--blue-d);
+    border: 1px solid #1a3558;
+    border-left: 3px solid var(--blue);
+    border-radius: 8px;
+    padding: 0.8rem 1rem;
+    font-size: 13.5px;
+    color: #a0c4f8;
+    line-height: 1.6;
+  }
+  .highlight-box code {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12.5px;
+    background: rgba(96,165,250,0.12);
+    padding: 1px 5px;
+    border-radius: 4px;
+    color: var(--blue);
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+    font-size: 12px;
+    color: var(--cmt);
+    text-align: center;
+  }
+
+  @media (max-width: 600px) {
+    .grid2 { grid-template-columns: 1fr; }
+    .branch-row { gap: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <h1>Java OOP</h1>
+    <span class="lang-badge">Java 17+</span>
+  </div>
+  <div class="header-sub">Scheda riassuntiva · Estensioni · Interfacce · Polimorfismo</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SEZIONE 1: ESTENSIONE
+═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon icon-purple">⬆</div>
+    <div>
+      <div class="section-title">Estensione (Ereditarietà)</div>
+      <div class="section-desc">Parola chiave: <strong style="color:var(--purple)">extends</strong></div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <p class="desc">
+      Una classe <strong>figlia</strong> eredita tutti i campi e metodi non privati dalla classe <strong>genitore</strong>.
+      Java supporta solo ereditarietà <strong>singola</strong> tra classi (una figlia, un solo genitore diretto).
+    </p>
+
+    <pre><span class="kw">class</span> <span class="cls">Animale</span> {
+  <span class="kw">String</span> nome;
+  <span class="kw">int</span>    eta;
+
+  <span class="cls">Animale</span>(<span class="kw">String</span> nome) {
+    <span class="kw">this</span>.nome = nome;
+  }
+
+  <span class="kw">void</span> mangia() {
+    System.out.println(nome + <span class="str">" sta mangiando"</span>);
+  }
+
+  <span class="kw">void</span> descrivi() {
+    System.out.println(<span class="str">"Sono un animale di nome "</span> + nome);
+  }
+}
+
+<span class="kw">class</span> <span class="cls">Cane</span> <span class="kw">extends</span> <span class="cls">Animale</span> {   <span class="cmt">// Cane eredita da Animale</span>
+
+  <span class="kw">String</span> razza;
+
+  <span class="cls">Cane</span>(<span class="kw">String</span> nome, <span class="kw">String</span> razza) {
+    <span class="kw">super</span>(nome);             <span class="cmt">// chiama il costruttore del genitore</span>
+    <span class="kw">this</span>.razza = razza;
+  }
+
+  <span class="ann">@Override</span>                   <span class="cmt">// ridefinisce il metodo del genitore</span>
+  <span class="kw">void</span> mangia() {
+    <span class="kw">super</span>.mangia();          <span class="cmt">// esegue prima la versione del genitore</span>
+    System.out.println(<span class="str">"... con la crocchetta!"</span>);
+  }
+
+  <span class="kw">void</span> abbaia() {            <span class="cmt">// metodo aggiunto dalla classe figlia</span>
+    System.out.println(<span class="str">"Bau bau!"</span>);
+  }
+}</pre>
+
+    <div class="pill-row">
+      <span class="pill pill-purple">extends</span>
+      <span class="pill pill-purple">super()</span>
+      <span class="pill pill-purple">super.metodo()</span>
+      <span class="pill pill-amber">@Override</span>
+      <span class="pill pill-coral">final → blocca ereditarietà</span>
+      <span class="pill pill-blue">protected → accessibile dalle figlie</span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="grid2">
+      <div class="compare-box ok">
+        <h4>✓ Cosa si eredita</h4>
+        <ul>
+          <li>Campi <code>public</code> e <code>protected</code></li>
+          <li>Metodi <code>public</code> e <code>protected</code></li>
+          <li>Interfacce implementate dal genitore</li>
+          <li>Metodi e campi <code>static</code> (visibili, non override)</li>
+        </ul>
+      </div>
+      <div class="compare-box nok">
+        <h4>✗ Cosa NON si eredita</h4>
+        <ul>
+          <li>Costruttori (vanno richiamati con <code>super()</code>)</li>
+          <li>Campi e metodi <code>private</code></li>
+          <li>Metodi dichiarati <code>final</code> (non si ridefiniscono)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="highlight-box" style="margin-top:1rem">
+      💡 <code>super()</code> deve essere la <strong>prima istruzione</strong> nel costruttore della classe figlia.
+      Se omesso, Java chiama automaticamente <code>super()</code> senza argomenti — errore se il genitore non ha costruttore vuoto.
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SEZIONE 2: INTERFACCE
+═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon icon-teal">⬡</div>
+    <div>
+      <div class="section-title">Interfacce</div>
+      <div class="section-desc">Parole chiave: <strong style="color:var(--teal)">interface</strong> · <strong style="color:var(--teal)">implements</strong></div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <p class="desc">
+      Un'interfaccia è un <strong>contratto</strong>: definisce <em>cosa</em> una classe deve saper fare, senza specificare <em>come</em>.
+      Una classe può implementare <strong>più interfacce</strong> contemporaneamente (soluzione al limite dell'ereditarietà singola).
+    </p>
+
+    <pre><span class="kw">interface</span> <span class="cls">Volante</span> {
+  <span class="kw">void</span> vola();                <span class="cmt">// metodo astratto → obbligatorio implementarlo</span>
+  <span class="kw">void</span> atterra();             <span class="cmt">// ogni metodo è implicitamente public abstract</span>
+
+  <span class="kw">default void</span> descriviVolo() {   <span class="cmt">// Java 8+: metodo con implementazione</span>
+    System.out.println(<span class="str">"Sto volando!"</span>);
+  }
+
+  <span class="kw">static</span> <span class="cls">Volante</span> crea() {      <span class="cmt">// Java 8+: metodo statico nell'interfaccia</span>
+    <span class="kw">return new</span> <span class="cls">Aquila</span>();
+  }
+}
+
+<span class="kw">interface</span> <span class="cls">Nuotante</span> {
+  <span class="kw">void</span> nuota();
+}
+
+<span class="cmt">// Una classe può implementare PIÙ interfacce</span>
+<span class="kw">class</span> <span class="cls">Anatra</span> <span class="kw">extends</span> <span class="cls">Animale</span> <span class="kw">implements</span> <span class="cls">Volante</span>, <span class="cls">Nuotante</span> {
+
+  <span class="cls">Anatra</span>(<span class="kw">String</span> nome) { <span class="kw">super</span>(nome); }
+
+  <span class="ann">@Override</span>
+  <span class="kw">public void</span> vola()    { System.out.println(<span class="str">"L'anatra vola bassa"</span>); }
+
+  <span class="ann">@Override</span>
+  <span class="kw">public void</span> atterra() { System.out.println(<span class="str">"Atterraggio sull'acqua"</span>); }
+
+  <span class="ann">@Override</span>
+  <span class="kw">public void</span> nuota()   { System.out.println(<span class="str">"Quack e via"</span>); }
+}</pre>
+
+    <div class="pill-row">
+      <span class="pill pill-teal">interface</span>
+      <span class="pill pill-teal">implements</span>
+      <span class="pill pill-teal">default (corpo opzionale)</span>
+      <span class="pill pill-teal">static nell'interfaccia</span>
+      <span class="pill pill-amber">campi: solo static final</span>
+      <span class="pill pill-coral">nessun costruttore</span>
+    </div>
+
+    <hr class="divider">
+
+    <table>
+      <thead>
+        <tr>
+          <th>Caratteristica</th>
+          <th>Interfaccia</th>
+          <th>Classe astratta</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Ereditarietà multipla</strong></td>
+          <td style="color:var(--teal)">✓ Sì (implements A, B, C)</td>
+          <td style="color:var(--coral)">✗ No (solo una extends)</td>
+        </tr>
+        <tr>
+          <td><strong>Metodi concreti</strong></td>
+          <td>Solo <code>default</code> e <code>static</code></td>
+          <td>Sì, liberamente</td>
+        </tr>
+        <tr>
+          <td><strong>Campi di istanza</strong></td>
+          <td style="color:var(--coral)">✗ Solo <code>static final</code></td>
+          <td style="color:var(--teal)">✓ Sì</td>
+        </tr>
+        <tr>
+          <td><strong>Costruttore</strong></td>
+          <td style="color:var(--coral)">✗ No</td>
+          <td style="color:var(--teal)">✓ Sì</td>
+        </tr>
+        <tr>
+          <td><strong>Uso tipico</strong></td>
+          <td>Capacità / comportamento (<em>"sa fare"</em>)</td>
+          <td>Tipo base comune (<em>"è un tipo di"</em>)</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SEZIONE 3: POLIMORFISMO
+═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon icon-coral">◈</div>
+    <div>
+      <div class="section-title">Polimorfismo</div>
+      <div class="section-desc">Un'interfaccia, molte forme — risolto a <strong style="color:var(--coral)">runtime</strong></div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <p class="desc">
+      Una variabile del tipo <strong>genitore</strong> (o interfaccia) può riferirsi a un oggetto di qualsiasi classe figlia.
+      Quale metodo viene chiamato è deciso a <strong>runtime</strong> in base al tipo reale dell'oggetto (<em>dynamic dispatch</em>).
+    </p>
+
+    <pre><span class="cmt">// Polimorfismo con classe genitore</span>
+<span class="cls">Animale</span> a1 = <span class="kw">new</span> <span class="cls">Cane</span>(<span class="str">"Rex"</span>, <span class="str">"Labrador"</span>);  <span class="cmt">// tipo dichiarato: Animale</span>
+<span class="cls">Animale</span> a2 = <span class="kw">new</span> <span class="cls">Anatra</span>(<span class="str">"Paperino"</span>);
+
+a1.mangia();   <span class="cmt">// → chiama Cane.mangia()   (la versione @Override)</span>
+a2.mangia();   <span class="cmt">// → chiama Animale.mangia() (Anatra non ha override)</span>
+
+<span class="cmt">// Polimorfismo con interfaccia</span>
+<span class="cls">Volante</span>[] stormo = {
+  <span class="kw">new</span> <span class="cls">Anatra</span>(<span class="str">"Duck"</span>),
+  <span class="kw">new</span> <span class="cls">Aquila</span>(<span class="str">"Aquilone"</span>),
+  <span class="kw">new</span> <span class="cls">Aereo</span>(<span class="str">"B737"</span>)
+};
+
+<span class="kw">for</span> (<span class="cls">Volante</span> v : stormo) {
+  v.vola();    <span class="cmt">// ogni oggetto esegue la propria versione di vola()</span>
+}
+
+<span class="cmt">// Cast esplicito + controllo di tipo (Java 16+: pattern matching)</span>
+<span class="kw">for</span> (<span class="cls">Animale</span> a : animali) {
+  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cls">Cane</span> c) {     <span class="cmt">// se è un Cane, crea var 'c' già castata</span>
+    c.abbaia();                    <span class="cmt">// posso usare i metodi specifici di Cane</span>
+  }
+  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cls">Anatra</span> anatra) {
+    anatra.nuota();
+  }
+}</pre>
+
+    <div class="pill-row">
+      <span class="pill pill-coral">@Override</span>
+      <span class="pill pill-coral">instanceof</span>
+      <span class="pill pill-coral">cast esplicito (ClasseFiglia) obj</span>
+      <span class="pill pill-coral">dynamic dispatch</span>
+      <span class="pill pill-blue">pattern matching Java 16+</span>
+    </div>
+
+    <hr class="divider">
+
+    <p class="desc" style="margin-bottom:0.75rem">
+      <strong>Override vs Overload</strong> — due concetti spesso confusi:
+    </p>
+
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th>Override (ridefinizione)</th>
+          <th>Overload (sovraccarico)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Quando</strong></td>
+          <td>A <strong>runtime</strong> (dinamico)</td>
+          <td>A <strong>compile-time</strong> (statico)</td>
+        </tr>
+        <tr>
+          <td><strong>Dove</strong></td>
+          <td>Classi diverse (figlia ridefinisce genitore)</td>
+          <td>Stessa classe</td>
+        </tr>
+        <tr>
+          <td><strong>Firma</strong></td>
+          <td>Identica (stesso nome, stessi parametri)</td>
+          <td>Stesso nome, parametri diversi</td>
+        </tr>
+        <tr>
+          <td><strong>Annotazione</strong></td>
+          <td><code>@Override</code> (consigliata)</td>
+          <td>Nessuna</td>
+        </tr>
+        <tr>
+          <td><strong>Esempio</strong></td>
+          <td><code>Cane.mangia()</code> ridefinisce <code>Animale.mangia()</code></td>
+          <td><code>somma(int,int)</code> e <code>somma(double,double)</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="highlight-box">
+      ⚠️ Non puoi fare override di metodi <code>static</code> — li puoi solo <em>nascondere</em> (hiding).
+      Con <code>static</code> il metodo scelto dipende dal <strong>tipo dichiarato</strong>, non da quello reale.
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     SEZIONE 4: SCHEMA RIASSUNTIVO
+═══════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-icon" style="background:#1a1a2e; color:#fff; font-size:16px;">⊞</div>
+    <div>
+      <div class="section-title">Schema gerarchico completo</div>
+      <div class="section-desc">Come si collegano estensione, interfacce e polimorfismo</div>
+    </div>
+  </div>
+  <div class="section-body">
+
+    <div class="schema">
+      <div class="tree">
+        <!-- root -->
+        <div class="node node-purple">Animale <span>(classe base)</span></div>
+        <div class="connector"></div>
+        <!-- figlie -->
+        <div class="branch-row">
+          <div class="branch">
+            <div class="node node-teal">Cane <span>extends Animale</span></div>
+            <div class="connector"></div>
+            <div class="node" style="background:#1a2a1a; color:#86efac; border-color:#2a4a2a; font-family:'JetBrains Mono',monospace; font-size:12px; padding:4px 14px; border-radius:6px;">@Override mangia()</div>
+          </div>
+          <div class="branch">
+            <div class="node node-teal">Anatra <span>extends Animale</span></div>
+            <div class="connector"></div>
+            <div class="node node-blue" style="font-size:12px; padding:4px 14px; border-radius:6px;">implements Volante, Nuotante</div>
+          </div>
+          <div class="branch">
+            <div class="node node-teal">Aquila <span>extends Animale</span></div>
+            <div class="connector"></div>
+            <div class="node node-blue" style="font-size:12px; padding:4px 14px; border-radius:6px;">implements Volante</div>
+          </div>
+        </div>
+
+        <div class="schema-note">
+          Polimorfismo in azione:<br>
+          <code>Animale a = new Cane("Rex", "Lab");</code> → <code>a.mangia()</code> chiama <code>Cane.mangia()</code> a runtime<br>
+          <code>Volante v = new Anatra("Duck");</code> → <code>v.vola()</code> chiama <code>Anatra.vola()</code> a runtime
+        </div>
+      </div>
+    </div>
+
+    <pre><span class="cmt">// Esempio completo che usa tutti e tre i concetti</span>
+<span class="cls">List</span>&lt;<span class="cls">Animale</span>&gt; animali = <span class="cls">List</span>.of(
+  <span class="kw">new</span> <span class="cls">Cane</span>(<span class="str">"Rex"</span>, <span class="str">"Labrador"</span>),
+  <span class="kw">new</span> <span class="cls">Anatra</span>(<span class="str">"Donald"</span>),
+  <span class="kw">new</span> <span class="cls">Aquila</span>(<span class="str">"Arco"</span>)
+);
+
+<span class="kw">for</span> (<span class="cls">Animale</span> a : animali) {
+  a.mangia();                          <span class="cmt">// polimorfismo → metodo corretto per ciascuno</span>
+
+  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cls">Volante</span> v) v.vola(); <span class="cmt">// solo chi implementa Volante vola</span>
+  <span class="kw">if</span> (a <span class="kw">instanceof</span> <span class="cls">Cane</span>    c) c.abbaia();
+}</pre>
+
+  </div>
+</div>
+
+<div class="footer">
+  Java OOP Reference · Estensioni · Interfacce · Polimorfismo
+</div>
+
+</body>
+</html>

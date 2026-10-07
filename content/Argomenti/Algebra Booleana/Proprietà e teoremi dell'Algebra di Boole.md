@@ -1,0 +1,1 @@
+![[Dispensa sull'algebra di Boole e circuiti logici#Teoremi e proprietà dell'algebra di Boole]]

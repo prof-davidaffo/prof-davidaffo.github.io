@@ -1,0 +1,869 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 10 The dplyr Library | Technical Foundations of Informatics</title>
+  <meta name="description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 10 The dplyr Library | Technical Foundations of Informatics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://info201.github.io/" />
+  <meta property="og:image" content="https://info201.github.io/img/cover-img.png" />
+  <meta property="og:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="github-repo" content="info201/book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 10 The dplyr Library | Technical Foundations of Informatics" />
+  
+  <meta name="twitter:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="twitter:image" content="https://info201.github.io/img/cover-img.png" />
+
+<meta name="author" content="Michael Freeman and Joel Ross" />
+
+
+<meta name="date" content="2019-09-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
+<link rel="prev" href="data-frames.html"/>
+<link rel="next" href="apis.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-98444716-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Technical Foundations of Informatics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the Book</a></li>
+<li class="chapter" data-level="1" data-path="setup-machine.html"><a href="setup-machine.html"><i class="fa fa-check"></i><b>1</b> Setting up your Machine</a><ul>
+<li class="chapter" data-level="1.1" data-path="setup-machine.html"><a href="setup-machine.html#git"><i class="fa fa-check"></i><b>1.1</b> Git</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="setup-machine.html"><a href="setup-machine.html#github"><i class="fa fa-check"></i><b>1.1.1</b> GitHub</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-tools-bash"><i class="fa fa-check"></i><b>1.2</b> Command-line Tools (Bash)</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-a-mac"><i class="fa fa-check"></i><b>1.2.1</b> Command-line on a Mac</a></li>
+<li class="chapter" data-level="1.2.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-windows"><i class="fa fa-check"></i><b>1.2.2</b> Command-line on Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="setup-machine.html"><a href="setup-machine.html#text-editors"><i class="fa fa-check"></i><b>1.3</b> Text Editors</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="setup-machine.html"><a href="setup-machine.html#atom"><i class="fa fa-check"></i><b>1.3.1</b> Atom</a></li>
+<li class="chapter" data-level="1.3.2" data-path="setup-machine.html"><a href="setup-machine.html#visual-studio-code"><i class="fa fa-check"></i><b>1.3.2</b> Visual Studio Code</a></li>
+<li class="chapter" data-level="1.3.3" data-path="setup-machine.html"><a href="setup-machine.html#sublime-text"><i class="fa fa-check"></i><b>1.3.3</b> Sublime Text</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="setup-machine.html"><a href="setup-machine.html#r-language"><i class="fa fa-check"></i><b>1.4</b> R Language</a></li>
+<li class="chapter" data-level="1.5" data-path="setup-machine.html"><a href="setup-machine.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="" data-path="setup-machine.html"><a href="setup-machine.html#resources"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>2</b> The Command Line</a><ul>
+<li class="chapter" data-level="2.1" data-path="command-line.html"><a href="command-line.html#accessing-the-command-line"><i class="fa fa-check"></i><b>2.1</b> Accessing the Command-Line</a></li>
+<li class="chapter" data-level="2.2" data-path="command-line.html"><a href="command-line.html#navigating-the-command-line"><i class="fa fa-check"></i><b>2.2</b> Navigating the Command Line</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="command-line.html"><a href="command-line.html#changing-directories"><i class="fa fa-check"></i><b>2.2.1</b> Changing Directories</a></li>
+<li class="chapter" data-level="2.2.2" data-path="command-line.html"><a href="command-line.html#listing-files"><i class="fa fa-check"></i><b>2.2.2</b> Listing Files</a></li>
+<li class="chapter" data-level="2.2.3" data-path="command-line.html"><a href="command-line.html#paths"><i class="fa fa-check"></i><b>2.2.3</b> Paths</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="command-line.html"><a href="command-line.html#file-commands"><i class="fa fa-check"></i><b>2.3</b> File Commands</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="command-line.html"><a href="command-line.html#learning-new-commands"><i class="fa fa-check"></i><b>2.3.1</b> Learning New Commands</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="command-line.html"><a href="command-line.html#dealing-with-errors"><i class="fa fa-check"></i><b>2.4</b> Dealing With Errors</a></li>
+<li class="chapter" data-level="" data-path="command-line.html"><a href="command-line.html#resources-1"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="markdown.html"><a href="markdown.html"><i class="fa fa-check"></i><b>3</b> Markdown</a><ul>
+<li class="chapter" data-level="3.1" data-path="markdown.html"><a href="markdown.html#writing-markdown"><i class="fa fa-check"></i><b>3.1</b> Writing Markdown</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="markdown.html"><a href="markdown.html#text-formatting"><i class="fa fa-check"></i><b>3.1.1</b> Text Formatting</a></li>
+<li class="chapter" data-level="3.1.2" data-path="markdown.html"><a href="markdown.html#text-blocks"><i class="fa fa-check"></i><b>3.1.2</b> Text Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="markdown.html"><a href="markdown.html#rendering-markdown"><i class="fa fa-check"></i><b>3.2</b> Rendering Markdown</a></li>
+<li class="chapter" data-level="" data-path="markdown.html"><a href="markdown.html#resources-2"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="git-basics.html"><a href="git-basics.html"><i class="fa fa-check"></i><b>4</b> Git and GitHub</a><ul>
+<li class="chapter" data-level="4.1" data-path="git-basics.html"><a href="git-basics.html#what-is-this-git-thing-anyway"><i class="fa fa-check"></i><b>4.1</b> What is this <em>git</em> thing anyway?</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="git-basics.html"><a href="git-basics.html#git-core-concepts"><i class="fa fa-check"></i><b>4.1.1</b> Git Core Concepts</a></li>
+<li class="chapter" data-level="4.1.2" data-path="git-basics.html"><a href="git-basics.html#wait-but-what-is-github-then"><i class="fa fa-check"></i><b>4.1.2</b> Wait, but what is GitHub then?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="git-basics.html"><a href="git-basics.html#installation-setup"><i class="fa fa-check"></i><b>4.2</b> Installation &amp; Setup</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="git-basics.html"><a href="git-basics.html#creating-a-repo"><i class="fa fa-check"></i><b>4.2.1</b> Creating a Repo</a></li>
+<li class="chapter" data-level="4.2.2" data-path="git-basics.html"><a href="git-basics.html#checking-status"><i class="fa fa-check"></i><b>4.2.2</b> Checking Status</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="git-basics.html"><a href="git-basics.html#making-changes"><i class="fa fa-check"></i><b>4.3</b> Making Changes</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="git-basics.html"><a href="git-basics.html#adding-files"><i class="fa fa-check"></i><b>4.3.1</b> Adding Files</a></li>
+<li class="chapter" data-level="4.3.2" data-path="git-basics.html"><a href="git-basics.html#committing"><i class="fa fa-check"></i><b>4.3.2</b> Committing</a></li>
+<li class="chapter" data-level="4.3.3" data-path="git-basics.html"><a href="git-basics.html#commit-history"><i class="fa fa-check"></i><b>4.3.3</b> Commit History</a></li>
+<li class="chapter" data-level="4.3.4" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process"><i class="fa fa-check"></i><b>4.3.4</b> Reviewing the Process</a></li>
+<li class="chapter" data-level="4.3.5" data-path="git-basics.html"><a href="git-basics.html#gitignore"><i class="fa fa-check"></i><b>4.3.5</b> The <code>.gitignore</code> File</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="git-basics.html"><a href="git-basics.html#github-and-remotes"><i class="fa fa-check"></i><b>4.4</b> GitHub and Remotes</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="git-basics.html"><a href="git-basics.html#forking-and-cloning"><i class="fa fa-check"></i><b>4.4.1</b> Forking and Cloning</a></li>
+<li class="chapter" data-level="4.4.2" data-path="git-basics.html"><a href="git-basics.html#pushing-and-pulling"><i class="fa fa-check"></i><b>4.4.2</b> Pushing and Pulling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process-1"><i class="fa fa-check"></i><b>4.4.3</b> Reviewing The Process</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="git-basics.html"><a href="git-basics.html#course-assignments-on-github"><i class="fa fa-check"></i><b>4.5</b> Course Assignments on GitHub</a></li>
+<li class="chapter" data-level="4.6" data-path="git-basics.html"><a href="git-basics.html#command-summary"><i class="fa fa-check"></i><b>4.6</b> Command Summary</a></li>
+<li class="chapter" data-level="" data-path="git-basics.html"><a href="git-basics.html#resources-3"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r-intro.html"><a href="r-intro.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a><ul>
+<li class="chapter" data-level="5.1" data-path="r-intro.html"><a href="r-intro.html#programming-with-r"><i class="fa fa-check"></i><b>5.1</b> Programming with R</a></li>
+<li class="chapter" data-level="5.2" data-path="r-intro.html"><a href="r-intro.html#running-r-scripts"><i class="fa fa-check"></i><b>5.2</b> Running R Scripts</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="r-intro.html"><a href="r-intro.html#running-r-cmd"><i class="fa fa-check"></i><b>5.2.1</b> Command-Line</a></li>
+<li class="chapter" data-level="5.2.2" data-path="r-intro.html"><a href="r-intro.html#running-r-rstudio"><i class="fa fa-check"></i><b>5.2.2</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="r-intro.html"><a href="r-intro.html#comments"><i class="fa fa-check"></i><b>5.3</b> Comments</a></li>
+<li class="chapter" data-level="5.4" data-path="r-intro.html"><a href="r-intro.html#variables"><i class="fa fa-check"></i><b>5.4</b> Variables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="r-intro.html"><a href="r-intro.html#basic-data-types"><i class="fa fa-check"></i><b>5.4.1</b> Basic Data Types</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="r-intro.html"><a href="r-intro.html#gettinghelp"><i class="fa fa-check"></i><b>5.5</b> Getting Help</a></li>
+<li class="chapter" data-level="" data-path="r-intro.html"><a href="r-intro.html#resources-4"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>6</b> Functions</a><ul>
+<li class="chapter" data-level="6.1" data-path="functions.html"><a href="functions.html#what-are-functions"><i class="fa fa-check"></i><b>6.1</b> What are Functions?</a></li>
+<li class="chapter" data-level="6.2" data-path="functions.html"><a href="functions.html#how-to-use-functions"><i class="fa fa-check"></i><b>6.2</b> How to Use Functions</a></li>
+<li class="chapter" data-level="6.3" data-path="functions.html"><a href="functions.html#built-in-r-functions"><i class="fa fa-check"></i><b>6.3</b> Built-in R Functions</a></li>
+<li class="chapter" data-level="6.4" data-path="functions.html"><a href="functions.html#loading-functions"><i class="fa fa-check"></i><b>6.4</b> Loading Functions</a></li>
+<li class="chapter" data-level="6.5" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>6.5</b> Writing Functions</a></li>
+<li class="chapter" data-level="6.6" data-path="functions.html"><a href="functions.html#conditional-statements"><i class="fa fa-check"></i><b>6.6</b> Conditional Statements</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#resources-5"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="vectors.html"><a href="vectors.html"><i class="fa fa-check"></i><b>7</b> Vectors</a><ul>
+<li class="chapter" data-level="7.1" data-path="vectors.html"><a href="vectors.html#what-is-a-vector"><i class="fa fa-check"></i><b>7.1</b> What is a Vector?</a></li>
+<li class="chapter" data-level="7.2" data-path="vectors.html"><a href="vectors.html#creating-vectors"><i class="fa fa-check"></i><b>7.2</b> Creating Vectors</a></li>
+<li class="chapter" data-level="7.3" data-path="vectors.html"><a href="vectors.html#vector-indices"><i class="fa fa-check"></i><b>7.3</b> Vector Indices</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="vectors.html"><a href="vectors.html#simple-numeric-indices"><i class="fa fa-check"></i><b>7.3.1</b> Simple Numeric Indices</a></li>
+<li class="chapter" data-level="7.3.2" data-path="vectors.html"><a href="vectors.html#multiple-indices"><i class="fa fa-check"></i><b>7.3.2</b> Multiple Indices</a></li>
+<li class="chapter" data-level="7.3.3" data-path="vectors.html"><a href="vectors.html#logical-indexing"><i class="fa fa-check"></i><b>7.3.3</b> Logical Indexing</a></li>
+<li class="chapter" data-level="7.3.4" data-path="vectors.html"><a href="vectors.html#named-vectors-and-character-indexing"><i class="fa fa-check"></i><b>7.3.4</b> Named Vectors and Character Indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="vectors.html"><a href="vectors.html#modifying-vectors"><i class="fa fa-check"></i><b>7.4</b> Modifying Vectors</a></li>
+<li class="chapter" data-level="7.5" data-path="vectors.html"><a href="vectors.html#vectorized-operations"><i class="fa fa-check"></i><b>7.5</b> Vectorized Operations</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="vectors.html"><a href="vectors.html#vectorized-operators"><i class="fa fa-check"></i><b>7.5.1</b> Vectorized Operators</a></li>
+<li class="chapter" data-level="7.5.2" data-path="vectors.html"><a href="vectors.html#vectorized-functions"><i class="fa fa-check"></i><b>7.5.2</b> Vectorized Functions</a></li>
+<li class="chapter" data-level="7.5.3" data-path="vectors.html"><a href="vectors.html#recycling"><i class="fa fa-check"></i><b>7.5.3</b> Recycling</a></li>
+<li class="chapter" data-level="7.5.4" data-path="vectors.html"><a href="vectors.html#r-is-a-vectorized-world"><i class="fa fa-check"></i><b>7.5.4</b> R Is a Vectorized World</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vectors.html"><a href="vectors.html#resources-6"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="lists.html"><a href="lists.html"><i class="fa fa-check"></i><b>8</b> Lists</a><ul>
+<li class="chapter" data-level="8.1" data-path="lists.html"><a href="lists.html#what-is-a-list"><i class="fa fa-check"></i><b>8.1</b> What is a List?</a></li>
+<li class="chapter" data-level="8.2" data-path="lists.html"><a href="lists.html#creating-lists"><i class="fa fa-check"></i><b>8.2</b> Creating Lists</a></li>
+<li class="chapter" data-level="8.3" data-path="lists.html"><a href="lists.html#accessing-list-elements"><i class="fa fa-check"></i><b>8.3</b> Accessing List Elements</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="lists.html"><a href="lists.html#lists-indexing-by-position"><i class="fa fa-check"></i><b>8.3.1</b> Indexing by position</a></li>
+<li class="chapter" data-level="8.3.2" data-path="lists.html"><a href="lists.html#indexing-by-name"><i class="fa fa-check"></i><b>8.3.2</b> Indexing by Name</a></li>
+<li class="chapter" data-level="8.3.3" data-path="lists.html"><a href="lists.html#indexing-by-logical-vector"><i class="fa fa-check"></i><b>8.3.3</b> Indexing by Logical Vector</a></li>
+<li class="chapter" data-level="8.3.4" data-path="lists.html"><a href="lists.html#lists-dollar-shortcut"><i class="fa fa-check"></i><b>8.3.4</b> Extracting named elements with <code>$</code></a></li>
+<li class="chapter" data-level="8.3.5" data-path="lists.html"><a href="lists.html#single-vs.double-brackets-vs.dollar"><i class="fa fa-check"></i><b>8.3.5</b> Single vs. Double Brackets vs. Dollar</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="lists.html"><a href="lists.html#modifying-lists"><i class="fa fa-check"></i><b>8.4</b> Modifying Lists</a></li>
+<li class="chapter" data-level="8.5" data-path="lists.html"><a href="lists.html#the-lapply-function"><i class="fa fa-check"></i><b>8.5</b> The <code>lapply()</code> Function</a></li>
+<li class="chapter" data-level="" data-path="lists.html"><a href="lists.html#resources-7"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-frames.html"><a href="data-frames.html"><i class="fa fa-check"></i><b>9</b> Data Frames</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-frames.html"><a href="data-frames.html#what-is-a-data-frame"><i class="fa fa-check"></i><b>9.1</b> What is a Data Frame?</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="data-frames.html"><a href="data-frames.html#creating-data-frames"><i class="fa fa-check"></i><b>9.1.1</b> Creating Data Frames</a></li>
+<li class="chapter" data-level="9.1.2" data-path="data-frames.html"><a href="data-frames.html#describing-structure-of-data-frames"><i class="fa fa-check"></i><b>9.1.2</b> Describing Structure of Data Frames</a></li>
+<li class="chapter" data-level="9.1.3" data-path="data-frames.html"><a href="data-frames.html#accessing-data-in-data-frames"><i class="fa fa-check"></i><b>9.1.3</b> Accessing Data in Data Frames</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="data-frames.html"><a href="data-frames.html#csv-files"><i class="fa fa-check"></i><b>9.2</b> Working with CSV Data</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="data-frames.html"><a href="data-frames.html#working-directory"><i class="fa fa-check"></i><b>9.2.1</b> Working Directory</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="data-frames.html"><a href="data-frames.html#factors"><i class="fa fa-check"></i><b>9.3</b> Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="data-frames.html"><a href="data-frames.html#resources-8"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>10</b> The <code>dplyr</code> Library</a><ul>
+<li class="chapter" data-level="10.1" data-path="dplyr.html"><a href="dplyr.html#a-grammar-of-data-manipulation"><i class="fa fa-check"></i><b>10.1</b> A Grammar of Data Manipulation</a></li>
+<li class="chapter" data-level="10.2" data-path="dplyr.html"><a href="dplyr.html#using-dplyr-functions"><i class="fa fa-check"></i><b>10.2</b> Using <code>dplyr</code> Functions</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>10.2.1</b> Select</a></li>
+<li class="chapter" data-level="10.2.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>10.2.2</b> Filter</a></li>
+<li class="chapter" data-level="10.2.3" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>10.2.3</b> Mutate</a></li>
+<li class="chapter" data-level="10.2.4" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>10.2.4</b> Arrange</a></li>
+<li class="chapter" data-level="10.2.5" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>10.2.5</b> Summarize</a></li>
+<li class="chapter" data-level="10.2.6" data-path="dplyr.html"><a href="dplyr.html#distinct"><i class="fa fa-check"></i><b>10.2.6</b> Distinct</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="dplyr.html"><a href="dplyr.html#multiple-operations"><i class="fa fa-check"></i><b>10.3</b> Multiple Operations</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="dplyr.html"><a href="dplyr.html#the-pipe-operator"><i class="fa fa-check"></i><b>10.3.1</b> The Pipe Operator</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="dplyr.html"><a href="dplyr.html#grouped-operations"><i class="fa fa-check"></i><b>10.4</b> Grouped Operations</a></li>
+<li class="chapter" data-level="10.5" data-path="dplyr.html"><a href="dplyr.html#joins"><i class="fa fa-check"></i><b>10.5</b> Joins</a></li>
+<li class="chapter" data-level="10.6" data-path="dplyr.html"><a href="dplyr.html#non-standard-evaluation-vs.standard-evaluation"><i class="fa fa-check"></i><b>10.6</b> Non-Standard Evaluation vs. Standard Evaluation</a><ul>
+<li class="chapter" data-level="10.6.1" data-path="dplyr.html"><a href="dplyr.html#explicit-standard-evaluation"><i class="fa fa-check"></i><b>10.6.1</b> Explicit Standard Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="dplyr.html"><a href="dplyr.html#resources-9"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>11</b> Accessing Web APIs</a><ul>
+<li class="chapter" data-level="11.1" data-path="apis.html"><a href="apis.html#what-is-a-web-api"><i class="fa fa-check"></i><b>11.1</b> What is a Web API?</a></li>
+<li class="chapter" data-level="11.2" data-path="apis.html"><a href="apis.html#restful-requests"><i class="fa fa-check"></i><b>11.2</b> RESTful Requests</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="apis.html"><a href="apis.html#uris"><i class="fa fa-check"></i><b>11.2.1</b> URIs</a></li>
+<li class="chapter" data-level="11.2.2" data-path="apis.html"><a href="apis.html#http-verbs"><i class="fa fa-check"></i><b>11.2.2</b> HTTP Verbs</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="apis.html"><a href="apis.html#accessing-web-apis"><i class="fa fa-check"></i><b>11.3</b> Accessing Web APIs</a></li>
+<li class="chapter" data-level="11.4" data-path="apis.html"><a href="apis.html#json"><i class="fa fa-check"></i><b>11.4</b> JSON Data</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="apis.html"><a href="apis.html#parsing-json"><i class="fa fa-check"></i><b>11.4.1</b> Parsing JSON</a></li>
+<li class="chapter" data-level="11.4.2" data-path="apis.html"><a href="apis.html#flattening-data"><i class="fa fa-check"></i><b>11.4.2</b> Flattening Data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apis.html"><a href="apis.html#resources-10"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>12</b> R Markdown</a><ul>
+<li class="chapter" data-level="12.1" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-and-rstudio"><i class="fa fa-check"></i><b>12.1</b> R Markdown and RStudio</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="r-markdown.html"><a href="r-markdown.html#creating-.rmd-files"><i class="fa fa-check"></i><b>12.1.1</b> Creating <code>.Rmd</code> Files</a></li>
+<li class="chapter" data-level="12.1.2" data-path="r-markdown.html"><a href="r-markdown.html#rmd-content"><i class="fa fa-check"></i><b>12.1.2</b> <code>.Rmd</code> Content</a></li>
+<li class="chapter" data-level="12.1.3" data-path="r-markdown.html"><a href="r-markdown.html#knitting-documents"><i class="fa fa-check"></i><b>12.1.3</b> Knitting Documents</a></li>
+<li class="chapter" data-level="12.1.4" data-path="r-markdown.html"><a href="r-markdown.html#html"><i class="fa fa-check"></i><b>12.1.4</b> HTML</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-syntax"><i class="fa fa-check"></i><b>12.2</b> R Markdown Syntax</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="r-markdown.html"><a href="r-markdown.html#r-code-chunks"><i class="fa fa-check"></i><b>12.2.1</b> R Code Chunks</a></li>
+<li class="chapter" data-level="12.2.2" data-path="r-markdown.html"><a href="r-markdown.html#inline-code"><i class="fa fa-check"></i><b>12.2.2</b> Inline Code</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-data"><i class="fa fa-check"></i><b>12.3</b> Rendering Data</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="r-markdown.html"><a href="r-markdown.html#rendering-strings"><i class="fa fa-check"></i><b>12.3.1</b> Rendering Strings</a></li>
+<li class="chapter" data-level="12.3.2" data-path="r-markdown.html"><a href="r-markdown.html#rendering-lists"><i class="fa fa-check"></i><b>12.3.2</b> Rendering Lists</a></li>
+<li class="chapter" data-level="12.3.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-tables"><i class="fa fa-check"></i><b>12.3.3</b> Rendering Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-markdown.html"><a href="r-markdown.html#resources-11"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>13</b> The <code>gglot2</code> Library</a><ul>
+<li class="chapter" data-level="13.1" data-path="ggplot2.html"><a href="ggplot2.html#a-grammar-of-graphics"><i class="fa fa-check"></i><b>13.1</b> A Grammar of Graphics</a></li>
+<li class="chapter" data-level="13.2" data-path="ggplot2.html"><a href="ggplot2.html#basic-plotting-with-ggplot2"><i class="fa fa-check"></i><b>13.2</b> Basic Plotting with <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="13.2.1" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-library"><i class="fa fa-check"></i><b>13.2.1</b> <em>ggplot2</em> library</a></li>
+<li class="chapter" data-level="13.2.2" data-path="ggplot2.html"><a href="ggplot2.html#mpg-data"><i class="fa fa-check"></i><b>13.2.2</b> <em>mpg</em> data</a></li>
+<li class="chapter" data-level="13.2.3" data-path="ggplot2.html"><a href="ggplot2.html#our-first-ggplot"><i class="fa fa-check"></i><b>13.2.3</b> Our first ggplot</a></li>
+<li class="chapter" data-level="13.2.4" data-path="ggplot2.html"><a href="ggplot2.html#aesthetic-mappings"><i class="fa fa-check"></i><b>13.2.4</b> Aesthetic Mappings</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="ggplot2.html"><a href="ggplot2.html#complex-plots"><i class="fa fa-check"></i><b>13.3</b> Complex Plots</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="ggplot2.html"><a href="ggplot2.html#specifying-geometry"><i class="fa fa-check"></i><b>13.3.1</b> Specifying Geometry</a></li>
+<li class="chapter" data-level="13.3.2" data-path="ggplot2.html"><a href="ggplot2.html#styling-with-scales"><i class="fa fa-check"></i><b>13.3.2</b> Styling with Scales</a></li>
+<li class="chapter" data-level="13.3.3" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>13.3.3</b> Coordinate Systems</a></li>
+<li class="chapter" data-level="13.3.4" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>13.3.4</b> Facets</a></li>
+<li class="chapter" data-level="13.3.5" data-path="ggplot2.html"><a href="ggplot2.html#labels-annotations"><i class="fa fa-check"></i><b>13.3.5</b> Labels &amp; Annotations</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="ggplot2.html"><a href="ggplot2.html#plotting-in-scripts"><i class="fa fa-check"></i><b>13.4</b> Plotting in Scripts</a></li>
+<li class="chapter" data-level="13.5" data-path="ggplot2.html"><a href="ggplot2.html#other-visualization-libraries"><i class="fa fa-check"></i><b>13.5</b> Other Visualization Libraries</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#resources-12"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="git-branches.html"><a href="git-branches.html"><i class="fa fa-check"></i><b>14</b> Git Branches</a><ul>
+<li class="chapter" data-level="14.1" data-path="git-branches.html"><a href="git-branches.html#git-branches-1"><i class="fa fa-check"></i><b>14.1</b> Git Branches</a></li>
+<li class="chapter" data-level="14.2" data-path="git-branches.html"><a href="git-branches.html#merging"><i class="fa fa-check"></i><b>14.2</b> Merging</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="git-branches.html"><a href="git-branches.html#merge-conflicts"><i class="fa fa-check"></i><b>14.2.1</b> Merge Conflicts</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="git-branches.html"><a href="git-branches.html#undoing-changes"><i class="fa fa-check"></i><b>14.3</b> Undoing Changes</a></li>
+<li class="chapter" data-level="14.4" data-path="git-branches.html"><a href="git-branches.html#github-and-branches"><i class="fa fa-check"></i><b>14.4</b> GitHub and Branches</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="git-branches.html"><a href="git-branches.html#github-pages"><i class="fa fa-check"></i><b>14.4.1</b> GitHub Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-branches.html"><a href="git-branches.html#resources-13"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="git-collaboration.html"><a href="git-collaboration.html"><i class="fa fa-check"></i><b>15</b> Git Collaboration</a><ul>
+<li class="chapter" data-level="15.1" data-path="git-collaboration.html"><a href="git-collaboration.html#centralized-workflow"><i class="fa fa-check"></i><b>15.1</b> Centralized Workflow</a></li>
+<li class="chapter" data-level="15.2" data-path="git-collaboration.html"><a href="git-collaboration.html#feature-branch-workflow"><i class="fa fa-check"></i><b>15.2</b> Feature Branch Workflow</a></li>
+<li class="chapter" data-level="15.3" data-path="git-collaboration.html"><a href="git-collaboration.html#forking-workflow"><i class="fa fa-check"></i><b>15.3</b> Forking Workflow</a><ul>
+<li class="chapter" data-level="15.3.1" data-path="git-collaboration.html"><a href="git-collaboration.html#pull-requests"><i class="fa fa-check"></i><b>15.3.1</b> Pull Requests</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-collaboration.html"><a href="git-collaboration.html#resources-14"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="shiny.html"><a href="shiny.html"><i class="fa fa-check"></i><b>16</b> The <code>shiny</code> Framework</a><ul>
+<li class="chapter" data-level="16.1" data-path="shiny.html"><a href="shiny.html#creating-shiny-apps"><i class="fa fa-check"></i><b>16.1</b> Creating Shiny Apps</a><ul>
+<li class="chapter" data-level="16.1.1" data-path="shiny.html"><a href="shiny.html#application-structure"><i class="fa fa-check"></i><b>16.1.1</b> Application Structure</a></li>
+<li class="chapter" data-level="16.1.2" data-path="shiny.html"><a href="shiny.html#the-ui"><i class="fa fa-check"></i><b>16.1.2</b> The UI</a></li>
+<li class="chapter" data-level="16.1.3" data-path="shiny.html"><a href="shiny.html#the-server"><i class="fa fa-check"></i><b>16.1.3</b> The Server</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="shiny.html"><a href="shiny.html#publishing-shiny-apps"><i class="fa fa-check"></i><b>16.2</b> Publishing Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="shiny.html"><a href="shiny.html#resources-15"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="appendix"><span><b>Special Topics</b></span></li>
+<li class="chapter" data-level="A" data-path="plotly.html"><a href="plotly.html"><i class="fa fa-check"></i><b>A</b> Plotly</a><ul>
+<li class="chapter" data-level="A.1" data-path="plotly.html"><a href="plotly.html#getting-started"><i class="fa fa-check"></i><b>A.1</b> Getting Started</a></li>
+<li class="chapter" data-level="A.2" data-path="plotly.html"><a href="plotly.html#basic-charts"><i class="fa fa-check"></i><b>A.2</b> Basic Charts</a></li>
+<li class="chapter" data-level="A.3" data-path="plotly.html"><a href="plotly.html#layout"><i class="fa fa-check"></i><b>A.3</b> Layout</a></li>
+<li class="chapter" data-level="A.4" data-path="plotly.html"><a href="plotly.html#hovers"><i class="fa fa-check"></i><b>A.4</b> Hovers</a></li>
+<li class="chapter" data-level="" data-path="plotly.html"><a href="plotly.html#resources-16"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="control-structures.html"><a href="control-structures.html"><i class="fa fa-check"></i><b>B</b> R Language Control Structures</a><ul>
+<li class="chapter" data-level="B.1" data-path="control-structures.html"><a href="control-structures.html#loops"><i class="fa fa-check"></i><b>B.1</b> Loops</a><ul>
+<li class="chapter" data-level="B.1.1" data-path="control-structures.html"><a href="control-structures.html#for-loop"><i class="fa fa-check"></i><b>B.1.1</b> For Loop</a></li>
+<li class="chapter" data-level="B.1.2" data-path="control-structures.html"><a href="control-structures.html#while-loop"><i class="fa fa-check"></i><b>B.1.2</b> While-loop</a></li>
+<li class="chapter" data-level="B.1.3" data-path="control-structures.html"><a href="control-structures.html#repeat-loop"><i class="fa fa-check"></i><b>B.1.3</b> repeat-loop</a></li>
+<li class="chapter" data-level="B.1.4" data-path="control-structures.html"><a href="control-structures.html#leaving-early-break-and-next"><i class="fa fa-check"></i><b>B.1.4</b> Leaving Early: <code>break</code> and <code>next</code></a></li>
+<li class="chapter" data-level="B.1.5" data-path="control-structures.html"><a href="control-structures.html#when-not-to-use-loops-in-r"><i class="fa fa-check"></i><b>B.1.5</b> When (Not) To Use Loops In R?</a></li>
+</ul></li>
+<li class="chapter" data-level="B.2" data-path="control-structures.html"><a href="control-structures.html#more-about-if-and-else"><i class="fa fa-check"></i><b>B.2</b> More about <code>if</code> and <code>else</code></a><ul>
+<li class="chapter" data-level="B.2.1" data-path="control-structures.html"><a href="control-structures.html#where-to-put-else"><i class="fa fa-check"></i><b>B.2.1</b> Where To Put Else</a></li>
+<li class="chapter" data-level="B.2.2" data-path="control-structures.html"><a href="control-structures.html#return-value"><i class="fa fa-check"></i><b>B.2.2</b> Return Value</a></li>
+</ul></li>
+<li class="chapter" data-level="B.3" data-path="control-structures.html"><a href="control-structures.html#switch-choosing-between-multiple-conditions"><i class="fa fa-check"></i><b>B.3</b> <code>switch</code>: Choosing Between Multiple Conditions</a></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="data-tables.html"><a href="data-tables.html"><i class="fa fa-check"></i><b>C</b> Thinking Big: Data Tables</a><ul>
+<li class="chapter" data-level="C.1" data-path="data-tables.html"><a href="data-tables.html#background-passing-by-value-and-passing-by-reference"><i class="fa fa-check"></i><b>C.1</b> Background: Passing By Value And Passing By Reference</a></li>
+<li class="chapter" data-level="C.2" data-path="data-tables.html"><a href="data-tables.html#data-tables-introduction"><i class="fa fa-check"></i><b>C.2</b> Data Tables: Introduction</a><ul>
+<li class="chapter" data-level="C.2.1" data-path="data-tables.html"><a href="data-tables.html#replacement-for-data-frames-sort-of"><i class="fa fa-check"></i><b>C.2.1</b> Replacement for Data Frames (Sort of)</a></li>
+<li class="chapter" data-level="C.2.2" data-path="data-tables.html"><a href="data-tables.html#fast-reading-and-writing"><i class="fa fa-check"></i><b>C.2.2</b> Fast Reading and Writing</a></li>
+</ul></li>
+<li class="chapter" data-level="C.3" data-path="data-tables.html"><a href="data-tables.html#indexing-the-major-powerhorse-of-data-tables"><i class="fa fa-check"></i><b>C.3</b> Indexing: The Major Powerhorse of Data Tables</a><ul>
+<li class="chapter" data-level="C.3.1" data-path="data-tables.html"><a href="data-tables.html#i-select-observations"><i class="fa fa-check"></i><b>C.3.1</b> i: Select Observations</a></li>
+<li class="chapter" data-level="C.3.2" data-path="data-tables.html"><a href="data-tables.html#j-work-with-columns"><i class="fa fa-check"></i><b>C.3.2</b> j: Work with Columns</a></li>
+<li class="chapter" data-level="C.3.3" data-path="data-tables.html"><a href="data-tables.html#group-in-by"><i class="fa fa-check"></i><b>C.3.3</b> Group in <code>by</code></a></li>
+</ul></li>
+<li class="chapter" data-level="C.4" data-path="data-tables.html"><a href="data-tables.html#create-variables-by-reference"><i class="fa fa-check"></i><b>C.4</b> <code>:=</code>–Create variables by reference</a></li>
+<li class="chapter" data-level="C.5" data-path="data-tables.html"><a href="data-tables.html#keys"><i class="fa fa-check"></i><b>C.5</b> keys</a></li>
+<li class="chapter" data-level="C.6" data-path="data-tables.html"><a href="data-tables.html#resources-17"><i class="fa fa-check"></i><b>C.6</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="remote-server.html"><a href="remote-server.html"><i class="fa fa-check"></i><b>D</b> Using Remote Server</a><ul>
+<li class="chapter" data-level="D.1" data-path="remote-server.html"><a href="remote-server.html#server-setup"><i class="fa fa-check"></i><b>D.1</b> Server Setup</a></li>
+<li class="chapter" data-level="D.2" data-path="remote-server.html"><a href="remote-server.html#connecting-to-the-remote-server"><i class="fa fa-check"></i><b>D.2</b> Connecting to the Remote Server</a></li>
+<li class="chapter" data-level="D.3" data-path="remote-server.html"><a href="remote-server.html#copying-files"><i class="fa fa-check"></i><b>D.3</b> Copying Files</a><ul>
+<li class="chapter" data-level="D.3.1" data-path="remote-server.html"><a href="remote-server.html#scp"><i class="fa fa-check"></i><b>D.3.1</b> scp</a></li>
+<li class="chapter" data-level="D.3.2" data-path="remote-server.html"><a href="remote-server.html#rsync"><i class="fa fa-check"></i><b>D.3.2</b> rsync</a></li>
+<li class="chapter" data-level="D.3.3" data-path="remote-server.html"><a href="remote-server.html#graphical-frontends"><i class="fa fa-check"></i><b>D.3.3</b> Graphical Frontends</a></li>
+<li class="chapter" data-level="D.3.4" data-path="remote-server.html"><a href="remote-server.html#remote-editing"><i class="fa fa-check"></i><b>D.3.4</b> Remote Editing</a></li>
+</ul></li>
+<li class="chapter" data-level="D.4" data-path="remote-server.html"><a href="remote-server.html#r-and-rscript"><i class="fa fa-check"></i><b>D.4</b> R and Rscript</a><ul>
+<li class="chapter" data-level="D.4.1" data-path="remote-server.html"><a href="remote-server.html#graphics-output-with-no-gui"><i class="fa fa-check"></i><b>D.4.1</b> Graphics Output with No GUI</a></li>
+</ul></li>
+<li class="chapter" data-level="D.5" data-path="remote-server.html"><a href="remote-server.html#life-on-server"><i class="fa fa-check"></i><b>D.5</b> Life on Server</a><ul>
+<li class="chapter" data-level="D.5.1" data-path="remote-server.html"><a href="remote-server.html#be-social"><i class="fa fa-check"></i><b>D.5.1</b> Be Social!</a></li>
+<li class="chapter" data-level="D.5.2" data-path="remote-server.html"><a href="remote-server.html#useful-things-to-do"><i class="fa fa-check"></i><b>D.5.2</b> Useful Things to Do</a></li>
+<li class="chapter" data-level="D.5.3" data-path="remote-server.html"><a href="remote-server.html#permissions-and-ownership"><i class="fa fa-check"></i><b>D.5.3</b> Permissions and ownership</a></li>
+<li class="chapter" data-level="D.5.4" data-path="remote-server.html"><a href="remote-server.html#more-than-one-connection"><i class="fa fa-check"></i><b>D.5.4</b> More than One Connection</a></li>
+</ul></li>
+<li class="chapter" data-level="D.6" data-path="remote-server.html"><a href="remote-server.html#advanced-usage"><i class="fa fa-check"></i><b>D.6</b> Advanced Usage</a><ul>
+<li class="chapter" data-level="D.6.1" data-path="remote-server.html"><a href="remote-server.html#ssh-keys-.sshconfig"><i class="fa fa-check"></i><b>D.6.1</b> ssh keys, .ssh/config</a></li>
+<li class="chapter" data-level="D.6.2" data-path="remote-server.html"><a href="remote-server.html#more-about-command-line-pipes-and-shell-patterns"><i class="fa fa-check"></i><b>D.6.2</b> More about command line: pipes and shell patterns</a></li>
+<li class="chapter" data-level="D.6.3" data-path="remote-server.html"><a href="remote-server.html#running-rscript-in-ssh-session"><i class="fa fa-check"></i><b>D.6.3</b> Running RScript in ssh Session</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Technical Foundations of Informatics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="dplyr" class="section level1">
+<h1><span class="header-section-number">Chapter 10</span> The <code>dplyr</code> Library</h1>
+<p>The <strong><code>dplyr</code></strong> (“dee-ply-er”) package is the preeminent tool for data wrangling in R (and perhaps, in data science more generally). It provides programmers with an intuitive vocabulary for executing data management and analysis tasks. Learning and utilizing this package will make your data preparation and management process faster and easier to understand. This chapter introduces the philosophy behind the library and an overview of how to use the library to work with dataframes using its expressive and efficient syntax.</p>
+<div id="a-grammar-of-data-manipulation" class="section level2">
+<h2><span class="header-section-number">10.1</span> A Grammar of Data Manipulation</h2>
+<p><a href="http://hadley.nz/">Hadley Wickham</a>, the creator of the <a href="https://github.com/hadley/dplyr"><code>dplyr</code></a> package, fittingly refers to it as a <strong><em>Grammar of Data Manipulation</em></strong>. This is because the package provides a set of <strong>verbs</strong> (functions) to describe and perform common data preparation tasks. One of the core challenge in programming is mapping from questions about a dataset to specific programming operations. The presence of a data manipulation grammar makes this process smoother, as it enables you to use the same vocabulary to both <em>ask</em> questions and <em>write</em> your program. Specifically, the <code>dplyr</code> grammar lets you easily talk about and perform tasks such as:</p>
+<ul>
+<li><strong>select</strong> specific features (columns) of interest from the data set</li>
+<li><strong>filter</strong> out irrelevant data and only keep observations (rows) of interest</li>
+<li><strong>mutate</strong> a data set by adding more features (columns)</li>
+<li><strong>arrange</strong> the observations (rows) in a particular order</li>
+<li><strong>summarize</strong> the data in terms of aspects such as the mean, median, or maximum</li>
+<li><strong>join</strong> multiple data sets together into a single data frame
+<!-- - find **distinct** observations (rows) in the data set --></li>
+</ul>
+<p>You can use these words when describing the <em>algorithm</em> or process for interrogating data, and then use <code>dplyr</code> to write code that will closely follow your “plain language” description because it uses functions and procedures that share the same language. Indeed, many real-world questions about a dataset come down to isolating specific rows/columns of the data set as the “elements of interest”, and then performing a simple comparison or computation (mean, count, max, etc.). While it is possible to perform this computation with basic R functions—the <code>dplyr</code> library makes it much easier to write and read such code.</p>
+</div>
+<div id="using-dplyr-functions" class="section level2">
+<h2><span class="header-section-number">10.2</span> Using <code>dplyr</code> Functions</h2>
+<p>The <code>dplyr</code> package provides functions that mirror the above verbs. Using this package’s functions will allow you to quickly and effectively write code to ask questions of your data sets.</p>
+<p>Since <code>dplyr</code> is an external package, you will need to install it (once per machine) and load it to make the functions available:</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb113-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>)  <span class="co"># once per machine</span></a>
+<a class="sourceLine" id="cb113-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;dplyr&quot;</span>)</a></code></pre></div>
+<p>After loading the library, you can call any of the functions just as if they were the built-in functions you’ve come to know and love.</p>
+<p>For each <code>dplyr</code> function discussed here, the <strong>first argument</strong> to the function is a data frame to manipulate, with the rest of the arguments providing more details about the manipulation.</p>
+<p class="alert alert-warning">
+<strong><em>IMPORTANT NOTE:</em></strong> inside the function argument list (inside the parentheses), we refer to data frame columns <strong>without quotation marks</strong>—that is, we just give the column names as <em>variable names</em>, rather than as <em>character strings</em>. This is refered to as <a href="#Non-standard%20Evaluation">non-standard evaluation</a>, and is described in more detail below; while it makes code easier to write and read, it can occasionally create challenges.
+</p>
+<p class="alert alert">
+The images in this section come from the <a href="http://bit.ly/rday-nyc-strata15">RStudio’s STRATA NYC R-Day workshop</a>, which was presented by <a href="http://conferences.oreilly.com/strata/big-data-conference-ny-2015/public/schedule/speaker/217840">Nathan Stephens</a>.
+</p>
+<div id="select" class="section level3">
+<h3><span class="header-section-number">10.2.1</span> Select</h3>
+<p>The <strong><code>select()</code></strong> operation allows you to choose and extract <strong>columns</strong> of interest from your data frame.</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb114-1" data-line-number="1"><span class="co"># Select `storm` and `pressure` columns from `storms` data frame</span></a>
+<a class="sourceLine" id="cb114-2" data-line-number="2">storm_info &lt;-<span class="st"> </span><span class="kw">select</span>(storms, storm, pressure)</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/select.png" title="Diagram of the select() function" alt="Diagram of the select() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>select()</code> function (by Nathan Stephens).</p>
+</div>
+<p>The <code>select()</code> function takes in the data frame to select from, followed by the names of the columns you wish to select (quotation marks are optional!)</p>
+<p>This function is equivalent to simply extracting the columns:</p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb115-1" data-line-number="1"><span class="co"># Extract columns by name</span></a>
+<a class="sourceLine" id="cb115-2" data-line-number="2">storm_info &lt;-<span class="st"> </span>storms[, <span class="kw">c</span>(<span class="st">&quot;storm&quot;</span>, <span class="st">&quot;pressure&quot;</span>)]  <span class="co"># Note the comma!</span></a></code></pre></div>
+<p>But easier to read and write!</p>
+</div>
+<div id="filter" class="section level3">
+<h3><span class="header-section-number">10.2.2</span> Filter</h3>
+<p>The <strong><code>filter()</code></strong> operation allows you to choose and extract <strong>rows</strong> of interest from your data frame (contrasted with <code>select()</code> which extracts <em>columns</em>).</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb116-1" data-line-number="1"><span class="co"># Select rows whose `wind` column is greater than or equal to 50</span></a>
+<a class="sourceLine" id="cb116-2" data-line-number="2">some_storms &lt;-<span class="st"> </span><span class="kw">filter</span>(storms, wind <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span>)</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/filter.png" title="Diagram of the filter() function" alt="Diagram of the filter() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>filter()</code> function (by Nathan Stephens).</p>
+</div>
+<p>The <code>filter()</code> function takes in the data frame to filter, followed by a comma-separated list of conditions that each returned <em>row</em> must satisfy. Note again that columns are provided without quotation marks!</p>
+<ul>
+<li>R will extract the rows that match <strong>all</strong> conditions. Thus you are specifying that you want to filter down a data frame to contain only the rows that meet Condition 1 <strong>and</strong> Condition 2.</li>
+</ul>
+<p>This function is equivalent to simply extracting the rows:</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb117-1" data-line-number="1"><span class="co"># Extract rows by condition</span></a>
+<a class="sourceLine" id="cb117-2" data-line-number="2">some_storms &lt;-<span class="st"> </span>storms[storms<span class="op">$</span>wind <span class="op">&gt;=</span><span class="st"> </span><span class="dv">50</span>, ]  <span class="co"># Note the comma!</span></a></code></pre></div>
+<p>As the number of conditions increases, it is <strong>far easier</strong> to read and write <code>filter()</code> functions, rather than squeeze your conditions into brackets.</p>
+</div>
+<div id="mutate" class="section level3">
+<h3><span class="header-section-number">10.2.3</span> Mutate</h3>
+<p>The <strong><code>mutate()</code></strong> operation allows you to create additional <strong>columns</strong> for your data frame.</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb118-1" data-line-number="1"><span class="co"># Add `ratio` column that is ratio between pressure and wind</span></a>
+<a class="sourceLine" id="cb118-2" data-line-number="2">storms &lt;-<span class="st"> </span><span class="kw">mutate</span>(storms, <span class="dt">ratio =</span> pressure<span class="op">/</span>wind)  <span class="co"># Replace existing `storms` frame with mutated one!</span></a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/mutate.png" title="Diagram of the mutate() function" alt="Diagram of the mutate() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>mutate()</code> function (by Nathan Stephens).</p>
+</div>
+<p>The <code>mutate()</code> function takes in the data frame to mutate, followed by a comma-separated list of columns to create using the same <strong><code>name = vector</code></strong> syntax you used when creating <strong>lists</strong> or <strong>data frames</strong> from scratch. As always, the names of the columns in the data frame are used without quotation marks.</p>
+<ul>
+<li>Despite the name, the <code>mutate()</code> function doesn’t actually change the data frame; instead it returns a <em>new</em> data frame that has the extra columns added. You will often want to replace the old data frame variable with this new value.</li>
+</ul>
+<p>In cases where you are creating multiple columns (and therefore writing really long code instructions), you should break the single statement into multiple lines for readability. Because you haven’t closed the parentheses on the function arguments, R will not treat each line as a separate statement.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb119-1" data-line-number="1"><span class="co"># Generic mutate command</span></a>
+<a class="sourceLine" id="cb119-2" data-line-number="2">more_columns &lt;-<span class="st"> </span><span class="kw">mutate</span>(</a>
+<a class="sourceLine" id="cb119-3" data-line-number="3">  my_data_frame,</a>
+<a class="sourceLine" id="cb119-4" data-line-number="4">  <span class="dt">new_column_1 =</span> old_column <span class="op">*</span><span class="st"> </span><span class="dv">2</span>,</a>
+<a class="sourceLine" id="cb119-5" data-line-number="5">  <span class="dt">new_column_2 =</span> old_column <span class="op">*</span><span class="st"> </span><span class="dv">3</span>,</a>
+<a class="sourceLine" id="cb119-6" data-line-number="6">  <span class="dt">new_column_3 =</span> old_column <span class="op">*</span><span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb119-7" data-line-number="7">)</a></code></pre></div>
+</div>
+<div id="arrange" class="section level3">
+<h3><span class="header-section-number">10.2.4</span> Arrange</h3>
+<p>The <strong><code>arrange()</code></strong> operation allows you to <strong>sort the rows</strong> of your data frame by some feature (column value).</p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb120-1" data-line-number="1"><span class="co"># Arrange storms by INCREASING order of the `wind` column</span></a>
+<a class="sourceLine" id="cb120-2" data-line-number="2">sorted_storms &lt;-<span class="st"> </span><span class="kw">arrange</span>(storms, wind)</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/arrange.png" title="Diagram of the arrange() function" alt="Diagram of the arrange() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>arrange()</code> function (by Nathan Stephens).</p>
+</div>
+<p>By default, the <code>arrange()</code> function will sort rows in <strong>increasing</strong> order. To sort in <strong>reverse</strong> (decreasing) order, place a minus sign (<strong><code>-</code></strong>) in front of the column name (e.g., <code>-wind</code>). You can also use the <code>desc()</code> helper function (e.g, <code>desc(wind)</code>).</p>
+<ul>
+<li><p>You can pass multiple arguments into the <code>arrange()</code> function in order to sort first by <code>argument_1</code>, then by <code>argument_2</code>, and so on.</p></li>
+<li><p>Again, this doesn’t actually modify the argument data frame—instead returning a new data frame you’ll need to store.</p></li>
+</ul>
+</div>
+<div id="summarize" class="section level3">
+<h3><span class="header-section-number">10.2.5</span> Summarize</h3>
+<p>The <strong><code>summarize()</code></strong> function (equivalently <code>summarise()</code> for those using the British spelling) will generate a <em>new</em> data frame that contains a “summary” of a <strong>column</strong>, computing a single value from the multiple elements in that column.</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb121-1" data-line-number="1"><span class="co"># Compute the median value of the `amount` column</span></a>
+<a class="sourceLine" id="cb121-2" data-line-number="2">summary &lt;-<span class="st"> </span><span class="kw">summarize</span>(pollution, <span class="dt">median =</span> <span class="kw">median</span>(amount))</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/summarize.png" title="Diagram of the summarize() function" alt="Diagram of the summarize() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>summarize()</code> function (by Nathan Stephens).</p>
+</div>
+<p>The <code>summarize()</code> function takes in the data frame to mutate, followed by the values that will be included in the resulting summary table. You can use multiple arguments to include multiple summaries in the same statement:</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb122-1" data-line-number="1"><span class="co"># Compute statistics for the `amount` column</span></a>
+<a class="sourceLine" id="cb122-2" data-line-number="2">summaries &lt;-<span class="st"> </span><span class="kw">summarize</span>(</a>
+<a class="sourceLine" id="cb122-3" data-line-number="3">  pollution,</a>
+<a class="sourceLine" id="cb122-4" data-line-number="4">  <span class="dt">median =</span> <span class="kw">median</span>(amount), <span class="co"># median value</span></a>
+<a class="sourceLine" id="cb122-5" data-line-number="5">  <span class="dt">mean =</span> <span class="kw">mean</span>(amount), <span class="co"># &quot;average&quot; value</span></a>
+<a class="sourceLine" id="cb122-6" data-line-number="6">  <span class="dt">sum =</span> <span class="kw">sum</span>(amount), <span class="co"># total value</span></a>
+<a class="sourceLine" id="cb122-7" data-line-number="7">  <span class="dt">count =</span> <span class="kw">n</span>() <span class="co"># number of values (neat trick!)</span></a>
+<a class="sourceLine" id="cb122-8" data-line-number="8">)</a></code></pre></div>
+<p>Note that the <code>summarize()</code> function is particularly useful for grouped operations (see <a href="dplyr.html#grouped-operations">below</a>), as you can produce summaries of different groups of data.</p>
+</div>
+<div id="distinct" class="section level3">
+<h3><span class="header-section-number">10.2.6</span> Distinct</h3>
+<p>The <strong><code>distinct()</code></strong> operation allows you to extract distinct values (rows) from your data frame—that is, you’ll get one row for each different value in the dataframe (or set of selected <strong>columns</strong>). This is a useful tool to confirm that you don’t have <strong>duplicate observations</strong>, which often occurs in messy datasets.</p>
+<p>For example (no diagram available):</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb123-1" data-line-number="1"><span class="co"># Create a quick data frame</span></a>
+<a class="sourceLine" id="cb123-2" data-line-number="2">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">4</span>)  <span class="co"># duplicate x values</span></a>
+<a class="sourceLine" id="cb123-3" data-line-number="3">y &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="dv">8</span>                        <span class="co"># unique y values</span></a>
+<a class="sourceLine" id="cb123-4" data-line-number="4">my_df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(x, y)</a>
+<a class="sourceLine" id="cb123-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb123-6" data-line-number="6"><span class="co"># Select distinct rows, judging by the `x` column</span></a>
+<a class="sourceLine" id="cb123-7" data-line-number="7">distinct_rows &lt;-<span class="st"> </span><span class="kw">distinct</span>(my_df, x)</a>
+<a class="sourceLine" id="cb123-8" data-line-number="8">                                    <span class="co">#   x</span></a>
+<a class="sourceLine" id="cb123-9" data-line-number="9">                                    <span class="co"># 1 1</span></a>
+<a class="sourceLine" id="cb123-10" data-line-number="10">                                    <span class="co"># 2 2</span></a>
+<a class="sourceLine" id="cb123-11" data-line-number="11">                                    <span class="co"># 3 3</span></a>
+<a class="sourceLine" id="cb123-12" data-line-number="12">                                    <span class="co"># 4 4</span></a>
+<a class="sourceLine" id="cb123-13" data-line-number="13"></a>
+<a class="sourceLine" id="cb123-14" data-line-number="14"><span class="co"># Select distinct rows, judging by the `x` and `y`columns</span></a>
+<a class="sourceLine" id="cb123-15" data-line-number="15">distinct_rows &lt;-<span class="st"> </span><span class="kw">distinct</span>(my_df, x, y)  <span class="co"># returns whole table, since no duplicate rows</span></a></code></pre></div>
+<p>While this is a simple way to get a unique set of rows, <strong>be careful</strong> not to lazily remove rows of your data which may be important.</p>
+</div>
+</div>
+<div id="multiple-operations" class="section level2">
+<h2><span class="header-section-number">10.3</span> Multiple Operations</h2>
+<!-- This discussion may be better for lecture than module, but leave in for now -->
+<p>You’ve likely encountered a number of instances in which you want to take the results from one function and pass them into another function. Your approach thus far has often been to create <em>temporary variables</em> for use in your analysis. For example, if you’re using the <code>mtcars</code> dataset, you may want to ask a simple question like,</p>
+<blockquote>
+<p>Which 4-cylinder car gets the best milage per gallon?</p>
+</blockquote>
+<p>This simple question actually requires a few steps:</p>
+<ol style="list-style-type: decimal">
+<li><em>Filter</em> down the dataset to only 4-cylinder cars</li>
+<li>Of the 4-cylinder cars, <em>filter</em> down to the one with the highest mpg</li>
+<li><em>Select</em> the car name of the car</li>
+</ol>
+<p>You could then implement each step as follows:</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb124-1" data-line-number="1"><span class="co"># Preparation: add a column that is the car name</span></a>
+<a class="sourceLine" id="cb124-2" data-line-number="2">mtcars_named &lt;-<span class="st"> </span><span class="kw">mutate</span>(mtcars, <span class="dt">car_name =</span> <span class="kw">row.names</span>(mtcars))</a>
+<a class="sourceLine" id="cb124-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb124-4" data-line-number="4"><span class="co"># 1. Filter down to only four cylinder cars</span></a>
+<a class="sourceLine" id="cb124-5" data-line-number="5">four_cyl &lt;-<span class="st"> </span><span class="kw">filter</span>(mtcars_named, cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span>)</a>
+<a class="sourceLine" id="cb124-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb124-7" data-line-number="7"><span class="co"># 2. Filter down to the one with the highest mpg</span></a>
+<a class="sourceLine" id="cb124-8" data-line-number="8">best_four_cyl &lt;-<span class="st"> </span><span class="kw">filter</span>(four_cyl, mpg <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(mpg))</a>
+<a class="sourceLine" id="cb124-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb124-10" data-line-number="10"><span class="co"># 3. Select the car name of the car</span></a>
+<a class="sourceLine" id="cb124-11" data-line-number="11">best_car_name &lt;-<span class="st"> </span><span class="kw">select</span>(best_four_cyl, car_name)</a></code></pre></div>
+<p>While this works fine, it clutters the work environment with variables you won’t need to use again, and which can potentially step on one another’s toes. It can help with readability (the results of each step is explicit), but those extra variables make it harder to modify and change the algorithm later (you have to change them in two places).</p>
+<p>An alternative to saving each step as a distinct, named variable would be to utilize <strong>anonymous variables</strong> and write the desired statements <strong>nested</strong> within other functions. For example, you could write the algorithm above as follows:</p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb125-1" data-line-number="1"><span class="co"># Preparation: add a column that is the car name</span></a>
+<a class="sourceLine" id="cb125-2" data-line-number="2">mtcars_named &lt;-<span class="st"> </span><span class="kw">mutate</span>(mtcars, <span class="dt">car_name =</span> <span class="kw">row.names</span>(mtcars))</a>
+<a class="sourceLine" id="cb125-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb125-4" data-line-number="4"><span class="co"># Write a nested operation to return the best car name</span></a>
+<a class="sourceLine" id="cb125-5" data-line-number="5">best_car_name &lt;-<span class="st"> </span><span class="kw">select</span>( <span class="co"># 3. Select car name of the car</span></a>
+<a class="sourceLine" id="cb125-6" data-line-number="6">  <span class="kw">filter</span>( <span class="co"># 2. Filter down to the one with the highest mpg</span></a>
+<a class="sourceLine" id="cb125-7" data-line-number="7">    <span class="kw">filter</span>( <span class="co"># 1. Filter down to only four cylinder cars</span></a>
+<a class="sourceLine" id="cb125-8" data-line-number="8">      mtcars_named, <span class="co"># arguments for the Step 1 filter</span></a>
+<a class="sourceLine" id="cb125-9" data-line-number="9">      cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span></a>
+<a class="sourceLine" id="cb125-10" data-line-number="10">    ),</a>
+<a class="sourceLine" id="cb125-11" data-line-number="11">    mpg <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(mpg) <span class="co"># other arguments for the Step 2 filter</span></a>
+<a class="sourceLine" id="cb125-12" data-line-number="12">  ),</a>
+<a class="sourceLine" id="cb125-13" data-line-number="13">  car_name <span class="co"># other arguments for the Step 3 select</span></a>
+<a class="sourceLine" id="cb125-14" data-line-number="14">)</a></code></pre></div>
+<p>This version uses <em>anonymous variables</em>—result values which are not assigned to names (so are anonymous), but instead are immediately used as the arguments to another function. You’ve used these frequently with the <code>print()</code> function and with filters (those vectors of <code>TRUE</code> and <code>FALSE</code> values)—and even the <code>max(mpg)</code> in the Step 2 filter is an anonymous variable!</p>
+<p>This <em>nested</em> version performs the same results as the <em>temporary variable</em> version without creating the extra variables, but even with only 3 steps it can get quite complicated to read—in a large part because you have to think about it “inside out”, with the stuff in the middle evaluating first. This will obviously become undecipherable for more involved operations.</p>
+<div id="the-pipe-operator" class="section level3">
+<h3><span class="header-section-number">10.3.1</span> The Pipe Operator</h3>
+<p>Luckily, <code>dplyr</code> provides a cleaner and more effective way of achieving the same task (that is, using the result of one function as an argument to the next). The <strong>pipe operator</strong> (<strong><code>%&gt;%</code></strong>) indicates that the result from the first function operand should be passed in as <strong>the first argument</strong> to the next function operand!</p>
+<p>As a simple example:</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb126-1" data-line-number="1"><span class="co"># nested version: evaluate c(), then max(), then print()</span></a>
+<a class="sourceLine" id="cb126-2" data-line-number="2"><span class="kw">print</span>(<span class="kw">max</span>(<span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">1</span>)))</a>
+<a class="sourceLine" id="cb126-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb126-4" data-line-number="4"><span class="co"># pipe version</span></a>
+<a class="sourceLine" id="cb126-5" data-line-number="5"><span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>) <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># do first function</span></a>
+<a class="sourceLine" id="cb126-6" data-line-number="6"><span class="st">  </span><span class="kw">max</span>() <span class="op">%&gt;%</span><span class="st">   </span><span class="co"># which becomes the _first_ argument to the next function</span></a>
+<a class="sourceLine" id="cb126-7" data-line-number="7"><span class="st">  </span><span class="kw">print</span>()  <span class="co"># which becomes the _first_ argument to the next function</span></a></code></pre></div>
+<p>Or as another version of the above data wrangling:</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb127-1" data-line-number="1"><span class="co"># Preparation: add a column that is the car name</span></a>
+<a class="sourceLine" id="cb127-2" data-line-number="2">mtcars_named &lt;-<span class="st"> </span><span class="kw">mutate</span>(mtcars, <span class="dt">car_name =</span> <span class="kw">row.names</span>(mtcars))</a>
+<a class="sourceLine" id="cb127-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb127-4" data-line-number="4">best_car_name &lt;-<span class="st"> </span><span class="kw">filter</span>(mtcars_named, cyl <span class="op">==</span><span class="st"> </span><span class="dv">4</span>) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Step 1</span></a>
+<a class="sourceLine" id="cb127-5" data-line-number="5"><span class="st">  </span><span class="kw">filter</span>(mpg <span class="op">==</span><span class="st"> </span><span class="kw">max</span>(mpg)) <span class="op">%&gt;%</span><span class="st"> </span><span class="co"># Step 2</span></a>
+<a class="sourceLine" id="cb127-6" data-line-number="6"><span class="st">  </span><span class="kw">select</span>(car_name) <span class="co"># Step 3</span></a></code></pre></div>
+<ul>
+<li>Yes, the <code>%&gt;%</code> operator is awkward to type and takes some getting use to (especially compared to the command-line’s use of <code>|</code> to pipe). However, you can ease the typing by using the <a href="https://support.rstudio.com/hc/en-us/articles/200711853-Keyboard-Shortcuts">RStudio keyboard shortcut</a> <code>cmd + shift + m</code>.</li>
+</ul>
+<p>The pipe operator is part of the <code>dplyr</code> package (it is only available if you load that package), but it will work with <em>any</em> function, not just <code>dplyr</code> ones! This syntax, while slightly odd, can completely change and simplify the way you write code to ask questions about your data!</p>
+</div>
+</div>
+<div id="grouped-operations" class="section level2">
+<h2><span class="header-section-number">10.4</span> Grouped Operations</h2>
+<p><code>dplyr</code> functions are powerful, but they are truly awesome when you can apply them to <strong>groups of rows</strong> within a data set. For example, the above use of <code>summarize()</code> isn’t particularly useful since it just gives a single summary for a given column (which you could have done anyway). However, a <strong>grouped</strong> operation would allow you to compute the same summary measure (<code>mean</code>, <code>median</code>, <code>sum</code>, etc.) automatically for multiple groups of rows, enabling you to ask more nuanced questions about your data set.</p>
+<p>The <strong><code>group_by()</code></strong> operation allows you to break a data frame down into <em>groups</em> of rows, which can then have the other verbs (e.g., <code>summarize</code>, <code>filter</code>, etc). applied to each one.</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb128-1" data-line-number="1"><span class="co"># Get summary statistics by city</span></a>
+<a class="sourceLine" id="cb128-2" data-line-number="2">city_summary &lt;-<span class="st"> </span><span class="kw">group_by</span>(pollution, city) <span class="op">%&gt;%</span></a>
+<a class="sourceLine" id="cb128-3" data-line-number="3"><span class="st">  </span><span class="kw">summarize</span>( <span class="co"># first argument (the data frame) is received from the pipe</span></a>
+<a class="sourceLine" id="cb128-4" data-line-number="4">    <span class="dt">mean =</span> <span class="kw">mean</span>(amount),</a>
+<a class="sourceLine" id="cb128-5" data-line-number="5">    <span class="dt">sum =</span> <span class="kw">sum</span>(amount),</a>
+<a class="sourceLine" id="cb128-6" data-line-number="6">    <span class="dt">n =</span> <span class="kw">n</span>()</a>
+<a class="sourceLine" id="cb128-7" data-line-number="7">  )</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/group_by.png" title="Diagram of the group_by() function" alt="Diagram of the group_by() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>group_by()</code> function (by Nathan Stephens).</p>
+</div>
+<p>As another example, if you were using the <code>mtcars</code> dataset, you may want to answer this question:</p>
+<blockquote>
+<p>What are the differences in mean miles per gallon for cars with different numbers of gears (3, 4, or 5)?</p>
+</blockquote>
+<p>This simple question requires computing the mean for different subsets of the data. Rather than explicitly breaking your data into different groups (a.k.a. <em>bins</em> or <em>chunks</em>) and running the same operations on each, you can use the <code>group_by()</code> function to accomplish this in a single command:</p>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb129-1" data-line-number="1"><span class="co"># Group cars by gear number, then compute the mean and median mpg</span></a>
+<a class="sourceLine" id="cb129-2" data-line-number="2">gear_summary &lt;-<span class="st"> </span><span class="kw">group_by</span>(mtcars, gear) <span class="op">%&gt;%</span><span class="st">  </span><span class="co"># group by gear</span></a>
+<a class="sourceLine" id="cb129-3" data-line-number="3"><span class="st">                 </span><span class="kw">summarize</span>(<span class="dt">mean =</span> <span class="kw">mean</span>(mpg))  <span class="co"># calculate mean</span></a>
+<a class="sourceLine" id="cb129-4" data-line-number="4"><span class="co"># Computing the difference between scores is done elsewhere (or by hand!)</span></a></code></pre></div>
+<p>Thus grouping can allow you to quickly and easily compare different subsets of your data!</p>
+<!-- For an introduction to and practice working with grouped operations, see [exercise-5](exercise-5). -->
+</div>
+<div id="joins" class="section level2">
+<h2><span class="header-section-number">10.5</span> Joins</h2>
+<p>When working with real-world data, you’ll often find that that data is stored across <em>multiple</em> files or data frames. This can be done for a number of reasons. For one, it can help to reduce memory usage (in the same manner as <strong>factors</strong>). For example, if you had a data frame containing information on students enrolled in university courses, you might store information about each course (the instructor, meeting time, and classroom) in a separate data frame rather than duplicating that information for every student that takes the same course. You also may simply want to keep your information organized: e.g., have student information in one file, and course information in another.</p>
+<ul>
+<li>This separation and organization of data is a core concern in the design of <a href="https://en.wikipedia.org/wiki/Relational_database">relational databases</a>, a common topic of study within Information Schools.</li>
+</ul>
+<p>But at some point, you’ll want to access information from both data sets (e.g., you need to figure out a student’s schedule), and thus need a way to combine the data frames. This process is called a <strong>join</strong> (because you are “joining” the data frames together). When you perform a join, you identify <strong>columns</strong> which are present in both tables. Those column values are then used as <strong>identifiers</strong> to determine which rows in each table correspond to one another, and thus will be combined into a row in the resulting joined table.</p>
+<p>The <strong><code>left_join()</code></strong> operation is one example of a join. This operation looks for matching columns between the two data frames, and then returns a new data frame that is the first (“left”) operand with extra columns from the second operand added on.</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb130-1" data-line-number="1"><span class="co"># Combine (join) songs and artists data frames</span></a>
+<a class="sourceLine" id="cb130-2" data-line-number="2"><span class="kw">left_join</span>(songs, artists)</a></code></pre></div>
+<div class="figure">
+<img src="img/dplyr/left_join.png" title="Diagram of the left_join() function" alt="Diagram of the left_join() function (by Nathan Stephens)." />
+<p class="caption">Diagram of the <code>left_join()</code> function (by Nathan Stephens).</p>
+</div>
+<p>To understand how this works, consider a specific example where you have a table of student_ids and the students’ contact information. You also have a separate table of student_ids and the students’ majors (your institution very well may store this information in separate tables for privacy or organizational reasons).</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb131-1" data-line-number="1"><span class="co"># Table of contact information</span></a>
+<a class="sourceLine" id="cb131-2" data-line-number="2">student_contact &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb131-3" data-line-number="3">  <span class="dt">student_id =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="co"># id numbers</span></a>
+<a class="sourceLine" id="cb131-4" data-line-number="4">  <span class="dt">email =</span> <span class="kw">c</span>(<span class="st">&quot;id1@school.edu&quot;</span>, <span class="st">&quot;id2@school.edu&quot;</span>, <span class="st">&quot;id3@school.edu&quot;</span>, <span class="st">&quot;id4@school.edu&quot;</span>)</a>
+<a class="sourceLine" id="cb131-5" data-line-number="5">)</a>
+<a class="sourceLine" id="cb131-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb131-7" data-line-number="7"><span class="co"># Table of information about majors</span></a>
+<a class="sourceLine" id="cb131-8" data-line-number="8">student_majors &lt;-<span class="st"> </span><span class="kw">data.frame</span>(</a>
+<a class="sourceLine" id="cb131-9" data-line-number="9">  <span class="dt">student_id =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="co"># id numbers</span></a>
+<a class="sourceLine" id="cb131-10" data-line-number="10">  <span class="dt">major =</span> <span class="kw">c</span>(<span class="st">&quot;sociology&quot;</span>, <span class="st">&quot;math&quot;</span>, <span class="st">&quot;biology&quot;</span>)</a>
+<a class="sourceLine" id="cb131-11" data-line-number="11">)</a></code></pre></div>
+<p>Notice that both tables have a <code>student_id</code> column, allowing you to “match” the rows from the <code>student_contact</code> table to the <code>student_majors</code> table and merge them together:</p>
+<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb132-1" data-line-number="1"><span class="co"># Join tables by the student_id column</span></a>
+<a class="sourceLine" id="cb132-2" data-line-number="2">merged_student_info &lt;-<span class="st"> </span><span class="kw">left_join</span>(student_contact, student_majors)</a>
+<a class="sourceLine" id="cb132-3" data-line-number="3">                        <span class="co">#    student_id          email     major</span></a>
+<a class="sourceLine" id="cb132-4" data-line-number="4">                        <span class="co"># 1          1 id1@school.edu sociology</span></a>
+<a class="sourceLine" id="cb132-5" data-line-number="5">                        <span class="co"># 2          2 id2@school.edu      math</span></a>
+<a class="sourceLine" id="cb132-6" data-line-number="6">                        <span class="co"># 3          3 id3@school.edu   biology</span></a>
+<a class="sourceLine" id="cb132-7" data-line-number="7">                        <span class="co"># 4          4  id4@school.edu      &lt;NA&gt;</span></a></code></pre></div>
+<p>When you perform this <strong>left join</strong>, R goes through each row in the table on the “left” (the first argument), looking at the shared column(s) (<code>student_id</code>). For each row, it looks for a corresponding value in <code>student_majors$student_id</code>, and if it finds one then it adds any data from columns that are in <code>student_majors</code> but <em>not</em> in <code>student_contact</code> (e.g., <code>major</code>) to new columns in the resulting table, with values from whatever the matching row was. Thus student #1 is given a <code>major</code> of “sociology”, student #2 is given a <code>major</code> of “math”, and student #4 is given a <code>major</code> of <code>NA</code> (because that student had no corresponding row in <code>student_majors</code>!)</p>
+<ul>
+<li>In short, a <strong>left join</strong> returns all of the rows from the <em>first</em> table, with all of the columns from <em>both</em> tables.</li>
+</ul>
+<p>R will join tables by any and all shared columns. However, if the names of your columns don’t match specifically, you can also specify a <code>by</code> argument indicating which columns should be used for the matching:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb133-1" data-line-number="1"><span class="co"># Use the named `by` argument to specify (a vector of) columns to match on</span></a>
+<a class="sourceLine" id="cb133-2" data-line-number="2"><span class="kw">left_join</span>(student_contact, student_majors, <span class="dt">by=</span><span class="st">&quot;student_id&quot;</span>)</a></code></pre></div>
+<ul>
+<li>With the <code>by</code> argument, column name <em>is</em> a string (in quotes) because you’re specifying a vector of column names (the string literal is a vector length 1).</li>
+</ul>
+<p>Notice that because of how a left join is defined, <strong>the argument order matters!</strong> The resulting table only has rows for elements in the <em>left</em> (first) table; any unmatched elements in the second table are lost. If you switch the order of the operands, you would only have information for students with majors:</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb134-1" data-line-number="1"><span class="co"># Join tables by the student_id column</span></a>
+<a class="sourceLine" id="cb134-2" data-line-number="2">merged_student_info &lt;-<span class="st"> </span><span class="kw">left_join</span>(student_majors, student_contact)  <span class="co"># switched order!</span></a>
+<a class="sourceLine" id="cb134-3" data-line-number="3">                        <span class="co">#   student_id     major          email</span></a>
+<a class="sourceLine" id="cb134-4" data-line-number="4">                        <span class="co"># 1          1 sociology id1@school.edu</span></a>
+<a class="sourceLine" id="cb134-5" data-line-number="5">                        <span class="co"># 2          2      math id2@school.edu</span></a>
+<a class="sourceLine" id="cb134-6" data-line-number="6">                        <span class="co"># 3          3   biology id3@school.edu</span></a></code></pre></div>
+<p>You don’t get any information for student #4, because they didn’t have a record in the left-hand table!</p>
+<p>Because of this behavior, <code>dplyr</code> (and relational database systems in general) provide a number of different kinds of joins, each of which influences <em>which</em> rows are included in the final table. Note that in any case, <em>all</em> columns from <em>both</em> tables will be included, with rows taking on any values from their matches in the second table.</p>
+<ul>
+<li><p><strong><code>left_join</code></strong> All rows from the first (left) data frame are returned. That is, you get all the data from the left-hand table, with extra column values added from the right-hand table. Left-hand rows without a match will have <code>NA</code> in the right-hand columns.</p></li>
+<li><p><strong><code>right_join</code></strong> All rows from the second (right) data frame are returned. That is, you get all the data from the right-hand table, with extra column values added from the left-hand table. Right-hand rows without a match will have <code>NA</code> in the left-hand columns. This is the “opposite” of a <code>left_join</code>, and the equivalent of switching the operands.</p></li>
+<li><p><strong><code>inner_join</code></strong> Only rows in <strong>both</strong> data frames are returned. That is, you get any rows that had matching observations in both tables, with the column values from both tables. There will be no additional <code>NA</code> values created by the join. Observations from the left that had no match in the right, or observations in the right that had no match in the left, will not be returned at all.</p></li>
+<li><p><strong><code>full_join</code></strong> All rows from <strong>both</strong> data frames are returned. That is, you get a row for any observation, whether or not it matched. If it happened to match, it will have values from both tables in that row. Observations without a match will have <code>NA</code> in the columns from the other table.</p></li>
+</ul>
+<p>The key to deciding between these is to think about what set of data you want as your set of observations (rows), and which columns you’d be okay with being <code>NA</code> if a record is missing.</p>
+<p>Note that these are all <em>mutating joins</em>, which add columns from one table to another. <code>dplyr</code> also provides <em>filtering joins</em> which exclude rows based on whether they have a matching observation in another table, and <em>set operations</em> which combine observations as if they were set elements. See <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html">the documentation</a> for more detail on these options, but in this course we’ll be primarily focusing on the mutating joins described above.</p>
+<!-- For an introduction to and practice working with joins, see [exercise-6](exercise-6). -->
+</div>
+<div id="non-standard-evaluation-vs.standard-evaluation" class="section level2">
+<h2><span class="header-section-number">10.6</span> Non-Standard Evaluation vs. Standard Evaluation</h2>
+<p>One of the features that makes <code>dplyr</code> such a clean and attractive way to write code is that inside of each function, you’ve been able to write column variable names <strong>without quotes</strong>. This is called <strong>non-standard evaluation (NSE)</strong> (it is <em>not</em> the <em>standard</em> way that code is <em>evaluated</em>, or interpreted), and is useful primarily because of how it reduces typing (along with some other benefits when working with databases). In particular, <code>dplyr</code> will <a href="http://dplyr.tidyverse.org/articles/programming.html">“quote”</a> expressions for you, converting those variables (symbols) into values that can be used to refer to column names.</p>
+<p>Most of the time this won’t cause you any problems—you can either use NSE to refer to column names without quotes, or provide the quotes yourself. You can even use variables to store the name of a column of interest!</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb135-1" data-line-number="1"><span class="co"># Normal, non-standard evaluation version</span></a>
+<a class="sourceLine" id="cb135-2" data-line-number="2">mpg &lt;-<span class="st"> </span><span class="kw">select</span>(mtcars, mpg)</a>
+<a class="sourceLine" id="cb135-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb135-4" data-line-number="4"><span class="co"># &quot;Standard-evaluation&quot; version (same result)</span></a>
+<a class="sourceLine" id="cb135-5" data-line-number="5">mpg &lt;-<span class="st"> </span><span class="kw">select</span>(mtcars, <span class="st">&quot;mpg&quot;</span>) <span class="co"># with quotes! &quot;mpg&quot; is a normal value!</span></a>
+<a class="sourceLine" id="cb135-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb135-7" data-line-number="7"><span class="co"># Make the column name a variable</span></a>
+<a class="sourceLine" id="cb135-8" data-line-number="8">which_col &lt;-<span class="st"> &quot;mpg&quot;</span></a>
+<a class="sourceLine" id="cb135-9" data-line-number="9">my_column &lt;-<span class="st"> </span><span class="kw">select</span>(mtcars, which_col)</a></code></pre></div>
+<p>However, this NSE can sometimes trip you up when using more complex functions such as <code>summarize()</code> or <code>group_by()</code>, or when you want to create your own functions that use NSE.</p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb136-1" data-line-number="1">which_col &lt;-<span class="st"> &quot;mpg&quot;</span></a>
+<a class="sourceLine" id="cb136-2" data-line-number="2"><span class="kw">summarize</span>(mtcars, <span class="dt">avg =</span> <span class="kw">mean</span>(which_col))  <span class="co"># In mean.default(which_col) :</span></a>
+<a class="sourceLine" id="cb136-3" data-line-number="3">                            <span class="co"># argument is not numeric or logical: returning NA</span></a></code></pre></div>
+<p>In this case, the <code>summarize()</code> function is trying to “quote” what we typed in (the <code>which_col</code> variable name&amp;dmash;not it’s <code>mpg</code> value), and then hitting a problem because there is no column of that name (it can’t resolve that column name to a column index).</p>
+<p>To fix this problem, there are two parts: first, you need to explicitly tell R that the <em>value</em> of <code>which_col</code> (<code>mpg</code>) is actually the value that needs to be automatically “quoted”—that is, that <code>mpg</code> is really a variable! Variable names in R are referred to as <a href="https://cran.r-project.org/doc/manuals/r-release/R-lang.html#Symbol-objects"><strong>symbols</strong></a>—a symbol refers to the variable label itself. You can explicitly change a value into a symbol by using the <a href="https://www.rdocumentation.org/packages/rlang/versions/0.1.6/topics/sym"><code>rlang::sym()</code></a> function (the <code>sym()</code> function found in the <code>rlang</code> library; the <code>::</code> indicates that the function belongs to a library).</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb137-1" data-line-number="1">which_col_sym &lt;-<span class="st"> </span>rlang<span class="op">::</span><span class="kw">sym</span>(which_col)  <span class="co"># convert to a symbol</span></a>
+<a class="sourceLine" id="cb137-2" data-line-number="2"><span class="kw">print</span>(which_col_sym)  <span class="co"># =&gt; mpg (but not in quotes, because it&#39;s not a string!)</span></a></code></pre></div>
+<p>Second, you will need to tell the <code>summarize()</code> function that it should <em>not</em> quote this symbol (because you’ve already converted it into a variable)—what is called <strong>unquoting</strong>. In <code>dplyr</code>, you “unquote” a parameter to a method by including two exclamation points in front of it:</p>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb138-1" data-line-number="1"><span class="kw">summarize</span>(mtcars, <span class="dt">avg =</span> <span class="kw">mean</span>(<span class="op">!!</span>which_col_sym))  <span class="co"># arranges by the specified column</span></a></code></pre></div>
+<p>There are many more details involved in this “quoting/unquoting” process, which are described in <a href="http://dplyr.tidyverse.org/articles/programming.html">this tutorial</a> (though that is currently <a href="http://rpubs.com/lionel-/programming-draft">being updated with better examples</a>).</p>
+<div id="explicit-standard-evaluation" class="section level3">
+<h3><span class="header-section-number">10.6.1</span> Explicit Standard Evaluation</h3>
+<p>Alternatively, older versions of <code>dplyr</code> supplied functions that <em>explicitly</em> performed <strong>standard evaluation (SE)</strong>—that is, they provide no quoting and expected you to do that work yourself. While now considered deprecated, they can still be useful if you are having problems with the new quoting system. These functions have the exact same names as the normal verb functions, except are followed by an underscore (<strong><code>_</code></strong>):</p>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb139-1" data-line-number="1"><span class="co"># Normal, non-standard evaluation version</span></a>
+<a class="sourceLine" id="cb139-2" data-line-number="2">mpg &lt;-<span class="st"> </span><span class="kw">select</span>(mtcars, mpg)</a>
+<a class="sourceLine" id="cb139-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb139-4" data-line-number="4"><span class="co"># Standard-evaluation version (same result)</span></a>
+<a class="sourceLine" id="cb139-5" data-line-number="5">mpg &lt;-<span class="st"> </span><span class="kw">select_</span>(mtcars, <span class="st">&#39;mpg&#39;</span>)  <span class="co"># with quotes! &#39;mpg&#39; is a normal value!</span></a>
+<a class="sourceLine" id="cb139-6" data-line-number="6"></a>
+<a class="sourceLine" id="cb139-7" data-line-number="7"><span class="co"># Normal, non-standard evaluation version of equations</span></a>
+<a class="sourceLine" id="cb139-8" data-line-number="8">mean_mpg &lt;-<span class="st"> </span><span class="kw">summarize</span>(mtcars, <span class="kw">mean</span>(mpg))</a>
+<a class="sourceLine" id="cb139-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb139-10" data-line-number="10"><span class="co"># Standard-evaluation version of equations (same result)</span></a>
+<a class="sourceLine" id="cb139-11" data-line-number="11">mean_mpg &lt;-<span class="st"> </span><span class="kw">summarize_</span>(mtcars, <span class="st">&#39;mean(mpg)&#39;</span>)</a>
+<a class="sourceLine" id="cb139-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb139-13" data-line-number="13"><span class="co"># Which column you&#39;re interested in</span></a>
+<a class="sourceLine" id="cb139-14" data-line-number="14">which_column &lt;-<span class="st"> &#39;mpg&#39;</span></a>
+<a class="sourceLine" id="cb139-15" data-line-number="15"></a>
+<a class="sourceLine" id="cb139-16" data-line-number="16"><span class="co"># Use standard evaluation to execute function:</span></a>
+<a class="sourceLine" id="cb139-17" data-line-number="17">my_column &lt;-<span class="st"> </span><span class="kw">arrange_</span>(mtcars, which_column)</a></code></pre></div>
+<p class="alert alert-warning">
+Yes, it does feel a bit off that the “normal” way of using <code>dplyr</code> is the “non-standard” way. Remember that using SE is the “different” approach
+</p>
+<p>The non-standard evaluation offered by <code>dplyr</code> can make it quick and easy to work with data when you know its structure and variable names, but can be a challenge when trying to work with variables. Often in that case, you may want to instead use the standard data frame syntax (e.g., bracket notation) described in Chapter 9.</p>
+<!-- TODO: Add note about using `desc()` in the string -->
+<!-- TODO: Formulas probably go here -->
+</div>
+</div>
+<div id="resources-9" class="section level2 unnumbered">
+<h2>Resources</h2>
+<ul>
+<li><a href="https://cran.r-project.org/web/packages/dplyr/vignettes/introduction.html">Introduction to dplyr</a></li>
+<li><a href="http://seananderson.ca/2014/09/13/dplyr-intro.html">dplyr and pipes: the basics (blog)</a></li>
+<li><a href="https://cran.r-project.org/web/packages/dplyr/vignettes/two-table.html">Two-table verbs</a></li>
+<li><a href="http://stat545.com/bit001_dplyr-cheatsheet.html">DPLYR Join Cheatsheet (Jenny Bryan)</a></li>
+<li><a href="https://cran.r-project.org/web/packages/dplyr/vignettes/nse.html">Non-standard evaluation</a></li>
+<li><a href="https://www.r-bloggers.com/data-manipulation-with-dplyr/">Data Manipulation with DPLYR (R-bloggers)</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="data-frames.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="apis.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["github", "facebook", "twitter", "google"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/info201/book/edit/master/dplyr.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+</body>
+
+</html>

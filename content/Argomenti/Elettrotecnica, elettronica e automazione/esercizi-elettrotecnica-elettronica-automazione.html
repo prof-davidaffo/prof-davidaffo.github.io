@@ -1,0 +1,2583 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Esercitazioni Interattive - Elettrotecnica, Elettronica e Automazione</title>
+  <style>
+    :root {
+      --bg: #f5efe3;
+      --paper: #fffaf1;
+      --panel: rgba(255, 250, 241, 0.82);
+      --ink: #1f2430;
+      --muted: #5b6472;
+      --line: rgba(31, 36, 48, 0.12);
+      --accent: #b2482b;
+      --accent-2: #0d6b66;
+      --accent-3: #d7a11e;
+      --ok: #13795b;
+      --bad: #b02a37;
+      --shadow: 0 18px 40px rgba(79, 59, 33, 0.14);
+      --radius: 22px;
+      --mono: "IBM Plex Mono", "Fira Code", monospace;
+      --sans: "Segoe UI", "Aptos", "Trebuchet MS", sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--sans);
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(210, 161, 30, 0.18), transparent 24%),
+        radial-gradient(circle at top right, rgba(13, 107, 102, 0.2), transparent 28%),
+        linear-gradient(180deg, #f3e7cb 0%, #f6f0e6 34%, #efe5d1 100%);
+      min-height: 100vh;
+    }
+
+    .page {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 28px 20px 48px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.7rem, 3vw, 2.4rem);
+      line-height: 1.05;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 22px;
+      margin-top: 22px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid rgba(255, 255, 255, 0.55);
+      border-radius: var(--radius);
+      padding: 22px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(16px);
+    }
+
+    .panel h2,
+    .panel h3 {
+      margin-top: 0;
+    }
+
+    .controls {
+      position: sticky;
+      top: 20px;
+      align-self: start;
+    }
+
+    .group {
+      margin-bottom: 18px;
+    }
+
+    .group label,
+    .group legend {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 8px;
+      font-size: 0.96rem;
+    }
+
+    input[type="number"],
+    input[type="text"],
+    textarea {
+      width: 100%;
+      font: inherit;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      padding: 12px 14px;
+      background: #fffef9;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    .main-grid {
+      display: grid;
+      gap: 22px;
+      align-content: start;
+    }
+
+    .section-block {
+      display: grid;
+      gap: 14px;
+      scroll-margin-top: 20px;
+    }
+
+    .section-block + .section-block {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-head h2 {
+      margin-bottom: 6px;
+    }
+
+    .question-card {
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 20px;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.96), rgba(255,252,246,0.88));
+    }
+
+    .question-top {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+      align-items: flex-start;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(13, 107, 102, 0.1);
+      color: var(--accent-2);
+      border: 1px solid rgba(13, 107, 102, 0.16);
+      white-space: nowrap;
+    }
+
+    .type-badge {
+      background: rgba(178, 72, 43, 0.08);
+      color: var(--accent);
+      border-color: rgba(178, 72, 43, 0.16);
+    }
+
+    .question-card h3 {
+      margin: 0 0 10px;
+      font-size: 1.14rem;
+      line-height: 1.35;
+    }
+
+    .question-card p,
+    .question-card li {
+      line-height: 1.5;
+    }
+
+    .figure-box {
+      margin: 14px 0 10px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.82);
+      overflow-x: auto;
+    }
+
+    .figure-box svg {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .figure-box pre {
+      margin: 0;
+      font-family: var(--mono);
+      font-size: 0.92rem;
+      line-height: 1.45;
+      white-space: pre-wrap;
+    }
+
+    .options {
+      display: grid;
+      gap: 10px;
+      margin: 16px 0;
+    }
+
+    .option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 12px 14px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.75);
+    }
+
+    .option input {
+      margin-top: 3px;
+      width: auto;
+    }
+
+    .inline-inputs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
+      margin: 14px 0;
+    }
+
+    .inline-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+      flex-wrap: wrap;
+    }
+
+    .small-btn {
+      width: auto;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.86);
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .small-btn:hover {
+      border-color: rgba(13, 107, 102, 0.26);
+      background: rgba(255, 255, 255, 1);
+    }
+
+    .feedback {
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 16px;
+      display: none;
+      border: 1px solid transparent;
+    }
+
+    .feedback.show {
+      display: block;
+    }
+
+    .feedback.ok {
+      background: rgba(19, 121, 91, 0.08);
+      border-color: rgba(19, 121, 91, 0.2);
+      color: #0e5d45;
+    }
+
+    .feedback.bad {
+      background: rgba(176, 42, 55, 0.08);
+      border-color: rgba(176, 42, 55, 0.18);
+      color: #83202a;
+    }
+
+    .feedback.info {
+      background: rgba(13, 107, 102, 0.08);
+      border-color: rgba(13, 107, 102, 0.18);
+      color: #0c5a56;
+    }
+
+    .explain {
+      margin-top: 8px;
+      color: var(--muted);
+    }
+
+    .nav-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .nav-item {
+      display: block;
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 11px 12px;
+      background: rgba(255, 255, 255, 0.72);
+    }
+
+    .nav-item:hover {
+      border-color: rgba(13, 107, 102, 0.26);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .nav-item small {
+      display: block;
+      color: var(--muted);
+      margin-top: 4px;
+    }
+
+    .section-link {
+      border-left: 4px solid var(--accent-2);
+    }
+
+    .topbar {
+      margin-bottom: 18px;
+    }
+
+    .toplinks {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+    }
+
+    .toplink {
+      display: inline-flex;
+      text-decoration: none;
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 10px 12px;
+      background: rgba(255, 255, 255, 0.72);
+      font-weight: 800;
+    }
+
+    .toplink:hover {
+      border-color: rgba(13, 107, 102, 0.26);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .page-view {
+      display: none;
+    }
+
+    .page-view.active {
+      display: block;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .resource-card {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.78);
+    }
+
+    .resource-card:hover {
+      border-color: rgba(13, 107, 102, 0.26);
+      background: rgba(255, 255, 255, 0.96);
+    }
+
+    .panel-title {
+      margin-bottom: 14px;
+    }
+
+    .muted {
+      color: var(--muted);
+    }
+
+    .empty-state {
+      padding: 26px;
+      border: 1px dashed rgba(31, 36, 48, 0.18);
+      border-radius: 20px;
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.48);
+    }
+
+    .resource-lab {
+      display: grid;
+      gap: 16px;
+    }
+
+    .resource-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .resource-tab {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.8);
+      color: var(--ink);
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .resource-tab[aria-selected="true"] {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: #fff;
+    }
+
+    .resource-example {
+      display: none;
+      grid-template-columns: minmax(0, 1fr) 280px;
+      gap: 16px;
+      align-items: start;
+    }
+
+    .resource-example.active {
+      display: grid;
+    }
+
+    .resource-stage {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 14px;
+      overflow: hidden;
+    }
+
+    .resource-side {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.78);
+      padding: 16px;
+    }
+
+    .resource-side h3 {
+      margin: 0 0 10px;
+    }
+
+    .resource-status {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      padding: 8px 10px;
+      border-radius: 14px;
+      background: rgba(13, 107, 102, 0.08);
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .resource-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #9aa7b2;
+    }
+
+    .resource-status.on .resource-dot {
+      background: #d7a11e;
+      box-shadow: 0 0 14px rgba(215, 161, 30, 0.9);
+    }
+
+    .resource-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .resource-wire {
+      fill: none;
+      stroke: #c8d2dc;
+      stroke-width: 8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .resource-wire.phase {
+      stroke: #b2482b;
+    }
+
+    .resource-wire.neutral {
+      stroke: #2563eb;
+    }
+
+    .resource-wire.earth {
+      stroke: #4d7c0f;
+    }
+
+    .resource-wire.active-wire {
+      stroke: #d7a11e;
+      filter: drop-shadow(0 0 5px rgba(215, 161, 30, 0.85));
+    }
+
+    .resource-component {
+      fill: #fffef9;
+      stroke: #6c7a89;
+      stroke-width: 3;
+    }
+
+    .resource-terminal {
+      fill: #fffef9;
+      stroke: #4d5b68;
+      stroke-width: 3;
+    }
+
+    .resource-blade {
+      stroke: #1f2430;
+      stroke-width: 6;
+      stroke-linecap: round;
+    }
+
+    .resource-label {
+      fill: #1f2430;
+      font-size: 18px;
+      font-weight: 800;
+    }
+
+    .resource-small {
+      fill: #5b6472;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .resource-lamp {
+      fill: #fff8d7;
+      stroke: #9aa7b2;
+      stroke-width: 4;
+    }
+
+    .resource-lamp.on {
+      fill: #ffd971;
+      stroke: #d7a11e;
+      filter: drop-shadow(0 0 16px rgba(215, 161, 30, 0.95));
+    }
+
+    .component-controls {
+      display: grid;
+      gap: 10px;
+      margin: 12px 0 6px;
+      align-items: center;
+    }
+
+    .component-controls.one {
+      grid-template-columns: minmax(0, 1fr) minmax(150px, 220px) minmax(0, 1fr);
+    }
+
+    .component-controls.one .resource-btn {
+      grid-column: 2;
+    }
+
+    .component-controls.two,
+    .component-controls.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .component-controls.two .resource-btn:last-child {
+      grid-column: 3;
+    }
+
+    .resource-btn {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #fffef9;
+      color: var(--ink);
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .resource-btn:hover {
+      border-color: rgba(13, 107, 102, 0.26);
+      background: #fff;
+    }
+
+    .resource-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      color: var(--muted);
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .resource-key {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+    }
+
+    .resource-swatch {
+      width: 26px;
+      height: 6px;
+      border-radius: 999px;
+      background: #c8d2dc;
+    }
+
+    .resource-swatch.phase {
+      background: #b2482b;
+    }
+
+    .resource-swatch.neutral {
+      background: #2563eb;
+    }
+
+    .resource-swatch.earth {
+      background: #4d7c0f;
+    }
+
+    .resource-swatch.active {
+      background: #d7a11e;
+      box-shadow: 0 0 8px rgba(215, 161, 30, 0.75);
+    }
+
+    @media (max-width: 980px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .controls {
+        position: static;
+      }
+
+      .resource-example.active {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .page {
+        padding: 16px 14px 28px;
+      }
+
+      .question-top {
+        flex-direction: column;
+      }
+
+      .component-controls.one,
+      .component-controls.two,
+      .component-controls.three {
+        grid-template-columns: 1fr;
+      }
+
+      .component-controls.one .resource-btn,
+      .component-controls.two .resource-btn:last-child {
+        grid-column: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar panel">
+      <h1>Risorse interattive</h1>
+      <p class="muted">Un unico file HTML con pagine interne separate: indice, laboratorio sui comandi luce ed esercizi.</p>
+      <div class="toplinks">
+        <a class="toplink" href="#home">Indice</a>
+        <a class="toplink" href="#comandi">Comandi luce</a>
+        <a class="toplink" href="#esercizi">Esercizi</a>
+      </div>
+    </div>
+
+    <section class="page-view active" id="page-home">
+      <div class="cards-grid">
+        <a class="resource-card" href="#comandi">
+          <h2>Comandi luce</h2>
+          <p class="muted">Laboratorio interattivo su interruttore, deviatori e invertitore.</p>
+        </a>
+        <a class="resource-card" href="#esercizi">
+          <h2>Esercizi</h2>
+          <p class="muted">Quiz e domande guidate divise per focus, con correzione immediata.</p>
+        </a>
+      </div>
+    </section>
+
+    <section class="page-view" id="page-comandi">
+      <div class="panel">
+        <h2>Comandi luce interattivi</h2>
+        <p class="muted">Seleziona un caso e aziona i comandi sotto lo schema.</p>
+        <div class="resource-tabs" role="tablist" aria-label="Comandi luce">
+          <button class="resource-tab" type="button" role="tab" aria-selected="true" data-resource-target="resource-single">Interruttore</button>
+          <button class="resource-tab" type="button" role="tab" aria-selected="false" data-resource-target="resource-deviator">Deviatori</button>
+          <button class="resource-tab" type="button" role="tab" aria-selected="false" data-resource-target="resource-inverter">Invertitore</button>
+        </div>
+
+        <section class="resource-example active" id="resource-single">
+          <div class="resource-stage">
+            <svg class="resource-svg" viewBox="0 0 900 430" aria-label="Interruttore unipolare">
+              <text x="35" y="42" class="resource-label">Comando da 1 punto</text>
+              <text x="65" y="115" class="resource-label">L</text><text x="65" y="285" class="resource-label">N</text><text x="65" y="350" class="resource-label">PE</text>
+              <path class="resource-wire neutral" d="M95 280 H760"></path><path class="resource-wire earth" d="M95 345 H760"></path><path class="resource-wire phase resource-single-source" d="M95 110 H300"></path><path class="resource-wire resource-single-switched" d="M475 110 H710"></path>
+              <rect class="resource-component" x="300" y="70" width="175" height="95" rx="8"></rect><circle class="resource-terminal" cx="330" cy="110" r="12"></circle><circle class="resource-terminal" cx="445" cy="110" r="12"></circle><line class="resource-blade resource-single-blade" x1="330" y1="110" x2="430" y2="78"></line><text x="306" y="190" class="resource-small">interruttore</text>
+              <circle class="resource-lamp resource-single-lamp" cx="765" cy="150" r="48"></circle><path class="resource-wire resource-single-feed" d="M710 110 Q760 110 760 105"></path><path class="resource-wire neutral" d="M760 280 V198"></path><path class="resource-wire earth" d="M805 345 V205"></path><text x="725" y="230" class="resource-small">lampada</text>
+            </svg>
+            <div class="component-controls one"><button class="resource-btn" type="button" data-resource-action="single-toggle">Aziona interruttore</button></div>
+            <div class="resource-legend"><span class="resource-key"><span class="resource-swatch phase"></span>Fase</span><span class="resource-key"><span class="resource-swatch active"></span>Percorso attivo</span><span class="resource-key"><span class="resource-swatch neutral"></span>Neutro</span><span class="resource-key"><span class="resource-swatch earth"></span>Terra</span></div>
+          </div>
+          <aside class="resource-side"><h3>Interruttore unipolare</h3><p class="resource-status resource-single-status"><span class="resource-dot"></span><span>Lampada spenta</span></p><ul class="notes"><li>La fase entra nell'interruttore.</li><li>Il neutro va direttamente alla lampada.</li><li>Il PE serve solo alla protezione.</li></ul></aside>
+        </section>
+
+        <section class="resource-example" id="resource-deviator">
+          <div class="resource-stage">
+            <svg class="resource-svg" viewBox="0 0 980 500" aria-label="Due deviatori">
+              <text x="35" y="42" class="resource-label">Comando da 2 punti</text>
+              <text x="55" y="110" class="resource-label">L</text><text x="55" y="350" class="resource-label">N</text><text x="55" y="420" class="resource-label">PE</text>
+              <path class="resource-wire neutral" d="M85 345 H850"></path><path class="resource-wire earth" d="M85 415 H850"></path><path class="resource-wire phase" d="M85 105 H220"></path>
+              <rect class="resource-component" x="220" y="60" width="150" height="180" rx="8"></rect><text x="230" y="265" class="resource-small">deviatore 1</text><circle class="resource-terminal" cx="250" cy="105" r="11"></circle><circle class="resource-terminal" cx="340" cy="85" r="11"></circle><circle class="resource-terminal" cx="340" cy="205" r="11"></circle><line class="resource-blade resource-dev1-blade" x1="250" y1="105" x2="330" y2="85"></line>
+              <rect class="resource-component" x="585" y="60" width="150" height="180" rx="8"></rect><text x="595" y="265" class="resource-small">deviatore 2</text><circle class="resource-terminal" cx="615" cy="85" r="11"></circle><circle class="resource-terminal" cx="615" cy="205" r="11"></circle><circle class="resource-terminal" cx="705" cy="105" r="11"></circle><line class="resource-blade resource-dev2-blade" x1="705" y1="105" x2="625" y2="85"></line>
+              <path class="resource-wire resource-dev-top" d="M340 85 H615"></path><path class="resource-wire resource-dev-bottom" d="M340 205 H615"></path><path class="resource-wire resource-dev-output" d="M705 105 H805"></path><circle class="resource-lamp resource-dev-lamp" cx="855" cy="145" r="48"></circle><path class="resource-wire neutral" d="M855 345 V193"></path><path class="resource-wire earth" d="M895 415 V205"></path><text x="815" y="225" class="resource-small">lampada</text>
+            </svg>
+            <div class="component-controls two"><button class="resource-btn" type="button" data-resource-action="dev1-toggle">Aziona deviatore 1</button><button class="resource-btn" type="button" data-resource-action="dev2-toggle">Aziona deviatore 2</button></div>
+            <div class="resource-legend"><span class="resource-key"><span class="resource-swatch phase"></span>Fase</span><span class="resource-key"><span class="resource-swatch active"></span>Percorso attivo</span><span class="resource-key"><span class="resource-swatch neutral"></span>Neutro</span><span class="resource-key"><span class="resource-swatch earth"></span>Terra</span></div>
+          </div>
+          <aside class="resource-side"><h3>Due deviatori</h3><p class="resource-status resource-dev-status"><span class="resource-dot"></span><span>Lampada spenta</span></p><ul class="notes"><li>La fase entra nel comune del primo deviatore.</li><li>Le due navette collegano i deviatori.</li><li>Il comune del secondo va alla lampada.</li></ul></aside>
+        </section>
+
+        <section class="resource-example" id="resource-inverter">
+          <div class="resource-stage">
+            <svg class="resource-svg" viewBox="0 0 1060 520" aria-label="Invertitore">
+              <text x="35" y="42" class="resource-label">Comando da 3 punti</text>
+              <text x="55" y="110" class="resource-label">L</text><text x="55" y="370" class="resource-label">N</text><text x="55" y="440" class="resource-label">PE</text>
+              <path class="resource-wire neutral" d="M85 365 H930"></path><path class="resource-wire earth" d="M85 435 H930"></path><path class="resource-wire phase" d="M85 105 H190"></path>
+              <rect class="resource-component" x="190" y="60" width="140" height="180" rx="8"></rect><text x="196" y="265" class="resource-small">deviatore 1</text><circle class="resource-terminal" cx="220" cy="105" r="11"></circle><circle class="resource-terminal" cx="300" cy="85" r="11"></circle><circle class="resource-terminal" cx="300" cy="205" r="11"></circle><line class="resource-blade resource-inv-d1-blade" x1="220" y1="105" x2="290" y2="85"></line>
+              <rect class="resource-component" x="450" y="55" width="160" height="200" rx="8"></rect><text x="478" y="280" class="resource-small">invertitore</text><circle class="resource-terminal" cx="480" cy="90" r="11"></circle><circle class="resource-terminal" cx="480" cy="210" r="11"></circle><circle class="resource-terminal" cx="580" cy="90" r="11"></circle><circle class="resource-terminal" cx="580" cy="210" r="11"></circle><line class="resource-blade resource-inv-line-a" x1="480" y1="90" x2="580" y2="90"></line><line class="resource-blade resource-inv-line-b" x1="480" y1="210" x2="580" y2="210"></line>
+              <rect class="resource-component" x="735" y="60" width="140" height="180" rx="8"></rect><text x="742" y="265" class="resource-small">deviatore 2</text><circle class="resource-terminal" cx="765" cy="85" r="11"></circle><circle class="resource-terminal" cx="765" cy="205" r="11"></circle><circle class="resource-terminal" cx="845" cy="105" r="11"></circle><line class="resource-blade resource-inv-d2-blade" x1="845" y1="105" x2="775" y2="85"></line>
+              <path class="resource-wire resource-inv-left-top" d="M300 85 H480"></path><path class="resource-wire resource-inv-left-bottom" d="M300 205 H480"></path><path class="resource-wire resource-inv-right-top" d="M580 90 H765"></path><path class="resource-wire resource-inv-right-bottom" d="M580 210 H765"></path><path class="resource-wire resource-inv-output" d="M845 105 H905"></path><circle class="resource-lamp resource-inv-lamp" cx="955" cy="145" r="48"></circle><path class="resource-wire neutral" d="M955 365 V193"></path><path class="resource-wire earth" d="M995 435 V205"></path><text x="915" y="225" class="resource-small">lampada</text>
+            </svg>
+            <div class="component-controls three"><button class="resource-btn" type="button" data-resource-action="inv-d1-toggle">Aziona deviatore 1</button><button class="resource-btn" type="button" data-resource-action="inv-toggle">Aziona invertitore</button><button class="resource-btn" type="button" data-resource-action="inv-d2-toggle">Aziona deviatore 2</button></div>
+            <div class="resource-legend"><span class="resource-key"><span class="resource-swatch phase"></span>Fase</span><span class="resource-key"><span class="resource-swatch active"></span>Percorso attivo</span><span class="resource-key"><span class="resource-swatch neutral"></span>Neutro</span><span class="resource-key"><span class="resource-swatch earth"></span>Terra</span></div>
+          </div>
+          <aside class="resource-side"><h3>Invertitore</h3><p class="resource-status resource-inv-status"><span class="resource-dot"></span><span>Lampada spenta</span></p><ul class="notes"><li>I deviatori restano alle estremità.</li><li>L'invertitore sta in mezzo alle navette.</li><li>Azionandolo incrocia o raddrizza i percorsi.</li></ul></aside>
+        </section>
+      </div>
+    </section>
+
+    <section class="page-view" id="page-esercizi">
+    <div class="layout">
+      <aside class="panel controls">
+        <h2>Sezioni</h2>
+
+        <div class="group" style="margin-top:20px">
+          <h3 class="panel-title">Navigazione</h3>
+          <div id="navList" class="nav-list">
+            <div class="empty-state">Caricamento sezioni...</div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-grid">
+        <section class="panel">
+          <h2>Esercizi</h2>
+          <div id="questionsContainer" class="empty-state">
+            Caricamento esercizi...
+          </div>
+        </section>
+      </main>
+    </div>
+    </section>
+  </div>
+
+  <script>
+    const questionBank = [
+      {
+        id: "f1-1",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Quale definizione descrive meglio l'elettrotecnica?",
+        prompt: "Scegli la risposta più corretta secondo la dispensa.",
+        options: [
+          "Studia il comportamento dei soli segnali digitali nei microchip.",
+          "Si occupa delle applicazioni dell'elettricità su scala energetica: produzione, trasporto, conversione.",
+          "Si occupa soprattutto di software di supervisione e reti industriali.",
+          "Coincide con l'automazione dei soli impianti civili."
+        ],
+        answer: 1,
+        explanation: "L'elettrotecnica lavora con l'energia elettrica e con le macchine che la producono, trasportano e trasformano."
+      },
+      {
+        id: "f1-2",
+        focus: "focus1",
+        type: "tf",
+        difficulty: "base",
+        title: "Microprocessore e microcontrollore",
+        prompt: "Un microcontrollore integra CPU, memorie e I/O nello stesso chip.",
+        answer: true,
+        explanation: "Il microprocessore contiene solo la CPU; il microcontrollore integra anche memoria e interfacce di ingresso/uscita."
+      },
+      {
+        id: "f1-3",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Impianto fotovoltaico",
+        prompt: "Perché in un impianto fotovoltaico serve un inverter?",
+        options: [
+          "Per adattare la tensione delle stringhe al solo contatore di produzione.",
+          "Per trasformare la corrente continua prodotta dalle celle in corrente alternata utilizzabile.",
+          "Per mantenere costante la resistività delle celle al variare della luce.",
+          "Per separare elettricamente i moduli dal quadro DC."
+        ],
+        answer: 1,
+        explanation: "Le celle fotovoltaiche producono DC, mentre rete e impianti civili lavorano in AC."
+      },
+      {
+        id: "f1-4",
+        focus: "focus1",
+        type: "open",
+        difficulty: "media",
+        title: "Differenza concettuale",
+        prompt: "Scrivi in poche parole la differenza tra comparto elettrotecnico e comparto elettronico.",
+        keywordGroups: [["energia", "potenza"], ["informazione", "segnali", "segnale"]],
+        minimumGroups: 2,
+        modelAnswer: "L'elettrotecnica riguarda la produzione, il trasporto e la conversione dell'energia elettrica; l'elettronica tratta segnali e informazione a bassa potenza.",
+        explanation: "Nella dispensa l'elettrotecnica è legata alla gestione dell'energia, mentre l'elettronica tratta informazione e segnali."
+      },
+      {
+        id: "f1-5",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "PLC",
+        prompt: "Quale affermazione sul PLC è corretta?",
+        options: [
+          "Lavora una sola volta all'accensione e poi mantiene l'ultimo stato.",
+          "È usato soprattutto dove serve alta potenza di calcolo grafico.",
+          "Legge ingressi, elabora il programma e aggiorna le uscite in modo ciclico.",
+          "Misura direttamente la tensione di rete al posto dei trasformatori."
+        ],
+        answer: 2,
+        explanation: "Il PLC funziona a ciclo continuo; il tempo di ciclo è un parametro importante nelle applicazioni real-time."
+      },
+      {
+        id: "f1-6",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Domotica",
+        prompt: "Nel sistema domotico/HBES, quale principio è corretto?",
+        options: [
+          "Ogni comando richiede un cablaggio dedicato fino all'attuatore.",
+          "Comando e attuatore sono separati e comunicano su un bus comune.",
+          "Si usano soltanto collegamenti wireless.",
+          "Non è possibile riconfigurare l'impianto via software."
+        ],
+        answer: 1,
+        explanation: "Nel building automation i dispositivi comunicano su un bus e il comando è separato dall'attuatore."
+      },
+      {
+        id: "f1-7",
+        focus: "focus1",
+        type: "tf",
+        difficulty: "base",
+        title: "Elettronica di potenza",
+        prompt: "SCR, TRIAC e DIAC sono componenti usati nel controllo di potenza in AC.",
+        answer: true,
+        explanation: "La dispensa li colloca nell'elettronica di potenza, insieme a diodi e IGBT."
+      },
+      {
+        id: "f1-8",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Centrale elettrica",
+        prompt: "Nell'alternatore di centrale, cosa produce la tensione elettrica?",
+        options: [
+          "L'induzione elettromagnetica dovuta al moto relativo tra campo magnetico e conduttori.",
+          "La differenza di sezione tra rotore e statore.",
+          "La sola rotazione meccanica, anche in assenza di campo magnetico.",
+          "L'aumento di temperatura degli avvolgimenti dello statore."
+        ],
+        answer: 0,
+        explanation: "Il principio richiamato è l'induzione elettromagnetica."
+      },
+      {
+        id: "f2-1",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "base",
+        title: "Corrente da carica e tempo",
+        prompt: "In un conduttore transitano 1800 C in 3600 s. Calcola la corrente in ampere.",
+        unit: "A",
+        answer: 0.5,
+        tolerance: 0.02,
+        explanation: "Si applica I = Q / t = 1800 / 3600 = 0,5 A."
+      },
+      {
+        id: "f2-2",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "base",
+        title: "Lavoro elettrico",
+        prompt: "Una carica di 0,5 mC è soggetta a 10 V. Calcola il lavoro in joule.",
+        unit: "J",
+        answer: 0.005,
+        tolerance: 0.0003,
+        explanation: "L = V * Q = 10 * 0,5e-3 = 5e-3 J."
+      },
+      {
+        id: "f2-3",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "base",
+        title: "Prima legge di Ohm",
+        prompt: "Quale relazione è corretta?",
+        options: [
+          "R = I / V",
+          "V = R * I",
+          "P = V / R",
+          "Q = V * t"
+        ],
+        answer: 1,
+        explanation: "Dalla prima legge di Ohm: V = R * I, con forme equivalenti R = V/I e I = V/R."
+      },
+      {
+        id: "f2-4",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Seconda legge di Ohm",
+        prompt: "Un filo di rame ha rho = 0,0173 ohm*mm^2/m, lunghezza 100 m e resistenza 0,692 ohm. Calcola la sezione in mm^2.",
+        unit: "mm^2",
+        answer: 2.5,
+        tolerance: 0.08,
+        explanation: "Si usa S = rho * l / R = 0,0173 * 100 / 0,692 = 2,5 mm^2."
+      },
+      {
+        id: "f2-5",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Potenza e corrente",
+        prompt: "Una lampada da 60 W è alimentata a 230 V. Calcola la corrente assorbita.",
+        unit: "A",
+        answer: 0.2609,
+        tolerance: 0.02,
+        explanation: "I = P / V = 60 / 230 = circa 0,26 A."
+      },
+      {
+        id: "f2-6",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Parallelo di due resistenze",
+        prompt: "Due resistenze da 100 ohm sono in parallelo. Calcola la resistenza equivalente.",
+        unit: "ohm",
+        answer: 50,
+        tolerance: 1,
+        explanation: "Per due resistenze uguali in parallelo: Req = 100 * 100 / (100 + 100) = 50 ohm."
+      },
+      {
+        id: "f2-7",
+        focus: "focus2",
+        type: "tf",
+        difficulty: "base",
+        title: "Verso convenzionale della corrente",
+        prompt: "Per convenzione la corrente esterna al generatore va dal polo positivo verso il negativo.",
+        answer: true,
+        explanation: "Anche se nei metalli si muovono gli elettroni, il verso convenzionale è quello delle cariche positive."
+      },
+      {
+        id: "f2-8",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Generatori in antiserie",
+        prompt: "Cinque generatori da 2 V ciascuno, di cui uno in antiserie. Calcola la f.e.m. totale.",
+        unit: "V",
+        answer: 6,
+        tolerance: 0.2,
+        explanation: "Etot = 2 + 2 + 2 + 2 - 2 = 6 V."
+      },
+      {
+        id: "f2-9",
+        focus: "focus2",
+        type: "open",
+        difficulty: "media",
+        title: "Serie vs parallelo",
+        prompt: "Spiega in una frase la differenza fondamentale tra resistenze in serie e in parallelo.",
+        keywordGroups: [["serie"], ["parallelo"], ["corrente"], ["tensione"]],
+        minimumGroups: 4,
+        modelAnswer: "In serie le resistenze sono percorse dalla stessa corrente e le tensioni si sommano; in parallelo hanno la stessa tensione ai capi e le correnti si ripartiscono nei rami.",
+        explanation: "In serie la corrente è la stessa e si sommano le cadute di tensione; in parallelo la tensione è la stessa e si dividono le correnti."
+      },
+      {
+        id: "f2-10",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Valore di picco della rete",
+        prompt: "La rete ha valore efficace di 230 V. Calcola approssimativamente il valore massimo della sinusoide.",
+        unit: "V",
+        answer: 325.27,
+        tolerance: 3,
+        explanation: "Vmax = Veff * sqrt(2) = 230 * 1,414 = circa 325 V."
+      },
+      {
+        id: "f3-1",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Fornitura monofase",
+        prompt: "Quali sono i tre conduttori della fornitura monofase domestica?",
+        options: [
+          "Fase, neutro, conduttore di protezione",
+          "Fase, ritorno comandi, neutro",
+          "Fase, neutro, conduttore equipotenziale principale",
+          "Due fasi, neutro e PE"
+        ],
+        answer: 0,
+        explanation: "La fornitura monofase tipica usa fase L, neutro N e PE."
+      },
+      {
+        id: "f3-2",
+        focus: "focus1",
+        type: "tf",
+        difficulty: "base",
+        title: "Frequenza di rete",
+        prompt: "In Europa la frequenza della rete è 50 Hz.",
+        answer: true,
+        explanation: "La dispensa collega 50 Hz a un periodo di 20 ms."
+      },
+      {
+        id: "f3-3",
+        focus: "focus1",
+        type: "numeric",
+        difficulty: "media",
+        title: "Portata cavo",
+        prompt: "Secondo la tabella della dispensa, qual è la portata approssimativa di un cavo da 2,5 mm^2?",
+        unit: "A",
+        answer: 21,
+        tolerance: 0.8,
+        explanation: "La tabella indica 21 A per la sezione 2,5 mm^2."
+      },
+      {
+        id: "f3-4",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Magnetotermico luci",
+        prompt: "Quale interruttore è associato tipicamente al circuito luci nella tabella riportata?",
+        options: [
+          "6 A",
+          "10 A",
+          "16 A",
+          "25 A"
+        ],
+        answer: 1,
+        explanation: "Per il circuito luci, la dispensa riporta cavo da 1,5 mm^2 e interruttore da 10 A."
+      },
+      {
+        id: "f3-5",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Differenziale",
+        prompt: "Quando scatta l'interruttore differenziale?",
+        options: [
+          "Quando la corrente assorbita supera la corrente nominale del magnetotermico.",
+          "Quando la corrente di andata è diversa dalla corrente di ritorno per una dispersione.",
+          "Quando il neutro e la fase hanno lo stesso potenziale.",
+          "Quando la frequenza di rete si discosta da 50 Hz."
+        ],
+        answer: 1,
+        explanation: "Il differenziale confronta corrente entrante e corrente uscente; se c'è dispersione verso terra, apre il circuito."
+      },
+      {
+        id: "f3-6",
+        focus: "focus1",
+        type: "open",
+        difficulty: "media",
+        title: "Contatto diretto e indiretto",
+        prompt: "Indica la differenza tra contatto diretto e contatto indiretto.",
+        keywordGroups: [["diretto"], ["indiretto"], ["massa", "carcassa"], ["tensione", "guasto"]],
+        minimumGroups: 4,
+        modelAnswer: "Il contatto diretto avviene toccando una parte normalmente in tensione; il contatto indiretto avviene toccando una massa metallica che è andata in tensione per un guasto.",
+        explanation: "Il contatto diretto riguarda parti normalmente in tensione; quello indiretto masse metalliche che diventano in tensione per guasto."
+      },
+      {
+        id: "f3-7",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Deviatore e invertitore",
+        prompt: "Quale dispositivo permette di estendere il comando di una luce a tre o più punti inserendosi tra due deviatori?",
+        options: [
+          "Interruttore unipolare",
+          "Pulsante",
+          "Invertitore",
+          "Relè termico"
+        ],
+        answer: 2,
+        explanation: "L'invertitore, con quattro morsetti, si inserisce tra due deviatori."
+      },
+      {
+        id: "f3-8",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Relè passo-passo",
+        prompt: "Perché il relè interruttore passo-passo è utile nel comando luci da molti punti?",
+        options: [
+          "Perché sostituisce il contatore.",
+          "Perché evita di usare troppi invertitori e troppi conduttori di comando.",
+          "Perché aumenta la tensione della rete.",
+          "Perché elimina il conduttore di protezione."
+        ],
+        answer: 1,
+        explanation: "La dispensa lo indica come soluzione pratica per cinque o più punti di comando."
+      },
+      {
+        id: "f3-9",
+        focus: "focus1",
+        type: "numeric",
+        difficulty: "base",
+        title: "Tensione trifase",
+        prompt: "Nella fornitura trifase italiana, qual è la tensione nominale tra due fasi?",
+        unit: "V",
+        answer: 400,
+        tolerance: 5,
+        explanation: "La rete trifase fornisce 400 V tra due fasi e 230 V tra fase e neutro."
+      },
+      {
+        id: "f4-1",
+        focus: "focus3",
+        type: "tf",
+        difficulty: "base",
+        title: "Segnali digitali",
+        prompt: "Un segnale digitale binario ha due soli stati logici possibili.",
+        answer: true,
+        explanation: "Il caso fondamentale è 0/1."
+      },
+      {
+        id: "f4-2",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "base",
+        title: "Rete combinatoria",
+        prompt: "Una rete combinatoria si caratterizza perché:",
+        options: [
+          "Memorizza l'ultimo stato degli ingressi per un intero ciclo.",
+          "Le uscite dipendono solo dagli ingressi nell'istante corrente.",
+          "Funziona solo se realizzata con porte NAND.",
+          "Richiede sempre un clock esterno."
+        ],
+        answer: 1,
+        explanation: "Nelle reti combinatorie non c'è memoria dello stato precedente."
+      },
+      {
+        id: "f4-3",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "base",
+        title: "Porta EXOR",
+        prompt: "La porta EXOR restituisce 1 quando:",
+        options: [
+          "Entrambi gli ingressi sono a livello alto.",
+          "Gli ingressi sono uguali ma non nulli.",
+          "Gli ingressi sono diversi tra loro.",
+          "Almeno uno degli ingressi è 1, compreso il caso in cui lo siano entrambi."
+        ],
+        answer: 2,
+        explanation: "EXOR = uno o l'altro, ma non entrambi."
+      },
+      {
+        id: "f4-4",
+        focus: "focus3",
+        type: "open",
+        difficulty: "media",
+        title: "Ladder e logica booleana",
+        prompt: "Collega schema a contatti e algebra di Boole: cosa rappresentano serie, parallelo e contatto normalmente chiuso?",
+        keywordGroups: [["serie", "contatti in serie"], ["parallelo", "contatti in parallelo"], ["and"], ["or"], ["not", "negazione", "chiuso"]],
+        minimumGroups: 5,
+        modelAnswer: "Nello schema a contatti la serie corrisponde alla funzione AND, il parallelo alla funzione OR e il contatto normalmente chiuso alla negazione NOT.",
+        explanation: "Nello schema a contatti: serie = AND, parallelo = OR, contatto NC = NOT."
+      },
+      {
+        id: "f4-5",
+        focus: "focus3",
+        type: "tf",
+        difficulty: "media",
+        title: "Porte universali",
+        prompt: "Con sole porte NAND è possibile realizzare qualsiasi funzione logica.",
+        answer: true,
+        explanation: "NAND e NOR sono universali, come segue dai teoremi di De Morgan."
+      },
+      {
+        id: "f4-6",
+        focus: "focus3",
+        type: "numeric",
+        difficulty: "base",
+        title: "Numero di righe della tabella della verità",
+        prompt: "Quante righe ha la tabella della verità di una funzione con 3 ingressi binari?",
+        unit: "righe",
+        answer: 8,
+        tolerance: 0.1,
+        explanation: "Con n ingressi binari si hanno 2^n combinazioni. Per 3 ingressi: 2^3 = 8."
+      },
+      {
+        id: "f4-7",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Prima forma canonica",
+        prompt: "Quando conviene usare la prima forma canonica SOM?",
+        options: [
+          "Quando le righe con Y=1 sono poche.",
+          "Quando le righe con Y=0 sono poche.",
+          "Solo con una variabile.",
+          "Solo nei circuiti analogici."
+        ],
+        answer: 0,
+        explanation: "La somma di mintermini è comoda quando i casi con uscita 1 sono pochi."
+      },
+      {
+        id: "f4-8",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Tecnologia CMOS",
+        prompt: "Perché i CMOS sono diventati dominanti secondo la dispensa?",
+        options: [
+          "Perché consumano di più ma costano meno.",
+          "Perché non hanno pin esterni.",
+          "Perché consumano meno e tollerano meglio il rumore.",
+          "Perché funzionano solo a 230 V."
+        ],
+        answer: 2,
+        explanation: "La dispensa evidenzia basso consumo e maggiore immunità al rumore."
+      },
+      {
+        id: "f5-1",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "base",
+        title: "Struttura di uno sketch Arduino",
+        prompt: "Quale blocco viene eseguito una sola volta all'accensione o al reset?",
+        options: [
+          "loop()",
+          "setup()",
+          "resetLoop()",
+          "begin()"
+        ],
+        answer: 1,
+        explanation: "setup() inizializza pin, periferiche e variabili."
+      },
+      {
+        id: "f5-2",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "base",
+        title: "Pin digitali",
+        prompt: "Quale istruzione configura il pin 13 come uscita?",
+        options: [
+          "digitalWrite(13, OUTPUT);",
+          "pinMode(13, OUTPUT);",
+          "digitalRead(13, OUTPUT);",
+          "setup(13, OUTPUT);"
+        ],
+        answer: 1,
+        explanation: "pinMode imposta il ruolo del pin."
+      },
+      {
+        id: "f5-3",
+        focus: "focus4",
+        type: "tf",
+        difficulty: "base",
+        title: "Pull-up",
+        prompt: "La resistenza di pull-up serve a evitare che un ingresso resti flottante.",
+        answer: true,
+        explanation: "Stabilizza il livello logico quando il pulsante è aperto."
+      },
+      {
+        id: "f5-4",
+        focus: "focus4",
+        type: "numeric",
+        difficulty: "media",
+        title: "Clock Arduino UNO",
+        prompt: "Qual è la frequenza di clock nominale di Arduino UNO secondo la dispensa?",
+        unit: "MHz",
+        answer: 16,
+        tolerance: 0.2,
+        explanation: "La scheda usa un quarzo da 16 MHz."
+      },
+      {
+        id: "f5-5",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Trappola comune in if",
+        prompt: "Quale istruzione confronta correttamente se pippo vale 1?",
+        options: [
+          "if (pippo = 1)",
+          "if (pippo == 1)",
+          "if (pippo := 1)",
+          "if (1 => pippo)"
+        ],
+        answer: 1,
+        explanation: "Il doppio uguale serve per il confronto; il singolo uguale assegna."
+      },
+      {
+        id: "f5-6",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "switch-case",
+        prompt: "A cosa serve il comando break in uno switch-case?",
+        options: [
+          "A interrompere la compilazione se il case non è valido.",
+          "A uscire dal case evitando l'esecuzione dei successivi.",
+          "A riportare automaticamente la variabile al valore iniziale.",
+          "A passare dalla memoria SRAM alla EEPROM."
+        ],
+        answer: 1,
+        explanation: "Senza break avviene il fall-through nel case successivo."
+      },
+      {
+        id: "f5-7",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "Debug seriale",
+        prompt: "A cosa serve Serial.begin(9600) in una frase?",
+        keywordGroups: [["serial"], ["comunicazione"], ["9600", "baud", "bit"]],
+        minimumGroups: 3,
+        modelAnswer: "Serve a inizializzare la comunicazione seriale tra Arduino e PC alla velocità di 9600 bit al secondo.",
+        explanation: "Inizializza la comunicazione seriale alla velocità scelta, utile per debug e scambio dati col PC."
+      },
+      {
+        id: "f5-8",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Cicli",
+        prompt: "Quale ciclo garantisce almeno un'esecuzione del blocco?",
+        options: [
+          "for",
+          "while",
+          "do-while",
+          "switch"
+        ],
+        answer: 2,
+        explanation: "Nel do-while la condizione è verificata dopo il corpo."
+      },
+      {
+        id: "f5-9",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Operatori di scorrimento",
+        prompt: "L'operazione x << 2 equivale approssimativamente a:",
+        options: [
+          "x / 4",
+          "x * 4",
+          "x + 2",
+          "x - 2"
+        ],
+        answer: 1,
+        explanation: "Uno shift a sinistra di 2 posizioni equivale a moltiplicare per 2^2."
+      },
+      {
+        id: "f5-10",
+        focus: "focus4",
+        type: "numeric",
+        difficulty: "base",
+        title: "Memoria SRAM",
+        prompt: "Quanti kB di SRAM ha Arduino UNO secondo la tabella della dispensa?",
+        unit: "kB",
+        answer: 2,
+        tolerance: 0.1,
+        explanation: "La SRAM disponibile è 2 kB, ed è la memoria più limitata."
+      },
+      {
+        id: "f1-9",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Microcontrollore",
+        prompt: "Quale caratteristica rende il microcontrollore adatto ai sistemi embedded?",
+        options: [
+          "Integra CPU, memorie e I/O nello stesso chip con pochi componenti esterni.",
+          "Lavora solo con sistemi operativi completi e memorie esterne dedicate.",
+          "Offre prestazioni migliori dei server general-purpose per il calcolo numerico.",
+          "Può essere programmato solo in ladder."
+        ],
+        answer: 0,
+        explanation: "La forte integrazione, il basso consumo e il costo contenuto lo rendono adatto a compiti specifici."
+      },
+      {
+        id: "f1-10",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "PCB",
+        prompt: "Qual è il motivo principale per cui si usano PCB multistrato?",
+        options: [
+          "Permettono di ospitare più connessioni e componenti in poco spazio.",
+          "Servono solo per alimentazioni in alta tensione.",
+          "Eliminano completamente la necessità delle piste di rame.",
+          "Rendono superflui i componenti attivi."
+        ],
+        answer: 0,
+        explanation: "Il multistrato è usato quando la densità di componenti e collegamenti è elevata."
+      },
+      {
+        id: "f1-11",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Contatori nel fotovoltaico",
+        prompt: "Negli impianti grid-connected, quale differenza c'è tra contatore di scambio e contatore di produzione?",
+        options: [
+          "Il primo misura energia immessa e prelevata dalla rete, il secondo tutta l'energia generata dall'impianto.",
+          "Il primo misura solo la tensione, il secondo solo la corrente.",
+          "Il primo si usa in DC, il secondo solo nei sistemi trifase industriali.",
+          "Svolgono la stessa funzione ma con marche diverse."
+        ],
+        answer: 0,
+        explanation: "Il contatore di scambio è bidirezionale, quello di produzione registra l'energia prodotta."
+      },
+      {
+        id: "f1-12",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Tempo di ciclo del PLC",
+        prompt: "Perché il tempo di ciclo del PLC è un parametro critico?",
+        options: [
+          "Perché determina quanto rapidamente il sistema reagisce agli eventi di ingresso.",
+          "Perché fissa la tensione di alimentazione dell'impianto.",
+          "Perché decide la sezione minima dei cavi di potenza.",
+          "Perché sostituisce la taratura dei sensori analogici."
+        ],
+        answer: 0,
+        explanation: "Se il ciclo è troppo lento, la macchina reagisce in ritardo agli eventi."
+      },
+      {
+        id: "f2-11",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "base",
+        title: "Unità di misura",
+        prompt: "Qual è l'unità di misura della carica elettrica?",
+        options: [
+          "Coulomb",
+          "Volt",
+          "Ampere",
+          "Ohm"
+        ],
+        answer: 0,
+        explanation: "La carica elettrica Q si misura in coulomb."
+      },
+      {
+        id: "f2-12",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Durata di una pila",
+        prompt: "Una pila da 1200 mAh alimenta un carico che assorbe 1 A. Quanto dura approssimativamente in ore?",
+        unit: "h",
+        answer: 1.2,
+        tolerance: 0.05,
+        explanation: "t = Q / I = 1,2 Ah / 1 A = 1,2 h."
+      },
+      {
+        id: "f2-13",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "media",
+        title: "Effetto Joule",
+        prompt: "Perché le perdite nei cavi aumentano quando cresce la corrente?",
+        options: [
+          "Perché la potenza dissipata dipende da R * I^2.",
+          "Perché la tensione efficace smette di esistere.",
+          "Perché la resistività del rame diventa nulla.",
+          "Perché la carica elettrica non si conserva più."
+        ],
+        answer: 0,
+        explanation: "Le perdite per effetto Joule crescono con il quadrato della corrente."
+      },
+      {
+        id: "f2-14",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "media",
+        title: "Resistenze in serie",
+        prompt: "Due resistenze da 8 kohm e 4 kohm sono in serie. Qual è la resistenza equivalente?",
+        options: [
+          "12 kohm",
+          "2,67 kohm",
+          "32 kohm",
+          "4 kohm"
+        ],
+        answer: 0,
+        explanation: "In serie le resistenze si sommano algebricamente."
+      },
+      {
+        id: "f3-10",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Sistema TT",
+        prompt: "Che cosa significa che il sistema di distribuzione italiano è di tipo TT?",
+        options: [
+          "Che esistono due maglie di terra indipendenti: una del distributore e una dell'utente.",
+          "Che tutte le masse metalliche sono collegate direttamente al neutro senza terra.",
+          "Che la rete domestica usa sempre tre trasformatori trifase interni all'abitazione.",
+          "Che fase e neutro sono entrambi isolati da terra in ogni punto."
+        ],
+        answer: 0,
+        explanation: "TT significa Terra-Terra: terra del distributore e terra utente separate."
+      },
+      {
+        id: "f3-11",
+        focus: "focus1",
+        type: "numeric",
+        difficulty: "base",
+        title: "Periodo della rete",
+        prompt: "Se la frequenza della rete è 50 Hz, qual è il periodo approssimativo in millisecondi?",
+        unit: "ms",
+        answer: 20,
+        tolerance: 0.5,
+        explanation: "T = 1 / f = 1 / 50 s = 0,02 s = 20 ms."
+      },
+      {
+        id: "f3-12",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Centralino domestico",
+        prompt: "Qual è la funzione principale del centralino o QUA?",
+        options: [
+          "Smistare e proteggere i circuiti dell'abitazione con i dispositivi di protezione.",
+          "Convertire automaticamente la rete AC in DC per tutti gli elettrodomestici.",
+          "Misurare l'energia al posto del contatore del distributore.",
+          "Sostituire le scatole di derivazione nelle stanze."
+        ],
+        answer: 0,
+        explanation: "Il centralino contiene interruttore generale e protezioni dei vari circuiti."
+      },
+      {
+        id: "f3-13",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Lampade LED",
+        prompt: "Quale vantaggio delle lampade LED è esplicitamente richiamato nella dispensa?",
+        options: [
+          "Lunga durata ed elevata efficienza luminosa.",
+          "Funzionamento solo in corrente continua senza elettronica di supporto.",
+          "Assenza completa di dissipazione termica.",
+          "Possibilità di sostituire il salvavita."
+        ],
+        answer: 0,
+        explanation: "La dispensa cita durata oltre 50.000 ore ed elevata efficienza."
+      },
+      {
+        id: "f4-9",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "De Morgan",
+        prompt: "Quale trasformazione è corretta secondo i teoremi di De Morgan?",
+        options: [
+          "NOT(A + B) = NOT A · NOT B",
+          "NOT(A + B) = NOT A + NOT B",
+          "NOT(A · B) = NOT A · NOT B",
+          "A + (B · C) = A · B · C"
+        ],
+        answer: 0,
+        explanation: "La negazione di una OR diventa una AND di negazioni."
+      },
+      {
+        id: "f4-10",
+        focus: "focus3",
+        type: "numeric",
+        difficulty: "base",
+        title: "Tabella della verità con 4 ingressi",
+        prompt: "Quante righe ha la tabella della verità di una funzione con 4 ingressi binari?",
+        unit: "righe",
+        answer: 16,
+        tolerance: 0.1,
+        explanation: "Con 4 ingressi si hanno 2^4 = 16 combinazioni."
+      },
+      {
+        id: "f4-11",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Seconda forma canonica",
+        prompt: "Quando conviene usare il prodotto di maxtermini, cioè la seconda forma canonica?",
+        options: [
+          "Quando le righe con uscita 0 sono poche.",
+          "Quando le righe con uscita 1 sono poche.",
+          "Quando tutte le variabili sono analogiche.",
+          "Solo se il circuito è già semplificato."
+        ],
+        answer: 0,
+        explanation: "La seconda forma canonica è comoda quando le righe con Y = 0 sono poche."
+      },
+      {
+        id: "f4-12",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "base",
+        title: "Logica cablata e programmabile",
+        prompt: "Quale differenza descrive meglio logica cablata e logica programmabile?",
+        options: [
+          "Nella logica cablata si modifica il cablaggio, in quella programmabile si modifica il software.",
+          "Nella logica cablata si usano solo segnali analogici, in quella programmabile solo segnali continui.",
+          "La logica programmabile non può gestire ingressi e uscite fisici.",
+          "La logica cablata è sempre più flessibile di un PLC."
+        ],
+        answer: 0,
+        explanation: "La differenza centrale è dove risiede la funzione: nei collegamenti fisici o nel programma."
+      },
+      {
+        id: "f5-11",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Memorie di Arduino UNO",
+        prompt: "Quale memoria conserva il programma anche a scheda spenta?",
+        options: [
+          "Flash",
+          "SRAM",
+          "Registro dei pin digitali",
+          "Buffer seriale"
+        ],
+        answer: 0,
+        explanation: "La Flash è non volatile e contiene lo sketch."
+      },
+      {
+        id: "f5-12",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Serial.print e Serial.write",
+        prompt: "Qual è la differenza principale tra Serial.write(78) e Serial.print(78)?",
+        options: [
+          "write invia il byte corrispondente al codice ASCII, print invia le cifre del numero.",
+          "write funziona solo in ingresso, print solo in uscita.",
+          "write converte sempre in esadecimale, print sempre in binario.",
+          "Non c'è alcuna differenza pratica."
+        ],
+        answer: 0,
+        explanation: "Nella dispensa: Serial.write(78) produce il carattere ASCII, Serial.print(78) invia le cifre 78."
+      },
+      {
+        id: "f5-13",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "base",
+        title: "Cicli iterativi",
+        prompt: "Quale struttura è più adatta quando il numero di ripetizioni è noto in anticipo?",
+        options: [
+          "for",
+          "while",
+          "do-while",
+          "switch-case"
+        ],
+        answer: 0,
+        explanation: "Il ciclo for è pensato per iterazioni note in anticipo."
+      },
+      {
+        id: "f5-14",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Overflow",
+        prompt: "Che cosa può accadere a una variabile di tipo byte se vale 255 e viene incrementata di 1?",
+        options: [
+          "Torna a 0 per overflow.",
+          "Diventa automaticamente 256 senza problemi.",
+          "Si converte in int in modo trasparente.",
+          "Blocca l'esecuzione dello sketch."
+        ],
+        answer: 0,
+        explanation: "La dispensa segnala l'overflow come trappola tipica: il byte riparte da 0."
+      },
+      {
+        id: "f1-13",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Automazione interdisciplinare",
+        prompt: "Perché l'automazione viene descritta come disciplina interdisciplinare?",
+        options: [
+          "Perché unisce gestione dell'energia, trattamento dei segnali e logiche di controllo.",
+          "Perché riguarda solo macchine meccaniche senza elettronica.",
+          "Perché sostituisce completamente sia elettrotecnica sia informatica.",
+          "Perché si occupa esclusivamente di robot antropomorfi."
+        ],
+        answer: 0,
+        explanation: "L'automazione integra potenza, segnali e algoritmi di controllo."
+      },
+      {
+        id: "f1-14",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "base",
+        title: "Elettronica di consumo",
+        prompt: "Quale gruppo di prodotti rientra nell'elettronica di consumo?",
+        options: [
+          "Smartphone, TV, computer ed elettrodomestici",
+          "Solo turbine, alternatori e trasformatori",
+          "Solo quadri BT industriali",
+          "Esclusivamente robot collaborativi"
+        ],
+        answer: 0,
+        explanation: "La dispensa colloca questi prodotti nell'elettronica di consumo."
+      },
+      {
+        id: "f1-15",
+        focus: "focus1",
+        type: "numeric",
+        difficulty: "base",
+        title: "Tensione tipica dell'auto",
+        prompt: "Qual è la tensione nominale tipica della batteria di un'automobile secondo la tabella della dispensa?",
+        unit: "V",
+        answer: 12,
+        tolerance: 0.2,
+        explanation: "La tabella delle tensioni tipiche riporta 12 V per la batteria dell'auto."
+      },
+      {
+        id: "f1-16",
+        focus: "focus1",
+        type: "open",
+        difficulty: "media",
+        title: "Stringa fotovoltaica",
+        prompt: "Descrivi la catena di aggregazione delle celle in un impianto fotovoltaico, dalla cella al generatore.",
+        keywordGroups: [["cella", "celle"], ["modulo"], ["pannello"], ["stringa", "stringhe"], ["generatore"]],
+        minimumGroups: 5,
+        modelAnswer: "Le celle formano i moduli, i moduli compongono i pannelli, i pannelli si collegano in stringhe e le stringhe in parallelo costituiscono il generatore fotovoltaico.",
+        explanation: "La dispensa presenta una gerarchia precisa: celle, modulo, pannello, stringhe, generatore."
+      },
+      {
+        id: "f2-15",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Calcolo della resistenza",
+        prompt: "Un resistore è attraversato da 10 A e presenta ai capi 2 V. Calcola la resistenza.",
+        unit: "ohm",
+        answer: 0.2,
+        tolerance: 0.02,
+        explanation: "R = V / I = 2 / 10 = 0,2 ohm."
+      },
+      {
+        id: "f2-16",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Tensione massima su resistore",
+        prompt: "Una resistenza da 100 ohm sopporta al massimo 0,25 W. Qual è la tensione massima applicabile?",
+        unit: "V",
+        answer: 5,
+        tolerance: 0.2,
+        explanation: "Vmax = sqrt(P * R) = sqrt(0,25 * 100) = 5 V."
+      },
+      {
+        id: "f2-17",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caduta di tensione",
+        prompt: "Che cosa rappresenta una caduta di tensione su una resistenza?",
+        options: [
+          "La diminuzione di potenziale dovuta all'energia ceduta dalle cariche attraversando il componente",
+          "La variazione della frequenza della sorgente ai capi del resistore",
+          "L'aumento di carica accumulata all'interno del conduttore",
+          "La riduzione della resistività del materiale a corrente nulla"
+        ],
+        answer: 0,
+        explanation: "Le cariche cedono energia attraversando la resistenza e il potenziale diminuisce."
+      },
+      {
+        id: "f2-18",
+        focus: "focus2",
+        type: "open",
+        difficulty: "media",
+        title: "Perché alta tensione",
+        prompt: "Spiega perché l'energia elettrica viene trasmessa a tensione elevata sulle lunghe distanze.",
+        keywordGroups: [["tensione"], ["corrente"], ["perdite", "joule"], ["i^2", "quadrato"]],
+        minimumGroups: 3,
+        modelAnswer: "A parità di potenza, aumentando la tensione diminuisce la corrente; così si riducono le perdite per effetto Joule, che dipendono da I al quadrato.",
+        explanation: "La trasmissione ad alta tensione riduce la corrente e quindi le perdite R * I^2."
+      },
+      {
+        id: "f3-14",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Montante",
+        prompt: "Che cos'è il montante nell'impianto residenziale?",
+        options: [
+          "Il cavo multipolare che collega il contatore al centralino",
+          "Il pulsante del campanello collegato al ronzatore",
+          "L'insieme delle sole prese del piano cucina",
+          "Il conduttore che unisce due deviatori nel comando luce"
+        ],
+        answer: 0,
+        explanation: "La dispensa chiama montante il cavo che porta energia dal contatore al QUA."
+      },
+      {
+        id: "f3-15",
+        focus: "focus1",
+        type: "numeric",
+        difficulty: "base",
+        title: "Valore di picco della rete",
+        prompt: "Se la tensione efficace di rete è 230 V, qual è il valore di picco approssimativo?",
+        unit: "V",
+        answer: 325,
+        tolerance: 3,
+        explanation: "Vmax = 230 * sqrt(2), circa 325 V."
+      },
+      {
+        id: "f3-16",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Pulsante monostabile",
+        prompt: "Quale caratteristica distingue il pulsante da un interruttore unipolare?",
+        options: [
+          "Il pulsante è monostabile e chiude il contatto solo mentre viene premuto",
+          "Il pulsante può essere usato solo in corrente continua",
+          "Il pulsante sostituisce sempre il relè passo-passo",
+          "Il pulsante ha sempre quattro morsetti come l'invertitore"
+        ],
+        answer: 0,
+        explanation: "Il pulsante torna alla posizione di riposo appena viene rilasciato."
+      },
+      {
+        id: "f3-17",
+        focus: "focus1",
+        type: "open",
+        difficulty: "media",
+        title: "Ruolo del differenziale",
+        prompt: "Spiega in breve come il differenziale rileva una dispersione verso terra.",
+        keywordGroups: [["corrente di andata", "andata"], ["corrente di ritorno", "ritorno"], ["differenza"], ["terra", "dispersione"]],
+        minimumGroups: 3,
+        modelAnswer: "Il differenziale confronta la corrente che entra nel circuito con quella che ritorna: se c'è una differenza dovuta a una dispersione verso terra, apre il circuito.",
+        explanation: "Il principio di funzionamento è il confronto tra corrente entrante e uscente."
+      },
+      {
+        id: "f4-13",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Porta NAND",
+        prompt: "Quando la porta NAND produce uscita 0?",
+        options: [
+          "Solo quando tutti gli ingressi sono 1",
+          "Quando almeno un ingresso è 0",
+          "Solo quando tutti gli ingressi sono 0",
+          "Quando gli ingressi sono diversi tra loro"
+        ],
+        answer: 0,
+        explanation: "La NAND è l'AND negata: è 0 solo nel caso 1 AND 1."
+      },
+      {
+        id: "f4-14",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Mintermine",
+        prompt: "Che cos'è un mintermine nella prima forma canonica?",
+        options: [
+          "Un prodotto logico di tutte le variabili, dirette o negate, associato a una riga con uscita 1",
+          "Una somma logica semplificata che si ottiene dopo Karnaugh",
+          "Un collegamento parallelo di contatti normalmente chiusi",
+          "Una porta universale costruita con sole NAND"
+        ],
+        answer: 0,
+        explanation: "Nella SOM ogni riga con Y = 1 genera un mintermine."
+      },
+      {
+        id: "f4-15",
+        focus: "focus3",
+        type: "open",
+        difficulty: "media",
+        title: "Tabella della verità",
+        prompt: "Spiega perché una funzione con n ingressi binari ha 2^n combinazioni nella tabella della verità.",
+        keywordGroups: [["n ingressi", "ingressi"], ["due stati", "0", "1"], ["2^n", "2 n"], ["combinazioni"]],
+        minimumGroups: 3,
+        modelAnswer: "Ogni ingresso binario può assumere due stati, 0 o 1; combinando n ingressi indipendenti si ottengono 2^n combinazioni possibili.",
+        explanation: "La tabella della verità elenca tutte le combinazioni degli stati binari di ingresso."
+      },
+      {
+        id: "f5-15",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Pull-up interno",
+        prompt: "Perché si attiva la pull-up interna su un ingresso collegato a pulsante?",
+        options: [
+          "Per evitare che il pin resti flottante quando il pulsante è aperto",
+          "Per aumentare la corrente disponibile sul pin fino a 1 A",
+          "Per trasformare automaticamente l'ingresso digitale in analogico",
+          "Per memorizzare il valore del pulsante in EEPROM"
+        ],
+        answer: 0,
+        explanation: "La pull-up mantiene il pin a livello logico definito quando il contatto è aperto."
+      },
+      {
+        id: "f5-16",
+        focus: "focus4",
+        type: "numeric",
+        difficulty: "base",
+        title: "Pin digitali della UNO",
+        prompt: "Quanti pin digitali I/O ha Arduino UNO secondo la tabella della dispensa?",
+        unit: "pin",
+        answer: 14,
+        tolerance: 0.1,
+        explanation: "La scheda UNO dispone di 14 pin digitali I/O."
+      },
+      {
+        id: "f5-17",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "do-while",
+        prompt: "Quale proprietà distingue il ciclo do-while dal while?",
+        options: [
+          "Il corpo viene eseguito almeno una volta perché la condizione è verificata dopo",
+          "La condizione viene verificata due volte per ogni iterazione",
+          "Può essere usato solo con variabili di tipo int",
+          "Non ammette l'uso di break"
+        ],
+        answer: 0,
+        explanation: "Nel do-while il controllo è in coda, quindi il corpo parte almeno una volta."
+      },
+      {
+        id: "f5-18",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "setup e loop",
+        prompt: "Spiega la differenza tra setup() e loop() in uno sketch Arduino.",
+        keywordGroups: [["setup"], ["loop"], ["una volta", "accensione", "reset"], ["continuo", "ciclico", "ripete"]],
+        minimumGroups: 4,
+        modelAnswer: "setup() viene eseguito una sola volta all'avvio o al reset per inizializzare risorse e pin; loop() viene eseguito continuamente e contiene il comportamento operativo dello sketch.",
+        explanation: "Lo sketch Arduino è strutturato su inizializzazione iniziale e ciclo continuo di esecuzione."
+      },
+      {
+        id: "f2-19",
+        focus: "focus2",
+        type: "numeric",
+        difficulty: "media",
+        title: "Caso pratico - partitore di tensione",
+        prompt: "Osserva il partitore. Se ai capi della serie ci sono 12 V, quale tensione si preleva ai capi di R2?",
+        figure: `<svg viewBox="0 0 520 120" xmlns="http://www.w3.org/2000/svg" aria-label="Partitore di tensione">
+          <line x1="30" y1="60" x2="90" y2="60" stroke="#1f2430" stroke-width="3"/>
+          <rect x="90" y="42" width="110" height="36" rx="6" fill="#f7e3a7" stroke="#1f2430" stroke-width="2"/>
+          <text x="145" y="64" text-anchor="middle" font-size="18" fill="#1f2430">R1 = 8 kΩ</text>
+          <line x1="200" y1="60" x2="250" y2="60" stroke="#1f2430" stroke-width="3"/>
+          <circle cx="250" cy="60" r="5" fill="#b2482b"/>
+          <line x1="250" y1="60" x2="300" y2="60" stroke="#1f2430" stroke-width="3"/>
+          <rect x="300" y="42" width="110" height="36" rx="6" fill="#cbe9e6" stroke="#1f2430" stroke-width="2"/>
+          <text x="355" y="64" text-anchor="middle" font-size="18" fill="#1f2430">R2 = 4 kΩ</text>
+          <line x1="410" y1="60" x2="490" y2="60" stroke="#1f2430" stroke-width="3"/>
+          <text x="30" y="35" font-size="18" fill="#1f2430">+12 V</text>
+          <text x="228" y="35" font-size="16" fill="#b2482b">Uscita su R2</text>
+          <text x="470" y="35" font-size="18" fill="#1f2430">0 V</text>
+        </svg>`,
+        unit: "V",
+        answer: 4,
+        tolerance: 0.2,
+        explanation: "Nel partitore 8 kΩ + 4 kΩ, sui 4 kΩ cadono 4 V quando il totale è 12 V."
+      },
+      {
+        id: "f2-20",
+        focus: "focus2",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - rete mista",
+        prompt: "Nel circuito mostrato, le due resistenze da 100 ohm sono in parallelo e il blocco è in serie con 50 ohm. Qual è la resistenza equivalente totale?",
+        figure: `<svg viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" aria-label="Circuito misto">
+          <line x1="30" y1="85" x2="120" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <rect x="120" y="25" width="90" height="34" rx="6" fill="#f7e3a7" stroke="#1f2430" stroke-width="2"/>
+          <rect x="120" y="111" width="90" height="34" rx="6" fill="#f7e3a7" stroke="#1f2430" stroke-width="2"/>
+          <text x="165" y="47" text-anchor="middle" font-size="18">100 Ω</text>
+          <text x="165" y="133" text-anchor="middle" font-size="18">100 Ω</text>
+          <line x1="120" y1="42" x2="90" y2="42" stroke="#1f2430" stroke-width="3"/>
+          <line x1="90" y1="42" x2="90" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <line x1="120" y1="128" x2="90" y2="128" stroke="#1f2430" stroke-width="3"/>
+          <line x1="90" y1="128" x2="90" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <line x1="210" y1="42" x2="250" y2="42" stroke="#1f2430" stroke-width="3"/>
+          <line x1="210" y1="128" x2="250" y2="128" stroke="#1f2430" stroke-width="3"/>
+          <line x1="250" y1="42" x2="250" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <line x1="250" y1="128" x2="250" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <line x1="250" y1="85" x2="310" y2="85" stroke="#1f2430" stroke-width="3"/>
+          <rect x="310" y="68" width="90" height="34" rx="6" fill="#cbe9e6" stroke="#1f2430" stroke-width="2"/>
+          <text x="355" y="90" text-anchor="middle" font-size="18">50 Ω</text>
+          <line x1="400" y1="85" x2="490" y2="85" stroke="#1f2430" stroke-width="3"/>
+        </svg>`,
+        options: [
+          "100 ohm",
+          "75 ohm",
+          "50 ohm",
+          "25 ohm"
+        ],
+        answer: 0,
+        explanation: "Le due 100 ohm in parallelo valgono 50 ohm; poi 50 + 50 = 100 ohm."
+      },
+      {
+        id: "f3-18",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - comando da tre punti",
+        prompt: "Per comandare una lampada da tre punti distinti con la soluzione tradizionale a contatti, quale sequenza di dispositivi è corretta?",
+        figure: `<svg viewBox="0 0 520 120" xmlns="http://www.w3.org/2000/svg" aria-label="Comando luce da tre punti">
+          <rect x="30" y="35" width="120" height="50" rx="8" fill="#f7e3a7" stroke="#1f2430" stroke-width="2"/>
+          <rect x="200" y="35" width="120" height="50" rx="8" fill="#fff4dd" stroke="#1f2430" stroke-width="2"/>
+          <rect x="370" y="35" width="120" height="50" rx="8" fill="#f7e3a7" stroke="#1f2430" stroke-width="2"/>
+          <text x="90" y="65" text-anchor="middle" font-size="18">Punto 1</text>
+          <text x="260" y="65" text-anchor="middle" font-size="18">Punto 2</text>
+          <text x="430" y="65" text-anchor="middle" font-size="18">Punto 3</text>
+        </svg>`,
+        options: [
+          "Deviatore - invertitore - deviatore",
+          "Interruttore - deviatore - pulsante",
+          "Pulsante - pulsante - interruttore",
+          "Invertitore - invertitore - deviatore"
+        ],
+        answer: 0,
+        explanation: "Per tre punti la soluzione classica usa due deviatori e un invertitore in mezzo."
+      },
+      {
+        id: "f3-19",
+        focus: "focus1",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - scelta del magnetotermico",
+        prompt: "Hai un circuito prese con cavo da 2,5 mm². Secondo la tabella della dispensa, quale corrente nominale dell'interruttore è coerente?",
+        options: [
+          "16 A",
+          "10 A",
+          "25 A",
+          "32 A"
+        ],
+        answer: 0,
+        explanation: "Per le prese, la tabella riporta 2,5 mm² con magnetotermico da 16 A."
+      },
+      {
+        id: "f4-16",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - logica a contatti",
+        prompt: "Nel ramo ladder mostrato, A e B sono in serie e il loro gruppo è in parallelo con C. Quale espressione booleana rappresenta l'uscita Y?",
+        figure: `<svg viewBox="0 0 520 150" xmlns="http://www.w3.org/2000/svg" aria-label="Schema a contatti">
+          <line x1="40" y1="20" x2="40" y2="130" stroke="#1f2430" stroke-width="4"/>
+          <line x1="480" y1="20" x2="480" y2="130" stroke="#1f2430" stroke-width="4"/>
+          <line x1="40" y1="50" x2="90" y2="50" stroke="#1f2430" stroke-width="3"/>
+          <line x1="130" y1="50" x2="180" y2="50" stroke="#1f2430" stroke-width="3"/>
+          <line x1="220" y1="50" x2="300" y2="50" stroke="#1f2430" stroke-width="3"/>
+          <line x1="90" y1="35" x2="90" y2="65" stroke="#1f2430" stroke-width="3"/>
+          <line x1="130" y1="35" x2="130" y2="65" stroke="#1f2430" stroke-width="3"/>
+          <line x1="180" y1="35" x2="180" y2="65" stroke="#1f2430" stroke-width="3"/>
+          <line x1="220" y1="35" x2="220" y2="65" stroke="#1f2430" stroke-width="3"/>
+          <text x="110" y="28" text-anchor="middle" font-size="18">A</text>
+          <text x="200" y="28" text-anchor="middle" font-size="18">B</text>
+          <line x1="40" y1="100" x2="300" y2="100" stroke="#1f2430" stroke-width="3"/>
+          <line x1="90" y1="85" x2="90" y2="115" stroke="#1f2430" stroke-width="3"/>
+          <line x1="130" y1="85" x2="130" y2="115" stroke="#1f2430" stroke-width="3"/>
+          <text x="110" y="78" text-anchor="middle" font-size="18">C</text>
+          <line x1="300" y1="50" x2="300" y2="100" stroke="#1f2430" stroke-width="3"/>
+          <line x1="300" y1="75" x2="390" y2="75" stroke="#1f2430" stroke-width="3"/>
+          <circle cx="430" cy="75" r="20" fill="none" stroke="#1f2430" stroke-width="3"/>
+          <text x="430" y="81" text-anchor="middle" font-size="18">Y</text>
+          <line x1="450" y1="75" x2="480" y2="75" stroke="#1f2430" stroke-width="3"/>
+        </svg>`,
+        options: [
+          "Y = (A · B) + C",
+          "Y = A + (B · C)",
+          "Y = (A + B) · C",
+          "Y = A · B · C"
+        ],
+        answer: 0,
+        explanation: "Serie corrisponde a AND, parallelo corrisponde a OR."
+      },
+      {
+        id: "f4-17",
+        focus: "focus3",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - tabella della verità",
+        prompt: "La funzione Y vale 1 solo quando i due ingressi sono diversi. A quale porta corrisponde?",
+        options: [
+          "EXOR",
+          "AND",
+          "OR",
+          "NAND"
+        ],
+        answer: 0,
+        explanation: "La funzione che vale 1 quando gli ingressi sono diversi è l'EXOR."
+      },
+      {
+        id: "f5-19",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - lettura del codice",
+        prompt: "Osserva il frammento di sketch. Che cosa fa il LED collegato al pin 13?",
+        figure: `<pre><code>void setup() {
+  pinMode(13, OUTPUT);
+}
+
+void loop() {
+  digitalWrite(13, HIGH);
+  delay(1000);
+  digitalWrite(13, LOW);
+  delay(1000);
+}</code></pre>`,
+        options: [
+          "Lampeggia: 1 secondo acceso e 1 secondo spento in ciclo continuo",
+          "Resta sempre acceso dopo il primo secondo",
+          "Resta sempre spento perché manca Serial.begin()",
+          "Cambia stato solo una volta al reset"
+        ],
+        answer: 0,
+        explanation: "Nel loop il pin 13 viene portato alto e basso con due ritardi di 1000 ms."
+      },
+      {
+        id: "f5-20",
+        focus: "focus4",
+        type: "mcq",
+        difficulty: "media",
+        title: "Caso pratico - scelta del ciclo",
+        prompt: "Vuoi leggere continuamente un sensore finché una condizione resta vera, senza sapere quante iterazioni serviranno. Quale struttura è la più adatta?",
+        options: [
+          "while",
+          "switch-case",
+          "for con contatore fisso",
+          "delayMicroseconds"
+        ],
+        answer: 0,
+        explanation: "Il while è il ciclo naturale quando il numero di iterazioni non è noto in anticipo."
+      },
+      {
+        id: "f5-21",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "Progetto Tinkercad - semaforo",
+        prompt: "Apri <a href=\"https://www.tinkercad.com/circuits\" target=\"_blank\" rel=\"noopener noreferrer\">Tinkercad Circuits</a> e realizza un semaforo con tre LED su Arduino UNO. Usa tre pin digitali, una resistenza per ciascun LED e una sequenza rosso -> verde -> giallo con tempi diversi. Descrivi in breve come hai distribuito i pin e come si comporta il ciclo.",
+        keywordGroups: [["rosso"], ["verde"], ["giallo"], ["pin"], ["ciclo", "sequenza", "loop"]],
+        minimumGroups: 3,
+        modelAnswer: "Ho collegato tre LED a tre pin digitali distinti, ciascuno con la propria resistenza. Nel loop il rosso resta acceso per alcuni secondi, poi si accende il verde, infine il giallo e la sequenza ricomincia.",
+        explanation: "L'esercizio verifica cablaggio di piu uscite, uso di `pinMode`, `digitalWrite` e temporizzazione con `delay`."
+      },
+      {
+        id: "f5-22",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "Progetto Tinkercad - pulsante uomo presente",
+        prompt: "Realizza un circuito in cui un pulsante collegato al pin 10 controlla un LED sul pin 13: il LED deve restare acceso solo mentre il pulsante e premuto. Usa `INPUT_PULLUP`. Spiega che cosa legge Arduino a pulsante aperto e a pulsante premuto.",
+        keywordGroups: [["input pullup", "pullup"], ["high"], ["low"], ["pulsante"], ["led"]],
+        minimumGroups: 4,
+        modelAnswer: "Con `INPUT_PULLUP` il pin legge HIGH quando il pulsante e aperto. Quando il pulsante viene premuto, il pin va a massa e Arduino legge LOW; il programma allora accende il LED solo durante la pressione.",
+        explanation: "L'esercizio controlla il cablaggio corretto di un ingresso digitale e la comprensione della logica invertita con pull-up interna."
+      },
+      {
+        id: "f5-23",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "Progetto Tinkercad - termostato di allarme",
+        prompt: "Costruisci in Tinkercad un piccolo allarme temperatura con Arduino, sensore analogico e LED o buzzer. Definisci una soglia: sotto soglia il sistema resta normale, sopra soglia si attiva l'allarme. Descrivi quali componenti hai usato e quale logica hai scritto.",
+        keywordGroups: [["sensore", "temperatura", "tmp36"], ["analog", "analogread", "ingresso analogico"], ["soglia"], ["allarme", "led", "buzzer"]],
+        minimumGroups: 3,
+        modelAnswer: "Ho usato un sensore di temperatura analogico collegato a un ingresso analogico di Arduino e un LED/buzzer come uscita di allarme. Il programma legge il valore con `analogRead`, lo confronta con una soglia e attiva l'allarme quando la temperatura supera il limite impostato.",
+        explanation: "L'esercizio collega lettura analogica, confronto logico e comando di un'uscita."
+      },
+      {
+        id: "f5-24",
+        focus: "focus4",
+        type: "open",
+        difficulty: "media",
+        title: "Progetto Tinkercad - contatore con monitor seriale",
+        prompt: "Realizza un contatore di pressioni: ogni volta che premi un pulsante, Arduino incrementa un conteggio e lo invia al Monitor Seriale. In Tinkercad monta il circuito e prova la simulazione. Spiega quali variabili e quali istruzioni servono per evitare ambiguita nella lettura del pulsante e mostrare il conteggio.",
+        keywordGroups: [["variabile", "contatore"], ["serial"], ["pulsante"], ["stato", "fronte", "debounce", "pressione"], ["incremento", "++"]],
+        minimumGroups: 3,
+        modelAnswer: "Serve una variabile contatore che aumenti a ogni pressione valida del pulsante, una gestione dello stato precedente o un piccolo debounce per non contare piu volte la stessa pressione, e l'invio del valore con `Serial.print` o `Serial.println` al Monitor Seriale.",
+        explanation: "L'esercizio porta dentro lo stesso progetto ingressi digitali, stato del programma e debug seriale."
+      }
+    ];
+
+    const labels = {
+      focus1: "Focus 1 - Settore tecnologico elettrico e impianto residenziale",
+      focus2: "Focus 2 - Fondamenti di elettricità",
+      focus3: "Focus 3 - Logica combinatoria",
+      focus4: "Focus 4 - Arduino e programmazione embedded"
+    };
+
+    const typeLabels = {
+      mcq: "Scelta multipla",
+      tf: "Vero/Falso",
+      numeric: "Numerico",
+      open: "Risposta guidata"
+    };
+
+    const dom = {
+      questionsContainer: document.getElementById("questionsContainer"),
+      navList: document.getElementById("navList")
+    };
+
+    function groupedQuestions() {
+      return Object.keys(labels).map(focusKey => ({
+        focus: focusKey,
+        label: labels[focusKey],
+        questions: questionBank.filter(q => q.focus === focusKey)
+      }));
+    }
+
+    function renderNav() {
+      dom.navList.innerHTML = groupedQuestions().map(section => `
+        <a class="nav-item section-link" href="#section_${section.focus}">
+          <strong>${section.label}</strong>
+          <small>${section.questions.length} esercizi</small>
+        </a>
+      `).join("");
+    }
+
+    function renderAllQuestions() {
+      const sections = groupedQuestions();
+      dom.questionsContainer.className = "";
+      dom.questionsContainer.innerHTML = sections.map(section => `
+        <section class="section-block" id="section_${section.focus}">
+          <div class="section-head">
+            <h2>${section.label}</h2>
+            <p class="muted">${section.questions.length} esercizi</p>
+          </div>
+          ${section.questions.map((q, index) => renderQuestion(q, index + 1)).join("")}
+        </section>
+      `).join("");
+    }
+
+    function renderQuestion(q, index) {
+      const header = `
+        <div class="question-top">
+          <div>
+            <div class="badge">${labels[q.focus]}</div>
+          </div>
+          <div class="badge type-badge">${typeLabels[q.type]}</div>
+        </div>
+      `;
+
+      let body = "";
+
+      if (q.type === "mcq") {
+        body = `
+          <div class="options">
+            ${q.options.map((opt, i) => `
+              <label class="option">
+                <input type="radio" name="q_${q.id}" value="${i}">
+                <span>${opt}</span>
+              </label>
+            `).join("")}
+          </div>
+        `;
+      }
+
+      if (q.type === "tf") {
+        body = `
+          <div class="options">
+            <label class="option">
+              <input type="radio" name="q_${q.id}" value="true">
+              <span>Vero</span>
+            </label>
+            <label class="option">
+              <input type="radio" name="q_${q.id}" value="false">
+              <span>Falso</span>
+            </label>
+          </div>
+        `;
+      }
+
+      if (q.type === "numeric") {
+        body = `
+          <div class="inline-inputs">
+            <input type="number" step="any" id="q_${q.id}" placeholder="Inserisci il valore">
+            <div class="option"><strong>Unità attesa:</strong>&nbsp;${q.unit}</div>
+          </div>
+        `;
+      }
+
+      if (q.type === "open") {
+        body = `
+          <textarea id="q_${q.id}" placeholder="Scrivi una risposta breve ma precisa"></textarea>
+          <div class="inline-actions">
+            <button class="small-btn" type="button" data-action="check-open" data-id="${q.id}">Correggi</button>
+            <button class="small-btn" type="button" data-action="show-solution" data-id="${q.id}">Mostra soluzione</button>
+          </div>
+        `;
+      }
+
+      return `
+        <article class="question-card" id="card_${q.id}" data-id="${q.id}" data-type="${q.type}">
+          ${header}
+          <h3>${index + 1}. ${q.title}</h3>
+          <p>${q.prompt}</p>
+          ${q.figure ? `<div class="figure-box">${q.figure}</div>` : ""}
+          ${body}
+          <div class="feedback" id="fb_${q.id}"></div>
+        </article>
+      `;
+    }
+
+    function normalizeText(value) {
+      return value
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "")
+        .replace(/[^\w\s]/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function evaluateOpenQuestion(q, text) {
+      const groups = q.keywordGroups || (q.keywords ? q.keywords.map(keyword => [keyword]) : []);
+      const matches = groups.map(group =>
+        group.some(keyword => text.includes(normalizeText(keyword)))
+      );
+      const matchedCount = matches.filter(Boolean).length;
+      const minimum = q.minimumGroups || groups.length;
+      return {
+        matchedCount,
+        minimum,
+        correct: matchedCount >= minimum,
+        missingGroups: groups.filter((_, index) => !matches[index])
+      };
+    }
+
+    function checkQuestion(q) {
+      let correct = false;
+      let detail = "";
+      let pending = false;
+
+      if (q.type === "mcq") {
+        const picked = document.querySelector(`input[name="q_${q.id}"]:checked`);
+        if (!picked) {
+          pending = true;
+        } else {
+          correct = Number(picked.value) === q.answer;
+          detail = correct ? "Risposta corretta." : `Risposta corretta: ${q.options[q.answer]}`;
+        }
+      }
+
+      if (q.type === "tf") {
+        const picked = document.querySelector(`input[name="q_${q.id}"]:checked`);
+        if (!picked) {
+          pending = true;
+        } else {
+          correct = String(q.answer) === picked.value;
+          detail = correct ? "Risposta corretta." : `Risposta corretta: ${q.answer ? "Vero" : "Falso"}`;
+        }
+      }
+
+      if (q.type === "numeric") {
+        const field = document.getElementById(`q_${q.id}`);
+        const value = Number(field.value);
+        if (field.value === "") {
+          pending = true;
+        } else {
+          correct = Math.abs(value - q.answer) <= q.tolerance;
+          detail = correct
+            ? `Valore corretto (${q.unit}).`
+            : `Valore atteso: ${q.answer} ${q.unit}`;
+        }
+      }
+
+      if (q.type === "open") {
+        const text = normalizeText(document.getElementById(`q_${q.id}`).value);
+        if (!text) {
+          pending = true;
+        } else {
+          const result = evaluateOpenQuestion(q, text);
+          correct = result.correct;
+          detail = correct
+            ? "Risposta centrata sugli elementi chiave."
+            : `Elementi ancora mancanti: ${result.missingGroups.map(group => group[0]).join(", ")}`;
+        }
+      }
+
+      const box = document.getElementById(`fb_${q.id}`);
+      if (pending) {
+        box.className = "feedback";
+        box.innerHTML = "";
+        return false;
+      }
+      box.className = `feedback show ${correct ? "ok" : "bad"}`;
+      box.innerHTML = `<strong>${detail}</strong><div class="explain">${q.explanation}</div>`;
+
+      return correct;
+    }
+
+    function showOpenSolution(q) {
+      const box = document.getElementById(`fb_${q.id}`);
+      box.className = "feedback show info";
+      box.innerHTML = `<strong>Soluzione modello</strong><div class="explain">${q.modelAnswer || q.explanation}</div>`;
+    }
+
+    function routePage() {
+      const hash = (location.hash || "#home").replace("#", "");
+      const page = ["home", "comandi", "esercizi"].includes(hash) ? hash : "home";
+      document.querySelectorAll(".page-view").forEach(view => view.classList.remove("active"));
+      document.getElementById(`page-${page}`)?.classList.add("active");
+    }
+
+    const resourceState = {
+      singleClosed: false,
+      dev1: 0,
+      dev2: 0,
+      invD1: 0,
+      invCross: false,
+      invD2: 0
+    };
+
+    function toggleResourceClass(selector, className, active) {
+      document.querySelectorAll(selector).forEach(node => node.classList.toggle(className, active));
+    }
+
+    function setResourceLamp(selector, active) {
+      document.querySelector(selector)?.classList.toggle("on", active);
+    }
+
+    function setResourceStatus(selector, active) {
+      const status = document.querySelector(selector);
+      if (!status) return;
+      status.classList.toggle("on", active);
+      status.querySelector("span:last-child").textContent = active ? "Lampada accesa" : "Lampada spenta";
+    }
+
+    function renderResourceSingle() {
+      const on = resourceState.singleClosed;
+      toggleResourceClass(".resource-single-source", "active-wire", true);
+      toggleResourceClass(".resource-single-switched, .resource-single-feed", "active-wire", on);
+      const blade = document.querySelector(".resource-single-blade");
+      if (blade) {
+        blade.setAttribute("x2", on ? "445" : "430");
+        blade.setAttribute("y2", on ? "110" : "78");
+      }
+      setResourceLamp(".resource-single-lamp", on);
+      setResourceStatus(".resource-single-status", on);
+    }
+
+    function renderResourceDeviators() {
+      const on = resourceState.dev1 === resourceState.dev2;
+      toggleResourceClass(".resource-dev-top, .resource-dev-bottom, .resource-dev-output", "active-wire", false);
+      toggleResourceClass(resourceState.dev1 === 0 ? ".resource-dev-top" : ".resource-dev-bottom", "active-wire", true);
+      toggleResourceClass(".resource-dev-output", "active-wire", on);
+      document.querySelector(".resource-dev1-blade")?.setAttribute("y2", resourceState.dev1 === 0 ? "85" : "205");
+      document.querySelector(".resource-dev2-blade")?.setAttribute("y2", resourceState.dev2 === 0 ? "85" : "205");
+      setResourceLamp(".resource-dev-lamp", on);
+      setResourceStatus(".resource-dev-status", on);
+    }
+
+    function renderResourceInvertitore() {
+      const afterInvert = resourceState.invCross ? 1 - resourceState.invD1 : resourceState.invD1;
+      const on = afterInvert === resourceState.invD2;
+      toggleResourceClass(".resource-inv-left-top, .resource-inv-left-bottom, .resource-inv-right-top, .resource-inv-right-bottom, .resource-inv-output", "active-wire", false);
+      toggleResourceClass(resourceState.invD1 === 0 ? ".resource-inv-left-top" : ".resource-inv-left-bottom", "active-wire", true);
+      toggleResourceClass(afterInvert === 0 ? ".resource-inv-right-top" : ".resource-inv-right-bottom", "active-wire", true);
+      toggleResourceClass(".resource-inv-output", "active-wire", on);
+      document.querySelector(".resource-inv-d1-blade")?.setAttribute("y2", resourceState.invD1 === 0 ? "85" : "205");
+      document.querySelector(".resource-inv-d2-blade")?.setAttribute("y2", resourceState.invD2 === 0 ? "85" : "205");
+
+      const lineA = document.querySelector(".resource-inv-line-a");
+      const lineB = document.querySelector(".resource-inv-line-b");
+      if (lineA && lineB) {
+        if (resourceState.invCross) {
+          lineA.setAttribute("x1", "480");
+          lineA.setAttribute("y1", "90");
+          lineA.setAttribute("x2", "580");
+          lineA.setAttribute("y2", "210");
+          lineB.setAttribute("x1", "480");
+          lineB.setAttribute("y1", "210");
+          lineB.setAttribute("x2", "580");
+          lineB.setAttribute("y2", "90");
+        } else {
+          lineA.setAttribute("x1", "480");
+          lineA.setAttribute("y1", "90");
+          lineA.setAttribute("x2", "580");
+          lineA.setAttribute("y2", "90");
+          lineB.setAttribute("x1", "480");
+          lineB.setAttribute("y1", "210");
+          lineB.setAttribute("x2", "580");
+          lineB.setAttribute("y2", "210");
+        }
+      }
+
+      setResourceLamp(".resource-inv-lamp", on);
+      setResourceStatus(".resource-inv-status", on);
+    }
+
+    function renderResources() {
+      renderResourceSingle();
+      renderResourceDeviators();
+      renderResourceInvertitore();
+    }
+
+    function attachResourceInteractions() {
+      document.querySelectorAll(".resource-tab").forEach(tab => {
+        tab.addEventListener("click", () => {
+          document.querySelectorAll(".resource-tab").forEach(item => item.setAttribute("aria-selected", "false"));
+          tab.setAttribute("aria-selected", "true");
+          document.querySelectorAll(".resource-example").forEach(item => item.classList.remove("active"));
+          document.getElementById(tab.dataset.resourceTarget)?.classList.add("active");
+        });
+      });
+
+      document.addEventListener("click", event => {
+        const action = event.target.closest("[data-resource-action]")?.dataset.resourceAction;
+        if (!action) return;
+        if (action === "single-toggle") resourceState.singleClosed = !resourceState.singleClosed;
+        if (action === "dev1-toggle") resourceState.dev1 = resourceState.dev1 ? 0 : 1;
+        if (action === "dev2-toggle") resourceState.dev2 = resourceState.dev2 ? 0 : 1;
+        if (action === "inv-d1-toggle") resourceState.invD1 = resourceState.invD1 ? 0 : 1;
+        if (action === "inv-toggle") resourceState.invCross = !resourceState.invCross;
+        if (action === "inv-d2-toggle") resourceState.invD2 = resourceState.invD2 ? 0 : 1;
+        renderResources();
+      });
+    }
+
+    function attachInstantCorrection() {
+      questionBank.forEach(q => {
+        if (q.type === "mcq" || q.type === "tf") {
+          document.querySelectorAll(`input[name="q_${q.id}"]`).forEach(el => {
+            el.addEventListener("change", () => checkQuestion(q));
+          });
+          return;
+        }
+
+        const field = document.getElementById(`q_${q.id}`);
+        if (!field) {
+          return;
+        }
+
+        if (q.type === "numeric") {
+          field.addEventListener("input", () => checkQuestion(q));
+          field.addEventListener("change", () => checkQuestion(q));
+        }
+      });
+
+      document.querySelectorAll('[data-action="check-open"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+          const q = questionBank.find(item => item.id === btn.dataset.id);
+          if (q) {
+            checkQuestion(q);
+          }
+        });
+      });
+
+      document.querySelectorAll('[data-action="show-solution"]').forEach(btn => {
+        btn.addEventListener("click", () => {
+          const q = questionBank.find(item => item.id === btn.dataset.id);
+          if (q) {
+            showOpenSolution(q);
+          }
+        });
+      });
+    }
+
+    renderNav();
+    renderAllQuestions();
+    attachInstantCorrection();
+    attachResourceInteractions();
+    renderResources();
+    routePage();
+    window.addEventListener("hashchange", routePage);
+  </script>
+</body>
+</html>

@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 2 The Command Line | Technical Foundations of Informatics</title>
+  <meta name="description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 2 The Command Line | Technical Foundations of Informatics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://info201.github.io/" />
+  <meta property="og:image" content="https://info201.github.io/img/cover-img.png" />
+  <meta property="og:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="github-repo" content="info201/book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 2 The Command Line | Technical Foundations of Informatics" />
+  
+  <meta name="twitter:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="twitter:image" content="https://info201.github.io/img/cover-img.png" />
+
+<meta name="author" content="Michael Freeman and Joel Ross" />
+
+
+<meta name="date" content="2019-09-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
+<link rel="prev" href="setup-machine.html"/>
+<link rel="next" href="markdown.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-98444716-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Technical Foundations of Informatics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the Book</a></li>
+<li class="chapter" data-level="1" data-path="setup-machine.html"><a href="setup-machine.html"><i class="fa fa-check"></i><b>1</b> Setting up your Machine</a><ul>
+<li class="chapter" data-level="1.1" data-path="setup-machine.html"><a href="setup-machine.html#git"><i class="fa fa-check"></i><b>1.1</b> Git</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="setup-machine.html"><a href="setup-machine.html#github"><i class="fa fa-check"></i><b>1.1.1</b> GitHub</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-tools-bash"><i class="fa fa-check"></i><b>1.2</b> Command-line Tools (Bash)</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-a-mac"><i class="fa fa-check"></i><b>1.2.1</b> Command-line on a Mac</a></li>
+<li class="chapter" data-level="1.2.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-windows"><i class="fa fa-check"></i><b>1.2.2</b> Command-line on Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="setup-machine.html"><a href="setup-machine.html#text-editors"><i class="fa fa-check"></i><b>1.3</b> Text Editors</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="setup-machine.html"><a href="setup-machine.html#atom"><i class="fa fa-check"></i><b>1.3.1</b> Atom</a></li>
+<li class="chapter" data-level="1.3.2" data-path="setup-machine.html"><a href="setup-machine.html#visual-studio-code"><i class="fa fa-check"></i><b>1.3.2</b> Visual Studio Code</a></li>
+<li class="chapter" data-level="1.3.3" data-path="setup-machine.html"><a href="setup-machine.html#sublime-text"><i class="fa fa-check"></i><b>1.3.3</b> Sublime Text</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="setup-machine.html"><a href="setup-machine.html#r-language"><i class="fa fa-check"></i><b>1.4</b> R Language</a></li>
+<li class="chapter" data-level="1.5" data-path="setup-machine.html"><a href="setup-machine.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="" data-path="setup-machine.html"><a href="setup-machine.html#resources"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>2</b> The Command Line</a><ul>
+<li class="chapter" data-level="2.1" data-path="command-line.html"><a href="command-line.html#accessing-the-command-line"><i class="fa fa-check"></i><b>2.1</b> Accessing the Command-Line</a></li>
+<li class="chapter" data-level="2.2" data-path="command-line.html"><a href="command-line.html#navigating-the-command-line"><i class="fa fa-check"></i><b>2.2</b> Navigating the Command Line</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="command-line.html"><a href="command-line.html#changing-directories"><i class="fa fa-check"></i><b>2.2.1</b> Changing Directories</a></li>
+<li class="chapter" data-level="2.2.2" data-path="command-line.html"><a href="command-line.html#listing-files"><i class="fa fa-check"></i><b>2.2.2</b> Listing Files</a></li>
+<li class="chapter" data-level="2.2.3" data-path="command-line.html"><a href="command-line.html#paths"><i class="fa fa-check"></i><b>2.2.3</b> Paths</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="command-line.html"><a href="command-line.html#file-commands"><i class="fa fa-check"></i><b>2.3</b> File Commands</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="command-line.html"><a href="command-line.html#learning-new-commands"><i class="fa fa-check"></i><b>2.3.1</b> Learning New Commands</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="command-line.html"><a href="command-line.html#dealing-with-errors"><i class="fa fa-check"></i><b>2.4</b> Dealing With Errors</a></li>
+<li class="chapter" data-level="" data-path="command-line.html"><a href="command-line.html#resources-1"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="markdown.html"><a href="markdown.html"><i class="fa fa-check"></i><b>3</b> Markdown</a><ul>
+<li class="chapter" data-level="3.1" data-path="markdown.html"><a href="markdown.html#writing-markdown"><i class="fa fa-check"></i><b>3.1</b> Writing Markdown</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="markdown.html"><a href="markdown.html#text-formatting"><i class="fa fa-check"></i><b>3.1.1</b> Text Formatting</a></li>
+<li class="chapter" data-level="3.1.2" data-path="markdown.html"><a href="markdown.html#text-blocks"><i class="fa fa-check"></i><b>3.1.2</b> Text Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="markdown.html"><a href="markdown.html#rendering-markdown"><i class="fa fa-check"></i><b>3.2</b> Rendering Markdown</a></li>
+<li class="chapter" data-level="" data-path="markdown.html"><a href="markdown.html#resources-2"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="git-basics.html"><a href="git-basics.html"><i class="fa fa-check"></i><b>4</b> Git and GitHub</a><ul>
+<li class="chapter" data-level="4.1" data-path="git-basics.html"><a href="git-basics.html#what-is-this-git-thing-anyway"><i class="fa fa-check"></i><b>4.1</b> What is this <em>git</em> thing anyway?</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="git-basics.html"><a href="git-basics.html#git-core-concepts"><i class="fa fa-check"></i><b>4.1.1</b> Git Core Concepts</a></li>
+<li class="chapter" data-level="4.1.2" data-path="git-basics.html"><a href="git-basics.html#wait-but-what-is-github-then"><i class="fa fa-check"></i><b>4.1.2</b> Wait, but what is GitHub then?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="git-basics.html"><a href="git-basics.html#installation-setup"><i class="fa fa-check"></i><b>4.2</b> Installation &amp; Setup</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="git-basics.html"><a href="git-basics.html#creating-a-repo"><i class="fa fa-check"></i><b>4.2.1</b> Creating a Repo</a></li>
+<li class="chapter" data-level="4.2.2" data-path="git-basics.html"><a href="git-basics.html#checking-status"><i class="fa fa-check"></i><b>4.2.2</b> Checking Status</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="git-basics.html"><a href="git-basics.html#making-changes"><i class="fa fa-check"></i><b>4.3</b> Making Changes</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="git-basics.html"><a href="git-basics.html#adding-files"><i class="fa fa-check"></i><b>4.3.1</b> Adding Files</a></li>
+<li class="chapter" data-level="4.3.2" data-path="git-basics.html"><a href="git-basics.html#committing"><i class="fa fa-check"></i><b>4.3.2</b> Committing</a></li>
+<li class="chapter" data-level="4.3.3" data-path="git-basics.html"><a href="git-basics.html#commit-history"><i class="fa fa-check"></i><b>4.3.3</b> Commit History</a></li>
+<li class="chapter" data-level="4.3.4" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process"><i class="fa fa-check"></i><b>4.3.4</b> Reviewing the Process</a></li>
+<li class="chapter" data-level="4.3.5" data-path="git-basics.html"><a href="git-basics.html#gitignore"><i class="fa fa-check"></i><b>4.3.5</b> The <code>.gitignore</code> File</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="git-basics.html"><a href="git-basics.html#github-and-remotes"><i class="fa fa-check"></i><b>4.4</b> GitHub and Remotes</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="git-basics.html"><a href="git-basics.html#forking-and-cloning"><i class="fa fa-check"></i><b>4.4.1</b> Forking and Cloning</a></li>
+<li class="chapter" data-level="4.4.2" data-path="git-basics.html"><a href="git-basics.html#pushing-and-pulling"><i class="fa fa-check"></i><b>4.4.2</b> Pushing and Pulling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process-1"><i class="fa fa-check"></i><b>4.4.3</b> Reviewing The Process</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="git-basics.html"><a href="git-basics.html#course-assignments-on-github"><i class="fa fa-check"></i><b>4.5</b> Course Assignments on GitHub</a></li>
+<li class="chapter" data-level="4.6" data-path="git-basics.html"><a href="git-basics.html#command-summary"><i class="fa fa-check"></i><b>4.6</b> Command Summary</a></li>
+<li class="chapter" data-level="" data-path="git-basics.html"><a href="git-basics.html#resources-3"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r-intro.html"><a href="r-intro.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a><ul>
+<li class="chapter" data-level="5.1" data-path="r-intro.html"><a href="r-intro.html#programming-with-r"><i class="fa fa-check"></i><b>5.1</b> Programming with R</a></li>
+<li class="chapter" data-level="5.2" data-path="r-intro.html"><a href="r-intro.html#running-r-scripts"><i class="fa fa-check"></i><b>5.2</b> Running R Scripts</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="r-intro.html"><a href="r-intro.html#running-r-cmd"><i class="fa fa-check"></i><b>5.2.1</b> Command-Line</a></li>
+<li class="chapter" data-level="5.2.2" data-path="r-intro.html"><a href="r-intro.html#running-r-rstudio"><i class="fa fa-check"></i><b>5.2.2</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="r-intro.html"><a href="r-intro.html#comments"><i class="fa fa-check"></i><b>5.3</b> Comments</a></li>
+<li class="chapter" data-level="5.4" data-path="r-intro.html"><a href="r-intro.html#variables"><i class="fa fa-check"></i><b>5.4</b> Variables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="r-intro.html"><a href="r-intro.html#basic-data-types"><i class="fa fa-check"></i><b>5.4.1</b> Basic Data Types</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="r-intro.html"><a href="r-intro.html#gettinghelp"><i class="fa fa-check"></i><b>5.5</b> Getting Help</a></li>
+<li class="chapter" data-level="" data-path="r-intro.html"><a href="r-intro.html#resources-4"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>6</b> Functions</a><ul>
+<li class="chapter" data-level="6.1" data-path="functions.html"><a href="functions.html#what-are-functions"><i class="fa fa-check"></i><b>6.1</b> What are Functions?</a></li>
+<li class="chapter" data-level="6.2" data-path="functions.html"><a href="functions.html#how-to-use-functions"><i class="fa fa-check"></i><b>6.2</b> How to Use Functions</a></li>
+<li class="chapter" data-level="6.3" data-path="functions.html"><a href="functions.html#built-in-r-functions"><i class="fa fa-check"></i><b>6.3</b> Built-in R Functions</a></li>
+<li class="chapter" data-level="6.4" data-path="functions.html"><a href="functions.html#loading-functions"><i class="fa fa-check"></i><b>6.4</b> Loading Functions</a></li>
+<li class="chapter" data-level="6.5" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>6.5</b> Writing Functions</a></li>
+<li class="chapter" data-level="6.6" data-path="functions.html"><a href="functions.html#conditional-statements"><i class="fa fa-check"></i><b>6.6</b> Conditional Statements</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#resources-5"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="vectors.html"><a href="vectors.html"><i class="fa fa-check"></i><b>7</b> Vectors</a><ul>
+<li class="chapter" data-level="7.1" data-path="vectors.html"><a href="vectors.html#what-is-a-vector"><i class="fa fa-check"></i><b>7.1</b> What is a Vector?</a></li>
+<li class="chapter" data-level="7.2" data-path="vectors.html"><a href="vectors.html#creating-vectors"><i class="fa fa-check"></i><b>7.2</b> Creating Vectors</a></li>
+<li class="chapter" data-level="7.3" data-path="vectors.html"><a href="vectors.html#vector-indices"><i class="fa fa-check"></i><b>7.3</b> Vector Indices</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="vectors.html"><a href="vectors.html#simple-numeric-indices"><i class="fa fa-check"></i><b>7.3.1</b> Simple Numeric Indices</a></li>
+<li class="chapter" data-level="7.3.2" data-path="vectors.html"><a href="vectors.html#multiple-indices"><i class="fa fa-check"></i><b>7.3.2</b> Multiple Indices</a></li>
+<li class="chapter" data-level="7.3.3" data-path="vectors.html"><a href="vectors.html#logical-indexing"><i class="fa fa-check"></i><b>7.3.3</b> Logical Indexing</a></li>
+<li class="chapter" data-level="7.3.4" data-path="vectors.html"><a href="vectors.html#named-vectors-and-character-indexing"><i class="fa fa-check"></i><b>7.3.4</b> Named Vectors and Character Indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="vectors.html"><a href="vectors.html#modifying-vectors"><i class="fa fa-check"></i><b>7.4</b> Modifying Vectors</a></li>
+<li class="chapter" data-level="7.5" data-path="vectors.html"><a href="vectors.html#vectorized-operations"><i class="fa fa-check"></i><b>7.5</b> Vectorized Operations</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="vectors.html"><a href="vectors.html#vectorized-operators"><i class="fa fa-check"></i><b>7.5.1</b> Vectorized Operators</a></li>
+<li class="chapter" data-level="7.5.2" data-path="vectors.html"><a href="vectors.html#vectorized-functions"><i class="fa fa-check"></i><b>7.5.2</b> Vectorized Functions</a></li>
+<li class="chapter" data-level="7.5.3" data-path="vectors.html"><a href="vectors.html#recycling"><i class="fa fa-check"></i><b>7.5.3</b> Recycling</a></li>
+<li class="chapter" data-level="7.5.4" data-path="vectors.html"><a href="vectors.html#r-is-a-vectorized-world"><i class="fa fa-check"></i><b>7.5.4</b> R Is a Vectorized World</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vectors.html"><a href="vectors.html#resources-6"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="lists.html"><a href="lists.html"><i class="fa fa-check"></i><b>8</b> Lists</a><ul>
+<li class="chapter" data-level="8.1" data-path="lists.html"><a href="lists.html#what-is-a-list"><i class="fa fa-check"></i><b>8.1</b> What is a List?</a></li>
+<li class="chapter" data-level="8.2" data-path="lists.html"><a href="lists.html#creating-lists"><i class="fa fa-check"></i><b>8.2</b> Creating Lists</a></li>
+<li class="chapter" data-level="8.3" data-path="lists.html"><a href="lists.html#accessing-list-elements"><i class="fa fa-check"></i><b>8.3</b> Accessing List Elements</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="lists.html"><a href="lists.html#lists-indexing-by-position"><i class="fa fa-check"></i><b>8.3.1</b> Indexing by position</a></li>
+<li class="chapter" data-level="8.3.2" data-path="lists.html"><a href="lists.html#indexing-by-name"><i class="fa fa-check"></i><b>8.3.2</b> Indexing by Name</a></li>
+<li class="chapter" data-level="8.3.3" data-path="lists.html"><a href="lists.html#indexing-by-logical-vector"><i class="fa fa-check"></i><b>8.3.3</b> Indexing by Logical Vector</a></li>
+<li class="chapter" data-level="8.3.4" data-path="lists.html"><a href="lists.html#lists-dollar-shortcut"><i class="fa fa-check"></i><b>8.3.4</b> Extracting named elements with <code>$</code></a></li>
+<li class="chapter" data-level="8.3.5" data-path="lists.html"><a href="lists.html#single-vs.double-brackets-vs.dollar"><i class="fa fa-check"></i><b>8.3.5</b> Single vs. Double Brackets vs. Dollar</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="lists.html"><a href="lists.html#modifying-lists"><i class="fa fa-check"></i><b>8.4</b> Modifying Lists</a></li>
+<li class="chapter" data-level="8.5" data-path="lists.html"><a href="lists.html#the-lapply-function"><i class="fa fa-check"></i><b>8.5</b> The <code>lapply()</code> Function</a></li>
+<li class="chapter" data-level="" data-path="lists.html"><a href="lists.html#resources-7"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-frames.html"><a href="data-frames.html"><i class="fa fa-check"></i><b>9</b> Data Frames</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-frames.html"><a href="data-frames.html#what-is-a-data-frame"><i class="fa fa-check"></i><b>9.1</b> What is a Data Frame?</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="data-frames.html"><a href="data-frames.html#creating-data-frames"><i class="fa fa-check"></i><b>9.1.1</b> Creating Data Frames</a></li>
+<li class="chapter" data-level="9.1.2" data-path="data-frames.html"><a href="data-frames.html#describing-structure-of-data-frames"><i class="fa fa-check"></i><b>9.1.2</b> Describing Structure of Data Frames</a></li>
+<li class="chapter" data-level="9.1.3" data-path="data-frames.html"><a href="data-frames.html#accessing-data-in-data-frames"><i class="fa fa-check"></i><b>9.1.3</b> Accessing Data in Data Frames</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="data-frames.html"><a href="data-frames.html#csv-files"><i class="fa fa-check"></i><b>9.2</b> Working with CSV Data</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="data-frames.html"><a href="data-frames.html#working-directory"><i class="fa fa-check"></i><b>9.2.1</b> Working Directory</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="data-frames.html"><a href="data-frames.html#factors"><i class="fa fa-check"></i><b>9.3</b> Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="data-frames.html"><a href="data-frames.html#resources-8"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>10</b> The <code>dplyr</code> Library</a><ul>
+<li class="chapter" data-level="10.1" data-path="dplyr.html"><a href="dplyr.html#a-grammar-of-data-manipulation"><i class="fa fa-check"></i><b>10.1</b> A Grammar of Data Manipulation</a></li>
+<li class="chapter" data-level="10.2" data-path="dplyr.html"><a href="dplyr.html#using-dplyr-functions"><i class="fa fa-check"></i><b>10.2</b> Using <code>dplyr</code> Functions</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>10.2.1</b> Select</a></li>
+<li class="chapter" data-level="10.2.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>10.2.2</b> Filter</a></li>
+<li class="chapter" data-level="10.2.3" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>10.2.3</b> Mutate</a></li>
+<li class="chapter" data-level="10.2.4" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>10.2.4</b> Arrange</a></li>
+<li class="chapter" data-level="10.2.5" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>10.2.5</b> Summarize</a></li>
+<li class="chapter" data-level="10.2.6" data-path="dplyr.html"><a href="dplyr.html#distinct"><i class="fa fa-check"></i><b>10.2.6</b> Distinct</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="dplyr.html"><a href="dplyr.html#multiple-operations"><i class="fa fa-check"></i><b>10.3</b> Multiple Operations</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="dplyr.html"><a href="dplyr.html#the-pipe-operator"><i class="fa fa-check"></i><b>10.3.1</b> The Pipe Operator</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="dplyr.html"><a href="dplyr.html#grouped-operations"><i class="fa fa-check"></i><b>10.4</b> Grouped Operations</a></li>
+<li class="chapter" data-level="10.5" data-path="dplyr.html"><a href="dplyr.html#joins"><i class="fa fa-check"></i><b>10.5</b> Joins</a></li>
+<li class="chapter" data-level="10.6" data-path="dplyr.html"><a href="dplyr.html#non-standard-evaluation-vs.standard-evaluation"><i class="fa fa-check"></i><b>10.6</b> Non-Standard Evaluation vs. Standard Evaluation</a><ul>
+<li class="chapter" data-level="10.6.1" data-path="dplyr.html"><a href="dplyr.html#explicit-standard-evaluation"><i class="fa fa-check"></i><b>10.6.1</b> Explicit Standard Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="dplyr.html"><a href="dplyr.html#resources-9"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>11</b> Accessing Web APIs</a><ul>
+<li class="chapter" data-level="11.1" data-path="apis.html"><a href="apis.html#what-is-a-web-api"><i class="fa fa-check"></i><b>11.1</b> What is a Web API?</a></li>
+<li class="chapter" data-level="11.2" data-path="apis.html"><a href="apis.html#restful-requests"><i class="fa fa-check"></i><b>11.2</b> RESTful Requests</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="apis.html"><a href="apis.html#uris"><i class="fa fa-check"></i><b>11.2.1</b> URIs</a></li>
+<li class="chapter" data-level="11.2.2" data-path="apis.html"><a href="apis.html#http-verbs"><i class="fa fa-check"></i><b>11.2.2</b> HTTP Verbs</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="apis.html"><a href="apis.html#accessing-web-apis"><i class="fa fa-check"></i><b>11.3</b> Accessing Web APIs</a></li>
+<li class="chapter" data-level="11.4" data-path="apis.html"><a href="apis.html#json"><i class="fa fa-check"></i><b>11.4</b> JSON Data</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="apis.html"><a href="apis.html#parsing-json"><i class="fa fa-check"></i><b>11.4.1</b> Parsing JSON</a></li>
+<li class="chapter" data-level="11.4.2" data-path="apis.html"><a href="apis.html#flattening-data"><i class="fa fa-check"></i><b>11.4.2</b> Flattening Data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apis.html"><a href="apis.html#resources-10"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>12</b> R Markdown</a><ul>
+<li class="chapter" data-level="12.1" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-and-rstudio"><i class="fa fa-check"></i><b>12.1</b> R Markdown and RStudio</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="r-markdown.html"><a href="r-markdown.html#creating-.rmd-files"><i class="fa fa-check"></i><b>12.1.1</b> Creating <code>.Rmd</code> Files</a></li>
+<li class="chapter" data-level="12.1.2" data-path="r-markdown.html"><a href="r-markdown.html#rmd-content"><i class="fa fa-check"></i><b>12.1.2</b> <code>.Rmd</code> Content</a></li>
+<li class="chapter" data-level="12.1.3" data-path="r-markdown.html"><a href="r-markdown.html#knitting-documents"><i class="fa fa-check"></i><b>12.1.3</b> Knitting Documents</a></li>
+<li class="chapter" data-level="12.1.4" data-path="r-markdown.html"><a href="r-markdown.html#html"><i class="fa fa-check"></i><b>12.1.4</b> HTML</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-syntax"><i class="fa fa-check"></i><b>12.2</b> R Markdown Syntax</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="r-markdown.html"><a href="r-markdown.html#r-code-chunks"><i class="fa fa-check"></i><b>12.2.1</b> R Code Chunks</a></li>
+<li class="chapter" data-level="12.2.2" data-path="r-markdown.html"><a href="r-markdown.html#inline-code"><i class="fa fa-check"></i><b>12.2.2</b> Inline Code</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-data"><i class="fa fa-check"></i><b>12.3</b> Rendering Data</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="r-markdown.html"><a href="r-markdown.html#rendering-strings"><i class="fa fa-check"></i><b>12.3.1</b> Rendering Strings</a></li>
+<li class="chapter" data-level="12.3.2" data-path="r-markdown.html"><a href="r-markdown.html#rendering-lists"><i class="fa fa-check"></i><b>12.3.2</b> Rendering Lists</a></li>
+<li class="chapter" data-level="12.3.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-tables"><i class="fa fa-check"></i><b>12.3.3</b> Rendering Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-markdown.html"><a href="r-markdown.html#resources-11"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>13</b> The <code>gglot2</code> Library</a><ul>
+<li class="chapter" data-level="13.1" data-path="ggplot2.html"><a href="ggplot2.html#a-grammar-of-graphics"><i class="fa fa-check"></i><b>13.1</b> A Grammar of Graphics</a></li>
+<li class="chapter" data-level="13.2" data-path="ggplot2.html"><a href="ggplot2.html#basic-plotting-with-ggplot2"><i class="fa fa-check"></i><b>13.2</b> Basic Plotting with <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="13.2.1" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-library"><i class="fa fa-check"></i><b>13.2.1</b> <em>ggplot2</em> library</a></li>
+<li class="chapter" data-level="13.2.2" data-path="ggplot2.html"><a href="ggplot2.html#mpg-data"><i class="fa fa-check"></i><b>13.2.2</b> <em>mpg</em> data</a></li>
+<li class="chapter" data-level="13.2.3" data-path="ggplot2.html"><a href="ggplot2.html#our-first-ggplot"><i class="fa fa-check"></i><b>13.2.3</b> Our first ggplot</a></li>
+<li class="chapter" data-level="13.2.4" data-path="ggplot2.html"><a href="ggplot2.html#aesthetic-mappings"><i class="fa fa-check"></i><b>13.2.4</b> Aesthetic Mappings</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="ggplot2.html"><a href="ggplot2.html#complex-plots"><i class="fa fa-check"></i><b>13.3</b> Complex Plots</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="ggplot2.html"><a href="ggplot2.html#specifying-geometry"><i class="fa fa-check"></i><b>13.3.1</b> Specifying Geometry</a></li>
+<li class="chapter" data-level="13.3.2" data-path="ggplot2.html"><a href="ggplot2.html#styling-with-scales"><i class="fa fa-check"></i><b>13.3.2</b> Styling with Scales</a></li>
+<li class="chapter" data-level="13.3.3" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>13.3.3</b> Coordinate Systems</a></li>
+<li class="chapter" data-level="13.3.4" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>13.3.4</b> Facets</a></li>
+<li class="chapter" data-level="13.3.5" data-path="ggplot2.html"><a href="ggplot2.html#labels-annotations"><i class="fa fa-check"></i><b>13.3.5</b> Labels &amp; Annotations</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="ggplot2.html"><a href="ggplot2.html#plotting-in-scripts"><i class="fa fa-check"></i><b>13.4</b> Plotting in Scripts</a></li>
+<li class="chapter" data-level="13.5" data-path="ggplot2.html"><a href="ggplot2.html#other-visualization-libraries"><i class="fa fa-check"></i><b>13.5</b> Other Visualization Libraries</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#resources-12"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="git-branches.html"><a href="git-branches.html"><i class="fa fa-check"></i><b>14</b> Git Branches</a><ul>
+<li class="chapter" data-level="14.1" data-path="git-branches.html"><a href="git-branches.html#git-branches-1"><i class="fa fa-check"></i><b>14.1</b> Git Branches</a></li>
+<li class="chapter" data-level="14.2" data-path="git-branches.html"><a href="git-branches.html#merging"><i class="fa fa-check"></i><b>14.2</b> Merging</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="git-branches.html"><a href="git-branches.html#merge-conflicts"><i class="fa fa-check"></i><b>14.2.1</b> Merge Conflicts</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="git-branches.html"><a href="git-branches.html#undoing-changes"><i class="fa fa-check"></i><b>14.3</b> Undoing Changes</a></li>
+<li class="chapter" data-level="14.4" data-path="git-branches.html"><a href="git-branches.html#github-and-branches"><i class="fa fa-check"></i><b>14.4</b> GitHub and Branches</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="git-branches.html"><a href="git-branches.html#github-pages"><i class="fa fa-check"></i><b>14.4.1</b> GitHub Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-branches.html"><a href="git-branches.html#resources-13"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="git-collaboration.html"><a href="git-collaboration.html"><i class="fa fa-check"></i><b>15</b> Git Collaboration</a><ul>
+<li class="chapter" data-level="15.1" data-path="git-collaboration.html"><a href="git-collaboration.html#centralized-workflow"><i class="fa fa-check"></i><b>15.1</b> Centralized Workflow</a></li>
+<li class="chapter" data-level="15.2" data-path="git-collaboration.html"><a href="git-collaboration.html#feature-branch-workflow"><i class="fa fa-check"></i><b>15.2</b> Feature Branch Workflow</a></li>
+<li class="chapter" data-level="15.3" data-path="git-collaboration.html"><a href="git-collaboration.html#forking-workflow"><i class="fa fa-check"></i><b>15.3</b> Forking Workflow</a><ul>
+<li class="chapter" data-level="15.3.1" data-path="git-collaboration.html"><a href="git-collaboration.html#pull-requests"><i class="fa fa-check"></i><b>15.3.1</b> Pull Requests</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-collaboration.html"><a href="git-collaboration.html#resources-14"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="shiny.html"><a href="shiny.html"><i class="fa fa-check"></i><b>16</b> The <code>shiny</code> Framework</a><ul>
+<li class="chapter" data-level="16.1" data-path="shiny.html"><a href="shiny.html#creating-shiny-apps"><i class="fa fa-check"></i><b>16.1</b> Creating Shiny Apps</a><ul>
+<li class="chapter" data-level="16.1.1" data-path="shiny.html"><a href="shiny.html#application-structure"><i class="fa fa-check"></i><b>16.1.1</b> Application Structure</a></li>
+<li class="chapter" data-level="16.1.2" data-path="shiny.html"><a href="shiny.html#the-ui"><i class="fa fa-check"></i><b>16.1.2</b> The UI</a></li>
+<li class="chapter" data-level="16.1.3" data-path="shiny.html"><a href="shiny.html#the-server"><i class="fa fa-check"></i><b>16.1.3</b> The Server</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="shiny.html"><a href="shiny.html#publishing-shiny-apps"><i class="fa fa-check"></i><b>16.2</b> Publishing Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="shiny.html"><a href="shiny.html#resources-15"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="appendix"><span><b>Special Topics</b></span></li>
+<li class="chapter" data-level="A" data-path="plotly.html"><a href="plotly.html"><i class="fa fa-check"></i><b>A</b> Plotly</a><ul>
+<li class="chapter" data-level="A.1" data-path="plotly.html"><a href="plotly.html#getting-started"><i class="fa fa-check"></i><b>A.1</b> Getting Started</a></li>
+<li class="chapter" data-level="A.2" data-path="plotly.html"><a href="plotly.html#basic-charts"><i class="fa fa-check"></i><b>A.2</b> Basic Charts</a></li>
+<li class="chapter" data-level="A.3" data-path="plotly.html"><a href="plotly.html#layout"><i class="fa fa-check"></i><b>A.3</b> Layout</a></li>
+<li class="chapter" data-level="A.4" data-path="plotly.html"><a href="plotly.html#hovers"><i class="fa fa-check"></i><b>A.4</b> Hovers</a></li>
+<li class="chapter" data-level="" data-path="plotly.html"><a href="plotly.html#resources-16"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="control-structures.html"><a href="control-structures.html"><i class="fa fa-check"></i><b>B</b> R Language Control Structures</a><ul>
+<li class="chapter" data-level="B.1" data-path="control-structures.html"><a href="control-structures.html#loops"><i class="fa fa-check"></i><b>B.1</b> Loops</a><ul>
+<li class="chapter" data-level="B.1.1" data-path="control-structures.html"><a href="control-structures.html#for-loop"><i class="fa fa-check"></i><b>B.1.1</b> For Loop</a></li>
+<li class="chapter" data-level="B.1.2" data-path="control-structures.html"><a href="control-structures.html#while-loop"><i class="fa fa-check"></i><b>B.1.2</b> While-loop</a></li>
+<li class="chapter" data-level="B.1.3" data-path="control-structures.html"><a href="control-structures.html#repeat-loop"><i class="fa fa-check"></i><b>B.1.3</b> repeat-loop</a></li>
+<li class="chapter" data-level="B.1.4" data-path="control-structures.html"><a href="control-structures.html#leaving-early-break-and-next"><i class="fa fa-check"></i><b>B.1.4</b> Leaving Early: <code>break</code> and <code>next</code></a></li>
+<li class="chapter" data-level="B.1.5" data-path="control-structures.html"><a href="control-structures.html#when-not-to-use-loops-in-r"><i class="fa fa-check"></i><b>B.1.5</b> When (Not) To Use Loops In R?</a></li>
+</ul></li>
+<li class="chapter" data-level="B.2" data-path="control-structures.html"><a href="control-structures.html#more-about-if-and-else"><i class="fa fa-check"></i><b>B.2</b> More about <code>if</code> and <code>else</code></a><ul>
+<li class="chapter" data-level="B.2.1" data-path="control-structures.html"><a href="control-structures.html#where-to-put-else"><i class="fa fa-check"></i><b>B.2.1</b> Where To Put Else</a></li>
+<li class="chapter" data-level="B.2.2" data-path="control-structures.html"><a href="control-structures.html#return-value"><i class="fa fa-check"></i><b>B.2.2</b> Return Value</a></li>
+</ul></li>
+<li class="chapter" data-level="B.3" data-path="control-structures.html"><a href="control-structures.html#switch-choosing-between-multiple-conditions"><i class="fa fa-check"></i><b>B.3</b> <code>switch</code>: Choosing Between Multiple Conditions</a></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="data-tables.html"><a href="data-tables.html"><i class="fa fa-check"></i><b>C</b> Thinking Big: Data Tables</a><ul>
+<li class="chapter" data-level="C.1" data-path="data-tables.html"><a href="data-tables.html#background-passing-by-value-and-passing-by-reference"><i class="fa fa-check"></i><b>C.1</b> Background: Passing By Value And Passing By Reference</a></li>
+<li class="chapter" data-level="C.2" data-path="data-tables.html"><a href="data-tables.html#data-tables-introduction"><i class="fa fa-check"></i><b>C.2</b> Data Tables: Introduction</a><ul>
+<li class="chapter" data-level="C.2.1" data-path="data-tables.html"><a href="data-tables.html#replacement-for-data-frames-sort-of"><i class="fa fa-check"></i><b>C.2.1</b> Replacement for Data Frames (Sort of)</a></li>
+<li class="chapter" data-level="C.2.2" data-path="data-tables.html"><a href="data-tables.html#fast-reading-and-writing"><i class="fa fa-check"></i><b>C.2.2</b> Fast Reading and Writing</a></li>
+</ul></li>
+<li class="chapter" data-level="C.3" data-path="data-tables.html"><a href="data-tables.html#indexing-the-major-powerhorse-of-data-tables"><i class="fa fa-check"></i><b>C.3</b> Indexing: The Major Powerhorse of Data Tables</a><ul>
+<li class="chapter" data-level="C.3.1" data-path="data-tables.html"><a href="data-tables.html#i-select-observations"><i class="fa fa-check"></i><b>C.3.1</b> i: Select Observations</a></li>
+<li class="chapter" data-level="C.3.2" data-path="data-tables.html"><a href="data-tables.html#j-work-with-columns"><i class="fa fa-check"></i><b>C.3.2</b> j: Work with Columns</a></li>
+<li class="chapter" data-level="C.3.3" data-path="data-tables.html"><a href="data-tables.html#group-in-by"><i class="fa fa-check"></i><b>C.3.3</b> Group in <code>by</code></a></li>
+</ul></li>
+<li class="chapter" data-level="C.4" data-path="data-tables.html"><a href="data-tables.html#create-variables-by-reference"><i class="fa fa-check"></i><b>C.4</b> <code>:=</code>–Create variables by reference</a></li>
+<li class="chapter" data-level="C.5" data-path="data-tables.html"><a href="data-tables.html#keys"><i class="fa fa-check"></i><b>C.5</b> keys</a></li>
+<li class="chapter" data-level="C.6" data-path="data-tables.html"><a href="data-tables.html#resources-17"><i class="fa fa-check"></i><b>C.6</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="remote-server.html"><a href="remote-server.html"><i class="fa fa-check"></i><b>D</b> Using Remote Server</a><ul>
+<li class="chapter" data-level="D.1" data-path="remote-server.html"><a href="remote-server.html#server-setup"><i class="fa fa-check"></i><b>D.1</b> Server Setup</a></li>
+<li class="chapter" data-level="D.2" data-path="remote-server.html"><a href="remote-server.html#connecting-to-the-remote-server"><i class="fa fa-check"></i><b>D.2</b> Connecting to the Remote Server</a></li>
+<li class="chapter" data-level="D.3" data-path="remote-server.html"><a href="remote-server.html#copying-files"><i class="fa fa-check"></i><b>D.3</b> Copying Files</a><ul>
+<li class="chapter" data-level="D.3.1" data-path="remote-server.html"><a href="remote-server.html#scp"><i class="fa fa-check"></i><b>D.3.1</b> scp</a></li>
+<li class="chapter" data-level="D.3.2" data-path="remote-server.html"><a href="remote-server.html#rsync"><i class="fa fa-check"></i><b>D.3.2</b> rsync</a></li>
+<li class="chapter" data-level="D.3.3" data-path="remote-server.html"><a href="remote-server.html#graphical-frontends"><i class="fa fa-check"></i><b>D.3.3</b> Graphical Frontends</a></li>
+<li class="chapter" data-level="D.3.4" data-path="remote-server.html"><a href="remote-server.html#remote-editing"><i class="fa fa-check"></i><b>D.3.4</b> Remote Editing</a></li>
+</ul></li>
+<li class="chapter" data-level="D.4" data-path="remote-server.html"><a href="remote-server.html#r-and-rscript"><i class="fa fa-check"></i><b>D.4</b> R and Rscript</a><ul>
+<li class="chapter" data-level="D.4.1" data-path="remote-server.html"><a href="remote-server.html#graphics-output-with-no-gui"><i class="fa fa-check"></i><b>D.4.1</b> Graphics Output with No GUI</a></li>
+</ul></li>
+<li class="chapter" data-level="D.5" data-path="remote-server.html"><a href="remote-server.html#life-on-server"><i class="fa fa-check"></i><b>D.5</b> Life on Server</a><ul>
+<li class="chapter" data-level="D.5.1" data-path="remote-server.html"><a href="remote-server.html#be-social"><i class="fa fa-check"></i><b>D.5.1</b> Be Social!</a></li>
+<li class="chapter" data-level="D.5.2" data-path="remote-server.html"><a href="remote-server.html#useful-things-to-do"><i class="fa fa-check"></i><b>D.5.2</b> Useful Things to Do</a></li>
+<li class="chapter" data-level="D.5.3" data-path="remote-server.html"><a href="remote-server.html#permissions-and-ownership"><i class="fa fa-check"></i><b>D.5.3</b> Permissions and ownership</a></li>
+<li class="chapter" data-level="D.5.4" data-path="remote-server.html"><a href="remote-server.html#more-than-one-connection"><i class="fa fa-check"></i><b>D.5.4</b> More than One Connection</a></li>
+</ul></li>
+<li class="chapter" data-level="D.6" data-path="remote-server.html"><a href="remote-server.html#advanced-usage"><i class="fa fa-check"></i><b>D.6</b> Advanced Usage</a><ul>
+<li class="chapter" data-level="D.6.1" data-path="remote-server.html"><a href="remote-server.html#ssh-keys-.sshconfig"><i class="fa fa-check"></i><b>D.6.1</b> ssh keys, .ssh/config</a></li>
+<li class="chapter" data-level="D.6.2" data-path="remote-server.html"><a href="remote-server.html#more-about-command-line-pipes-and-shell-patterns"><i class="fa fa-check"></i><b>D.6.2</b> More about command line: pipes and shell patterns</a></li>
+<li class="chapter" data-level="D.6.3" data-path="remote-server.html"><a href="remote-server.html#running-rscript-in-ssh-session"><i class="fa fa-check"></i><b>D.6.3</b> Running RScript in ssh Session</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Technical Foundations of Informatics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="command-line" class="section level1">
+<h1><span class="header-section-number">Chapter 2</span> The Command Line</h1>
+<p>The <strong>command-line</strong> is an <em>interface</em> to a computer—a way for you (the human) to communicate with the machine. But unlike common graphical interfaces that use <a href="https://en.wikipedia.org/wiki/WIMP_(computing)">windows, icons, menus, and pointers</a>, the command-line is <em>text-based</em>: you type commands instead of clicking on icons. The command-line lets you do everything you’d normally do by clicking with a mouse, but by typing in a manner similar to programming!</p>
+<div class="figure">
+<img src="img/command-line/cli-wikipedia.png" title="example command-line" alt="An example of the command-line in action (from Wikipedia)." />
+<p class="caption">An example of the command-line in action (from Wikipedia).</p>
+</div>
+<p>The command-line is not as friendly or intuitive as a graphical interface: it’s much harder to learn and figure out. However, it has the advantage of being both more powerful and more efficient in the hands of expert users. (It’s faster to type than to move a mouse, and you can do <em>lots</em> of “clicks” with a single command). The command-line is also used when working on remote servers or other computers that for some reason do not have a graphical interface enabled. Thus, command line is an essential tool for all professional developers, particularly when working with large amounts of data or files.</p>
+<p>This chapter will give you a brief introduction to basic tasks using the command-line: enough to get you comfortable navigating the interface and able to interpret commands.</p>
+<div id="accessing-the-command-line" class="section level2">
+<h2><span class="header-section-number">2.1</span> Accessing the Command-Line</h2>
+<p>In order to use the command-line, you will need to open a <strong>command shell</strong> (a.k.a. a <em>command prompt</em>). This is a program that provides the interface to type commands into. You should have installed a command shell (hereafter “the terminal”) as part of <a href="setup-machine.html#setup-machine">setting up your machine</a>.</p>
+<p>Once you open up the shell (Terminal or Git Bash), you should see something like this (red notes are added):</p>
+<div class="figure">
+<img src="img/command-line/cli-blank.png" title="A newly opened command-line" alt="A newly opened command-line." />
+<p class="caption">A newly opened command-line.</p>
+</div>
+<p>This is the textual equivalent of having opened up Finder or File Explorer and having it show you the user’s “Home” folder. The text shown lets you know:</p>
+<ul>
+<li>What <strong>machine</strong> you’re currently interfacing with (you can use the command-line to control different computers across a network or the internet).</li>
+<li>What <strong>directory</strong> (folder) you are currently looking at (<code>~</code> is a shorthand for the “home directory”).</li>
+<li>What <strong>user</strong> you are logged in as.</li>
+</ul>
+<p>After that you’ll see the <strong>prompt</strong> (typically denoted as the <code>$</code> symbol), which is where you will type in your commands.</p>
+</div>
+<div id="navigating-the-command-line" class="section level2">
+<h2><span class="header-section-number">2.2</span> Navigating the Command Line</h2>
+<p>Although the command-prompt gives you the name of the folder you’re in, you might like more detail about where that folder is. Time to send your first command! At the prompt, type:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="bu">pwd</span></a></code></pre></div>
+<p>This stands for <strong>p</strong>rint <strong>w</strong>orking <strong>d</strong>irectory (shell commands are highly abbreviated to make them faster to type), and will tell the computer to print the folder you are currently “in”.</p>
+<p class="alert alert-info">
+<em>Fun fact:</em> technically, this command usually starts a tiny program (app) that does exactly one thing: prints the working directory. When you run a command, you’re actually executing a tiny program! And when you run programs (tiny or large) on the command-line, it looks like you’re typing in commands.
+</p>
+<p>Folders on computers are stored in a hierarchy: each folder has more folders inside it, which have more folders inside them. This produces a <a href="https://en.wikipedia.org/wiki/Tree_(data_structure)">tree</a> structure which on a Mac may look like:</p>
+<div class="figure">
+<img src="img/command-line/dir-tree.png" title="directory tree" alt="A Directory Tree, from Bradnam and Korf." />
+<p class="caption">A Directory Tree, from Bradnam and Korf.</p>
+</div>
+<p>You describe what folder you are in putting a slash <code>/</code> between each folder in the tree: thus <code>/Users/iguest</code> means “the <code>iguest</code> folder, which is inside the <code>Users</code> folder”.</p>
+<p>At the very top (or bottom, depending on your point of view) is the <strong>root</strong> <code>/</code> directory‐which has no name, and so is just indicated with that single slash. So <code>/Users/iguest</code> really means “the <code>iguest</code> folder, which is inside the <code>Users</code> folder, which is inside the <em>root</em> folder”.</p>
+<p class="alert alert-info">
+<strong>A Note about Windows:</strong> while Mac (and other unix computers) use <code>/</code> as the root directory of the while system, Windows normally uses <code>This PC</code> on Explorer and similar graphical frontends, followed by the drive letters like <code>C:\</code>, followed by folder names separeted by backslashes. <em>gitbash</em> uses a unix-style filesystem tree approach with <code>/</code> replacing <code>This PC</code>, backslashes with forward slashes, and drive letters must be used without colon. So <code>C:\Users\Xiaotian\Desktop</code> can be accessed as <code>/c/Users/Xiatioan/Desktop</code>.
+</p>
+<div id="changing-directories" class="section level3">
+<h3><span class="header-section-number">2.2.1</span> Changing Directories</h3>
+<p>What if you want to change folders? In a graphical system like Finder, you would just double-click on the folder to open it. But there’s no clicking on the command-line.</p>
+<p class="alert alert-warning">
+This includes clicking to move the cursor to an earlier part of the command you typed. You’ll need to use the left and right arrow keys to move the cursor instead!
+</p>
+<p class="alert alert-info">
+<strong>Protip:</strong> The up and down arrow keys will let you cycle though your previous commands so you don’t need to re-type them!
+</p>
+<p>Since you can’t click on a folder, you’ll need to use another command:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="bu">cd</span> folder_name</a></code></pre></div>
+<p>The first word is the <strong>command</strong>, or what you want the computer to do. In this case, you’re issuing the command that means <strong>c</strong>hange <strong>d</strong>irectory.</p>
+<p>The second word is an example of an <strong>argument</strong>, which is a programming term that means “more details about what to do”. In this case, you’re providing a <em>required</em> argument of what folder you want to change to! (You’ll of course need to replace <code>folder_name</code> with the name of the folder).</p>
+<ul>
+<li>Try changing to the <code>Desktop</code> folder, which should be inside the home folder you started in—you could see it in Finder or File Explorer!
+<p class="alert alert-info">
+<strong>A note about Desktop on Windows:</strong> If you’re on Windows and the contents of your Desktop in the terminal doesn’t match the contents of your actual Desktop, your computer may be configured to have your Desktop in a different directory. This usually happens if you’ve set up software to back up your Desktop to an online service. Instead of <code>~/Desktop</code>, check if your Desktop folder is really in <code>~/OneDrive/Desktop</code> or <code>~/Dropbox/Desktop</code>.
+</p></li>
+<li>After you change folders, try printing your current location. Can you see that it has changed?</li>
+</ul>
+</div>
+<div id="listing-files" class="section level3">
+<h3><span class="header-section-number">2.2.2</span> Listing Files</h3>
+<p>In a graphical system, once you’ve double-clicked on a folder, Finder will show you the contents of that folder. The command-line doesn’t do this automatically; instead you need another command:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="fu">ls</span> [folder_name]</a></code></pre></div>
+<p>This command says to <strong>l</strong>i<strong>s</strong>t the folder contents. Note that the <em>argument</em> here is written in brackets (<code>[]</code>) to indicate that it is <em>optional</em>. If you just issue the <strong><code>ls</code></strong> command without an argument, it will list the contents of the current folder. If you include the optional argument (leaving off the brackets), you can “peek” at the contents of a folder you are not currently in.</p>
+<div class="alert alert-danger">
+<p>
+<strong>Warning</strong>: The command-line can be not great about giving <strong>feedback</strong> for your actions. For example, if there are no files in the folder, then <code>ls</code> will simply show nothing, potentially looking like it “didn’t work”. Or when typing a <strong>password</strong>, the letters you type won’t show (not even as <code>*</code>) as a security measure.
+</p>
+<p>
+Just because you don’t see any results from your command/typing, doesn’t mean it didn’t work! Trust in yourself, and use basic commands like <code>ls</code> and <code>pwd</code> to confirm any changes if you’re unsure. Take it slow, one step at a time.
+</p>
+</div>
+</div>
+<div id="paths" class="section level3">
+<h3><span class="header-section-number">2.2.3</span> Paths</h3>
+<p>Note that both the <strong><code>cd</code></strong> and <strong><code>ls</code></strong> commands work even for folders that are not “immediately inside” the current directory! You can refer to <em>any</em> file or folder on the computer by specifying its <strong>path</strong>. A file’s path is “how you get to that file”: the list of folders you’d need to click through to get to the file, with each folder separated by a <code>/</code>:</p>
+<pre><code>cd /Users/iguest/Desktop/</code></pre>
+<p>This says to start at the root directory (that initial <code>/</code>), then go to <code>Users</code>, then go to <code>iguest</code>, then to <code>Desktop</code>.</p>
+<p>Because this path starts with a specific directory (the root directory), it is referred to as an <strong>absolute path</strong>. No matter what folder you currently happen to be in, that path will refer to the correct file because it always starts on its journey from the root.</p>
+<p>Contrast that with:</p>
+<pre><code>cd iguest/Desktop/</code></pre>
+<p>Because this path doesn’t have the leading slash, it just says to “go to the <code>iguest/Desktop</code> folder <em>from the current location</em>”. It is known as a <strong>relative path</strong>: it gives you directions to a file <em>relative to the current folder</em>. As such, the relative path <code>iguest/Desktop/</code> path will only refer to the correct location if you happen to be in the <code>/Users</code> folder; if you start somewhere else, who knows where you’ll end up!</p>
+<p class="alert alert-warning">
+You should <strong>always</strong> use relative paths, particularly when programming! Because you’ll almost always be managing multiples files in a project, you should refer to the files <em>relatively</em> within your project. That way, you program can easily work across computers. For example, if your code refers to <code>/Users/your-user-name/project-name/data</code>, it can only run on the <code>your-user-name</code> account. However, if you use a <em>relative path</em> within your code (i.e., <code>project-name/data</code>), the program will run on multiple computers (crucial for collaborative projects).
+</p>
+<p>You can refer to the “current folder” by using a single dot <strong><code>.</code></strong>. So the command</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="fu">ls</span> .</a></code></pre></div>
+<p>means “list the contents of the current folder” (the same thing you get if you leave off the argument).</p>
+<p>If you want to go <em>up</em> a directory, you use <em>two</em> dots: <strong><code>..</code></strong> to refer to the <strong>parent</strong> folder (that is, the one that contains this one). So the command</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="fu">ls</span> ..</a></code></pre></div>
+<p>means “list the contents of the folder that contains the current folder”.</p>
+<p>Note that <strong><code>.</code></strong> and <strong><code>..</code></strong> act just like folder names, so you can include them anywhere in paths: <code>../../my_folder</code> says to go up two directories, and then into <code>my_folder</code>.</p>
+<p class="alert alert-info">
+<strong>Protip:</strong> Most command shells like Terminal and Git Bash support <strong>tab-completion</strong>. If you type out just the first few letters of a file or folder name and then hit the <code>tab</code> key, it will automatically fill in the rest of the name! If the name is ambiguous (e.g., you type <code>Do</code> and there is both a <code>Documents</code> and a <code>Downloads</code> folder), you can hit <code>tab</code> <em>twice</em> to see the list of matching folders. Then add enough letters to distinguish them and tab to complete! This will make your life <em>a lot</em> easier.
+</p>
+<p>Additionally, you can use a tilde <strong><code>~</code></strong> as shorthand for the home directory of the current user. Just like <code>.</code> refers to “current folder”, <code>~</code> refers to the user’s home directory (usually <code>/Users/USERNAME</code> on mac or <code>/c/Users/USERNAME</code> on windows). And of course, you can use the tilde as part of a path as well (e.g., <code>~/Desktop</code> is an <em>absolute path</em> to the desktop for the current user).</p>
+<p class="alert alert-info">
+<strong>A note about home directory on Windows:</strong> unlike unix, windows does not have a consistent concept of home directory, and different programs may interpret it in a different way. For instance, <em>gitbash</em> assumes the home directory is <code>/c/Users/USERNAME</code> while <code>R</code> assumes it is <code>/c/Users/USERNAME/Desktop</code>.
+</p>
+<p>As you perhaps noticed above, command line uses space as a separator between the command and additional arguments. This means it is more complicated to work with paths and file names that contain a space. For instance, if you want to change into a folder called <code>my folder</code>, then issuing <code>cd my folder</code> results in an error (“cd: too many arguments”). This is because <code>cd</code> thinks that <code>my</code> is folder name, and <code>folder</code> after space is an additional argument. But there are two ways to handle spaces: first, you can put your pathname in quotes like <code>cd &quot;my folder&quot;</code>, and second, you can <em>escape</em> the space with a backslash: <code>cd my\ folder</code>. Both of these options work reasonably well but in general we recommend to avoid spaces in file names whenever you work with command line.</p>
+</div>
+</div>
+<div id="file-commands" class="section level2">
+<h2><span class="header-section-number">2.3</span> File Commands</h2>
+<p><img src="img/command-line/matrix-cli.jpg" title="Matrix command-line meme" /></p>
+<p>Once you’re comfortable navigating folders in the command-line, you can start to use it to do all the same things you would do with Finder or File Explorer, simply by using the correct command. Here is an short list of commands to get you started using the command prompt, though there are <a href="http://www.lagmonster.org/docs/unix/intro-137.html">many more</a>:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Command</th>
+<th align="left">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"><strong><code>mkdir</code></strong></td>
+<td align="left"><strong>m</strong>a<strong>k</strong>e a <strong>dir</strong>ectory</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><code>rm</code></strong></td>
+<td align="left"><strong>r</strong>e<strong>m</strong>ove a file or folder</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><code>cp</code></strong></td>
+<td align="left"><strong>c</strong>o<strong>p</strong>y a file from one location to another</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><code>open</code></strong></td>
+<td align="left">opens a file or folder (Mac only)</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><code>start</code></strong></td>
+<td align="left">opens a file or folder (Windows only)</td>
+</tr>
+<tr class="even">
+<td align="left"><strong><code>cat</code></strong></td>
+<td align="left">con<strong>cat</strong>enate (combine) file contents and display the results</td>
+</tr>
+<tr class="odd">
+<td align="left"><strong><code>history</code></strong></td>
+<td align="left">show previous commands executed</td>
+</tr>
+</tbody>
+</table>
+<div class="alert alert-danger">
+<p>
+<strong>Warning</strong>: The command-line makes it <strong>dangerously easy</strong> to <em>permanently delete</em> multiple files or folders and <em>will not</em> ask you to confirm that you want to delete them (or move them to the “recycling bin”). Be very careful when using the terminal to manage your files, as it is very powerful.
+</p>
+</div>
+<p>Be aware that many of these commands <strong>won’t print anything</strong> when you run them. This often means that they worked; they just did so quietly. If it <em>doesn’t</em> work, you’ll know because you’ll see a message telling you so (and why, if you read the message). So just because you didn’t get any output doesn’t mean you did something wrong—you can use another command (such as <strong><code>ls</code></strong>) to confirm that the files or folders changed the way you wanted!</p>
+<div id="learning-new-commands" class="section level3">
+<h3><span class="header-section-number">2.3.1</span> Learning New Commands</h3>
+<p>How can you figure out what kind of arguments these commands take? You can look it up! This information is available online, but many command shells (though <em>not</em> Git Bash, unfortunately) also include their own manual you can use to look up commands!</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="fu">man</span> mkdir</a></code></pre></div>
+<p>Will show the <strong>man</strong>ual for the <strong><code>mkdir</code></strong> program/command.</p>
+<p class="alert alert-info">
+Because manuals are often long, they are opened up in a command-line viewer called <a href="https://en.wikipedia.org/wiki/Less_(Unix)"><code>less</code></a>. You can “scroll” up and down by using the arrow keys. Hit the <code>q</code> key to <strong>q</strong>uit and return to the command-prompt.
+</p>
+<div class="figure">
+<img src="img/command-line/mkdir.png" title="man mkdir" alt="The mkdir man page." />
+<p class="caption">The <code>mkdir</code> man page.</p>
+</div>
+<p>If you look under “Synopsis” you can see a summary of all the different arguments this command understands. A few notes about reading this syntax:</p>
+<ul>
+<li><p>Recall that anything in brackets <code>[]</code> is optional. Arguments that are not in brackets (e.g., <code>directory_name</code>) are required.</p></li>
+<li><p><strong>“Options”</strong> (or “flags”) for command-line programs are often marked with a leading dash <strong><code>-</code></strong> to make them distinct from file or folder names. Options may change the way a command-line program behaves—like how you might set “easy” or “hard” mode in a game. You can either write out each option individually, or combine them: <strong><code>mkdir -p -v</code></strong> and <strong><code>mkdir -pv</code></strong> are equivalent.</p>
+<ul>
+<li>Some options may require an additional argument beyond just indicating a particular operation style. In this case, you can see that the <code>-m</code> option requires you to specify an additional <code>mode</code> parameter; see the details below for what this looks like.</li>
+</ul></li>
+<li><p>Underlined arguments are ones you choose: you don’t actually type the word <code>directory_name</code>, but instead your own directory name! Contrast this with the options: if you want to use the <code>-p</code> option, you need to type <code>-p</code> exactly.</p></li>
+</ul>
+<p>Command-line manuals (“man pages”) are often very difficult to read and understand: start by looking at just the required arguments (which are usually straightforward), and then search for and use a particular option if you’re looking to change a command’s behavior.</p>
+<p>For practice, try to read the man page for <code>rm</code> and figure out how to delete a folder and not just a single file. Note that you’ll want to be careful, as this is a good way to <a href="http://www.pcworld.com/article/3057235/data-center-cloud/that-man-who-deleted-his-entire-company-with-a-line-of-code-it-was-a-hoax.html">break things</a>.</p>
+</div>
+</div>
+<div id="dealing-with-errors" class="section level2">
+<h2><span class="header-section-number">2.4</span> Dealing With Errors</h2>
+<p>Note that the syntax of these commands (how you write them out) is very important. Computers aren’t good at figuring out what you meant if you aren’t really specific; forgetting a space may result in an entirely different action.</p>
+<p>Try another command: <strong><code>echo</code></strong> lets you “echo” (print out) some text. Try echoing <code>&quot;Hello World&quot;</code> (which is the traditional first computer program):</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="bu">echo</span> <span class="st">&quot;Hello world&quot;</span></a></code></pre></div>
+<p>What happens if you forget the closing quote? You keep hitting “enter” but you just get that <code>&gt;</code> over and over again! What’s going on?</p>
+<ul>
+<li>Because you didn’t “close” the quote, the shell thinks you are still typing the message you want to echo! When you hit “enter” it adds a <em>line break</em> instead of ending the command, and the <code>&gt;</code> marks that you’re still going. If you finally close the quote, you’ll see your multi-line message printed!</li>
+</ul>
+<div class="alert alert-info">
+<p>
+<strong>IMPORTANT TIP</strong> If you ever get stuck in the command-line, hit <strong><code>ctrl-c</code></strong> (The <code>control</code> and <code>c</code> keys together). This almost always means “cancel”, and will “stop” whatever program or command is currently running in the shell so that you can try again. Just remember: “<strong><code>ctrl-c</code></strong> to flee”.
+</p>
+<p>
+(If that doesn’t work, try hitting the <code>esc</code> key, or typing <code>exit</code>, <code>q</code>, or <code>quit</code>. Those commands will cover <em>most</em> command-line programs).
+</p>
+</div>
+<p>Throughout this book, we’ll discuss a variety of approaches to handling errors in computer programs. While it’s tempting to disregard dense error messages, many programs do provide <strong>error messages</strong> that explain what went wrong. If you enter an unrecognized command, the terminal will inform you of your mistake:</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb10-1" data-line-number="1"><span class="ex">lx</span></a>
+<a class="sourceLine" id="cb10-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">-bash</span>: lx: command not found</a></code></pre></div>
+<p>However, forgetting arguments yields different results. In some cases, there will be a default behavior (see what happens if you enter <code>cd</code> without any arguments). If more information is <em>required</em> to run a command, your terminal will provide you with a brief summary of the command’s usage:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="fu">mkdir</span></a>
+<a class="sourceLine" id="cb11-2" data-line-number="2"><span class="op">&gt;</span> <span class="ex">usage</span>: mkdir [-pv] [-m mode] directory ...</a></code></pre></div>
+<p>Take the time to read the error message and think about what the problem might be before you try again.</p>
+</div>
+<div id="resources-1" class="section level2 unnumbered">
+<h2>Resources</h2>
+<div class="list-condensed">
+<ul>
+<li><a href="https://www.learnenough.com/command-line-tutorial#sec-basics">Learn Enough Command Line to be Dangerous</a></li>
+<li><a href="https://www.youtube.com/watch?v=sqYUYHn-HKg&amp;list=PLCAF7D691FFA25555">Video series: Bash commands</a></li>
+<li><a href="http://www.lagmonster.org/docs/unix/intro-137.html">List of Common Commands</a> (also <a href="http://www.math.utah.edu/lab/unix/unix-commands.html">here</a>)</li>
+</ul>
+</div>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="setup-machine.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="markdown.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["github", "facebook", "twitter", "google"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/info201/book/edit/master/command-line.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+</body>
+
+</html>

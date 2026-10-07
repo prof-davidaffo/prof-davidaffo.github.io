@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 11 Accessing Web APIs | Technical Foundations of Informatics</title>
+  <meta name="description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="generator" content="bookdown 0.13 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 11 Accessing Web APIs | Technical Foundations of Informatics" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="https://info201.github.io/" />
+  <meta property="og:image" content="https://info201.github.io/img/cover-img.png" />
+  <meta property="og:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="github-repo" content="info201/book" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 11 Accessing Web APIs | Technical Foundations of Informatics" />
+  
+  <meta name="twitter:description" content="The course reader for INFO 201: Technical Foundations of Informatics." />
+  <meta name="twitter:image" content="https://info201.github.io/img/cover-img.png" />
+
+<meta name="author" content="Michael Freeman and Joel Ross" />
+
+
+<meta name="date" content="2019-09-11" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  <link rel="shortcut icon" href="img/favicon.png" type="image/x-icon" />
+<link rel="prev" href="dplyr.html"/>
+<link rel="next" href="r-markdown.html"/>
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-98444716-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+
+<style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<link rel="stylesheet" href="css/style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">Technical Foundations of Informatics</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>About the Book</a></li>
+<li class="chapter" data-level="1" data-path="setup-machine.html"><a href="setup-machine.html"><i class="fa fa-check"></i><b>1</b> Setting up your Machine</a><ul>
+<li class="chapter" data-level="1.1" data-path="setup-machine.html"><a href="setup-machine.html#git"><i class="fa fa-check"></i><b>1.1</b> Git</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="setup-machine.html"><a href="setup-machine.html#github"><i class="fa fa-check"></i><b>1.1.1</b> GitHub</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-tools-bash"><i class="fa fa-check"></i><b>1.2</b> Command-line Tools (Bash)</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-a-mac"><i class="fa fa-check"></i><b>1.2.1</b> Command-line on a Mac</a></li>
+<li class="chapter" data-level="1.2.2" data-path="setup-machine.html"><a href="setup-machine.html#command-line-on-windows"><i class="fa fa-check"></i><b>1.2.2</b> Command-line on Windows</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="setup-machine.html"><a href="setup-machine.html#text-editors"><i class="fa fa-check"></i><b>1.3</b> Text Editors</a><ul>
+<li class="chapter" data-level="1.3.1" data-path="setup-machine.html"><a href="setup-machine.html#atom"><i class="fa fa-check"></i><b>1.3.1</b> Atom</a></li>
+<li class="chapter" data-level="1.3.2" data-path="setup-machine.html"><a href="setup-machine.html#visual-studio-code"><i class="fa fa-check"></i><b>1.3.2</b> Visual Studio Code</a></li>
+<li class="chapter" data-level="1.3.3" data-path="setup-machine.html"><a href="setup-machine.html#sublime-text"><i class="fa fa-check"></i><b>1.3.3</b> Sublime Text</a></li>
+</ul></li>
+<li class="chapter" data-level="1.4" data-path="setup-machine.html"><a href="setup-machine.html#r-language"><i class="fa fa-check"></i><b>1.4</b> R Language</a></li>
+<li class="chapter" data-level="1.5" data-path="setup-machine.html"><a href="setup-machine.html#rstudio"><i class="fa fa-check"></i><b>1.5</b> RStudio</a></li>
+<li class="chapter" data-level="" data-path="setup-machine.html"><a href="setup-machine.html#resources"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="command-line.html"><a href="command-line.html"><i class="fa fa-check"></i><b>2</b> The Command Line</a><ul>
+<li class="chapter" data-level="2.1" data-path="command-line.html"><a href="command-line.html#accessing-the-command-line"><i class="fa fa-check"></i><b>2.1</b> Accessing the Command-Line</a></li>
+<li class="chapter" data-level="2.2" data-path="command-line.html"><a href="command-line.html#navigating-the-command-line"><i class="fa fa-check"></i><b>2.2</b> Navigating the Command Line</a><ul>
+<li class="chapter" data-level="2.2.1" data-path="command-line.html"><a href="command-line.html#changing-directories"><i class="fa fa-check"></i><b>2.2.1</b> Changing Directories</a></li>
+<li class="chapter" data-level="2.2.2" data-path="command-line.html"><a href="command-line.html#listing-files"><i class="fa fa-check"></i><b>2.2.2</b> Listing Files</a></li>
+<li class="chapter" data-level="2.2.3" data-path="command-line.html"><a href="command-line.html#paths"><i class="fa fa-check"></i><b>2.2.3</b> Paths</a></li>
+</ul></li>
+<li class="chapter" data-level="2.3" data-path="command-line.html"><a href="command-line.html#file-commands"><i class="fa fa-check"></i><b>2.3</b> File Commands</a><ul>
+<li class="chapter" data-level="2.3.1" data-path="command-line.html"><a href="command-line.html#learning-new-commands"><i class="fa fa-check"></i><b>2.3.1</b> Learning New Commands</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="command-line.html"><a href="command-line.html#dealing-with-errors"><i class="fa fa-check"></i><b>2.4</b> Dealing With Errors</a></li>
+<li class="chapter" data-level="" data-path="command-line.html"><a href="command-line.html#resources-1"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="markdown.html"><a href="markdown.html"><i class="fa fa-check"></i><b>3</b> Markdown</a><ul>
+<li class="chapter" data-level="3.1" data-path="markdown.html"><a href="markdown.html#writing-markdown"><i class="fa fa-check"></i><b>3.1</b> Writing Markdown</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="markdown.html"><a href="markdown.html#text-formatting"><i class="fa fa-check"></i><b>3.1.1</b> Text Formatting</a></li>
+<li class="chapter" data-level="3.1.2" data-path="markdown.html"><a href="markdown.html#text-blocks"><i class="fa fa-check"></i><b>3.1.2</b> Text Blocks</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="markdown.html"><a href="markdown.html#rendering-markdown"><i class="fa fa-check"></i><b>3.2</b> Rendering Markdown</a></li>
+<li class="chapter" data-level="" data-path="markdown.html"><a href="markdown.html#resources-2"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="git-basics.html"><a href="git-basics.html"><i class="fa fa-check"></i><b>4</b> Git and GitHub</a><ul>
+<li class="chapter" data-level="4.1" data-path="git-basics.html"><a href="git-basics.html#what-is-this-git-thing-anyway"><i class="fa fa-check"></i><b>4.1</b> What is this <em>git</em> thing anyway?</a><ul>
+<li class="chapter" data-level="4.1.1" data-path="git-basics.html"><a href="git-basics.html#git-core-concepts"><i class="fa fa-check"></i><b>4.1.1</b> Git Core Concepts</a></li>
+<li class="chapter" data-level="4.1.2" data-path="git-basics.html"><a href="git-basics.html#wait-but-what-is-github-then"><i class="fa fa-check"></i><b>4.1.2</b> Wait, but what is GitHub then?</a></li>
+</ul></li>
+<li class="chapter" data-level="4.2" data-path="git-basics.html"><a href="git-basics.html#installation-setup"><i class="fa fa-check"></i><b>4.2</b> Installation &amp; Setup</a><ul>
+<li class="chapter" data-level="4.2.1" data-path="git-basics.html"><a href="git-basics.html#creating-a-repo"><i class="fa fa-check"></i><b>4.2.1</b> Creating a Repo</a></li>
+<li class="chapter" data-level="4.2.2" data-path="git-basics.html"><a href="git-basics.html#checking-status"><i class="fa fa-check"></i><b>4.2.2</b> Checking Status</a></li>
+</ul></li>
+<li class="chapter" data-level="4.3" data-path="git-basics.html"><a href="git-basics.html#making-changes"><i class="fa fa-check"></i><b>4.3</b> Making Changes</a><ul>
+<li class="chapter" data-level="4.3.1" data-path="git-basics.html"><a href="git-basics.html#adding-files"><i class="fa fa-check"></i><b>4.3.1</b> Adding Files</a></li>
+<li class="chapter" data-level="4.3.2" data-path="git-basics.html"><a href="git-basics.html#committing"><i class="fa fa-check"></i><b>4.3.2</b> Committing</a></li>
+<li class="chapter" data-level="4.3.3" data-path="git-basics.html"><a href="git-basics.html#commit-history"><i class="fa fa-check"></i><b>4.3.3</b> Commit History</a></li>
+<li class="chapter" data-level="4.3.4" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process"><i class="fa fa-check"></i><b>4.3.4</b> Reviewing the Process</a></li>
+<li class="chapter" data-level="4.3.5" data-path="git-basics.html"><a href="git-basics.html#gitignore"><i class="fa fa-check"></i><b>4.3.5</b> The <code>.gitignore</code> File</a></li>
+</ul></li>
+<li class="chapter" data-level="4.4" data-path="git-basics.html"><a href="git-basics.html#github-and-remotes"><i class="fa fa-check"></i><b>4.4</b> GitHub and Remotes</a><ul>
+<li class="chapter" data-level="4.4.1" data-path="git-basics.html"><a href="git-basics.html#forking-and-cloning"><i class="fa fa-check"></i><b>4.4.1</b> Forking and Cloning</a></li>
+<li class="chapter" data-level="4.4.2" data-path="git-basics.html"><a href="git-basics.html#pushing-and-pulling"><i class="fa fa-check"></i><b>4.4.2</b> Pushing and Pulling</a></li>
+<li class="chapter" data-level="4.4.3" data-path="git-basics.html"><a href="git-basics.html#reviewing-the-process-1"><i class="fa fa-check"></i><b>4.4.3</b> Reviewing The Process</a></li>
+</ul></li>
+<li class="chapter" data-level="4.5" data-path="git-basics.html"><a href="git-basics.html#course-assignments-on-github"><i class="fa fa-check"></i><b>4.5</b> Course Assignments on GitHub</a></li>
+<li class="chapter" data-level="4.6" data-path="git-basics.html"><a href="git-basics.html#command-summary"><i class="fa fa-check"></i><b>4.6</b> Command Summary</a></li>
+<li class="chapter" data-level="" data-path="git-basics.html"><a href="git-basics.html#resources-3"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="r-intro.html"><a href="r-intro.html"><i class="fa fa-check"></i><b>5</b> Introduction to R</a><ul>
+<li class="chapter" data-level="5.1" data-path="r-intro.html"><a href="r-intro.html#programming-with-r"><i class="fa fa-check"></i><b>5.1</b> Programming with R</a></li>
+<li class="chapter" data-level="5.2" data-path="r-intro.html"><a href="r-intro.html#running-r-scripts"><i class="fa fa-check"></i><b>5.2</b> Running R Scripts</a><ul>
+<li class="chapter" data-level="5.2.1" data-path="r-intro.html"><a href="r-intro.html#running-r-cmd"><i class="fa fa-check"></i><b>5.2.1</b> Command-Line</a></li>
+<li class="chapter" data-level="5.2.2" data-path="r-intro.html"><a href="r-intro.html#running-r-rstudio"><i class="fa fa-check"></i><b>5.2.2</b> RStudio</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="r-intro.html"><a href="r-intro.html#comments"><i class="fa fa-check"></i><b>5.3</b> Comments</a></li>
+<li class="chapter" data-level="5.4" data-path="r-intro.html"><a href="r-intro.html#variables"><i class="fa fa-check"></i><b>5.4</b> Variables</a><ul>
+<li class="chapter" data-level="5.4.1" data-path="r-intro.html"><a href="r-intro.html#basic-data-types"><i class="fa fa-check"></i><b>5.4.1</b> Basic Data Types</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="r-intro.html"><a href="r-intro.html#gettinghelp"><i class="fa fa-check"></i><b>5.5</b> Getting Help</a></li>
+<li class="chapter" data-level="" data-path="r-intro.html"><a href="r-intro.html#resources-4"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>6</b> Functions</a><ul>
+<li class="chapter" data-level="6.1" data-path="functions.html"><a href="functions.html#what-are-functions"><i class="fa fa-check"></i><b>6.1</b> What are Functions?</a></li>
+<li class="chapter" data-level="6.2" data-path="functions.html"><a href="functions.html#how-to-use-functions"><i class="fa fa-check"></i><b>6.2</b> How to Use Functions</a></li>
+<li class="chapter" data-level="6.3" data-path="functions.html"><a href="functions.html#built-in-r-functions"><i class="fa fa-check"></i><b>6.3</b> Built-in R Functions</a></li>
+<li class="chapter" data-level="6.4" data-path="functions.html"><a href="functions.html#loading-functions"><i class="fa fa-check"></i><b>6.4</b> Loading Functions</a></li>
+<li class="chapter" data-level="6.5" data-path="functions.html"><a href="functions.html#writing-functions"><i class="fa fa-check"></i><b>6.5</b> Writing Functions</a></li>
+<li class="chapter" data-level="6.6" data-path="functions.html"><a href="functions.html#conditional-statements"><i class="fa fa-check"></i><b>6.6</b> Conditional Statements</a></li>
+<li class="chapter" data-level="" data-path="functions.html"><a href="functions.html#resources-5"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="vectors.html"><a href="vectors.html"><i class="fa fa-check"></i><b>7</b> Vectors</a><ul>
+<li class="chapter" data-level="7.1" data-path="vectors.html"><a href="vectors.html#what-is-a-vector"><i class="fa fa-check"></i><b>7.1</b> What is a Vector?</a></li>
+<li class="chapter" data-level="7.2" data-path="vectors.html"><a href="vectors.html#creating-vectors"><i class="fa fa-check"></i><b>7.2</b> Creating Vectors</a></li>
+<li class="chapter" data-level="7.3" data-path="vectors.html"><a href="vectors.html#vector-indices"><i class="fa fa-check"></i><b>7.3</b> Vector Indices</a><ul>
+<li class="chapter" data-level="7.3.1" data-path="vectors.html"><a href="vectors.html#simple-numeric-indices"><i class="fa fa-check"></i><b>7.3.1</b> Simple Numeric Indices</a></li>
+<li class="chapter" data-level="7.3.2" data-path="vectors.html"><a href="vectors.html#multiple-indices"><i class="fa fa-check"></i><b>7.3.2</b> Multiple Indices</a></li>
+<li class="chapter" data-level="7.3.3" data-path="vectors.html"><a href="vectors.html#logical-indexing"><i class="fa fa-check"></i><b>7.3.3</b> Logical Indexing</a></li>
+<li class="chapter" data-level="7.3.4" data-path="vectors.html"><a href="vectors.html#named-vectors-and-character-indexing"><i class="fa fa-check"></i><b>7.3.4</b> Named Vectors and Character Indexing</a></li>
+</ul></li>
+<li class="chapter" data-level="7.4" data-path="vectors.html"><a href="vectors.html#modifying-vectors"><i class="fa fa-check"></i><b>7.4</b> Modifying Vectors</a></li>
+<li class="chapter" data-level="7.5" data-path="vectors.html"><a href="vectors.html#vectorized-operations"><i class="fa fa-check"></i><b>7.5</b> Vectorized Operations</a><ul>
+<li class="chapter" data-level="7.5.1" data-path="vectors.html"><a href="vectors.html#vectorized-operators"><i class="fa fa-check"></i><b>7.5.1</b> Vectorized Operators</a></li>
+<li class="chapter" data-level="7.5.2" data-path="vectors.html"><a href="vectors.html#vectorized-functions"><i class="fa fa-check"></i><b>7.5.2</b> Vectorized Functions</a></li>
+<li class="chapter" data-level="7.5.3" data-path="vectors.html"><a href="vectors.html#recycling"><i class="fa fa-check"></i><b>7.5.3</b> Recycling</a></li>
+<li class="chapter" data-level="7.5.4" data-path="vectors.html"><a href="vectors.html#r-is-a-vectorized-world"><i class="fa fa-check"></i><b>7.5.4</b> R Is a Vectorized World</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="vectors.html"><a href="vectors.html#resources-6"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="lists.html"><a href="lists.html"><i class="fa fa-check"></i><b>8</b> Lists</a><ul>
+<li class="chapter" data-level="8.1" data-path="lists.html"><a href="lists.html#what-is-a-list"><i class="fa fa-check"></i><b>8.1</b> What is a List?</a></li>
+<li class="chapter" data-level="8.2" data-path="lists.html"><a href="lists.html#creating-lists"><i class="fa fa-check"></i><b>8.2</b> Creating Lists</a></li>
+<li class="chapter" data-level="8.3" data-path="lists.html"><a href="lists.html#accessing-list-elements"><i class="fa fa-check"></i><b>8.3</b> Accessing List Elements</a><ul>
+<li class="chapter" data-level="8.3.1" data-path="lists.html"><a href="lists.html#lists-indexing-by-position"><i class="fa fa-check"></i><b>8.3.1</b> Indexing by position</a></li>
+<li class="chapter" data-level="8.3.2" data-path="lists.html"><a href="lists.html#indexing-by-name"><i class="fa fa-check"></i><b>8.3.2</b> Indexing by Name</a></li>
+<li class="chapter" data-level="8.3.3" data-path="lists.html"><a href="lists.html#indexing-by-logical-vector"><i class="fa fa-check"></i><b>8.3.3</b> Indexing by Logical Vector</a></li>
+<li class="chapter" data-level="8.3.4" data-path="lists.html"><a href="lists.html#lists-dollar-shortcut"><i class="fa fa-check"></i><b>8.3.4</b> Extracting named elements with <code>$</code></a></li>
+<li class="chapter" data-level="8.3.5" data-path="lists.html"><a href="lists.html#single-vs.double-brackets-vs.dollar"><i class="fa fa-check"></i><b>8.3.5</b> Single vs. Double Brackets vs. Dollar</a></li>
+</ul></li>
+<li class="chapter" data-level="8.4" data-path="lists.html"><a href="lists.html#modifying-lists"><i class="fa fa-check"></i><b>8.4</b> Modifying Lists</a></li>
+<li class="chapter" data-level="8.5" data-path="lists.html"><a href="lists.html#the-lapply-function"><i class="fa fa-check"></i><b>8.5</b> The <code>lapply()</code> Function</a></li>
+<li class="chapter" data-level="" data-path="lists.html"><a href="lists.html#resources-7"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="data-frames.html"><a href="data-frames.html"><i class="fa fa-check"></i><b>9</b> Data Frames</a><ul>
+<li class="chapter" data-level="9.1" data-path="data-frames.html"><a href="data-frames.html#what-is-a-data-frame"><i class="fa fa-check"></i><b>9.1</b> What is a Data Frame?</a><ul>
+<li class="chapter" data-level="9.1.1" data-path="data-frames.html"><a href="data-frames.html#creating-data-frames"><i class="fa fa-check"></i><b>9.1.1</b> Creating Data Frames</a></li>
+<li class="chapter" data-level="9.1.2" data-path="data-frames.html"><a href="data-frames.html#describing-structure-of-data-frames"><i class="fa fa-check"></i><b>9.1.2</b> Describing Structure of Data Frames</a></li>
+<li class="chapter" data-level="9.1.3" data-path="data-frames.html"><a href="data-frames.html#accessing-data-in-data-frames"><i class="fa fa-check"></i><b>9.1.3</b> Accessing Data in Data Frames</a></li>
+</ul></li>
+<li class="chapter" data-level="9.2" data-path="data-frames.html"><a href="data-frames.html#csv-files"><i class="fa fa-check"></i><b>9.2</b> Working with CSV Data</a><ul>
+<li class="chapter" data-level="9.2.1" data-path="data-frames.html"><a href="data-frames.html#working-directory"><i class="fa fa-check"></i><b>9.2.1</b> Working Directory</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="data-frames.html"><a href="data-frames.html#factors"><i class="fa fa-check"></i><b>9.3</b> Factor Variables</a></li>
+<li class="chapter" data-level="" data-path="data-frames.html"><a href="data-frames.html#resources-8"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="dplyr.html"><a href="dplyr.html"><i class="fa fa-check"></i><b>10</b> The <code>dplyr</code> Library</a><ul>
+<li class="chapter" data-level="10.1" data-path="dplyr.html"><a href="dplyr.html#a-grammar-of-data-manipulation"><i class="fa fa-check"></i><b>10.1</b> A Grammar of Data Manipulation</a></li>
+<li class="chapter" data-level="10.2" data-path="dplyr.html"><a href="dplyr.html#using-dplyr-functions"><i class="fa fa-check"></i><b>10.2</b> Using <code>dplyr</code> Functions</a><ul>
+<li class="chapter" data-level="10.2.1" data-path="dplyr.html"><a href="dplyr.html#select"><i class="fa fa-check"></i><b>10.2.1</b> Select</a></li>
+<li class="chapter" data-level="10.2.2" data-path="dplyr.html"><a href="dplyr.html#filter"><i class="fa fa-check"></i><b>10.2.2</b> Filter</a></li>
+<li class="chapter" data-level="10.2.3" data-path="dplyr.html"><a href="dplyr.html#mutate"><i class="fa fa-check"></i><b>10.2.3</b> Mutate</a></li>
+<li class="chapter" data-level="10.2.4" data-path="dplyr.html"><a href="dplyr.html#arrange"><i class="fa fa-check"></i><b>10.2.4</b> Arrange</a></li>
+<li class="chapter" data-level="10.2.5" data-path="dplyr.html"><a href="dplyr.html#summarize"><i class="fa fa-check"></i><b>10.2.5</b> Summarize</a></li>
+<li class="chapter" data-level="10.2.6" data-path="dplyr.html"><a href="dplyr.html#distinct"><i class="fa fa-check"></i><b>10.2.6</b> Distinct</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="dplyr.html"><a href="dplyr.html#multiple-operations"><i class="fa fa-check"></i><b>10.3</b> Multiple Operations</a><ul>
+<li class="chapter" data-level="10.3.1" data-path="dplyr.html"><a href="dplyr.html#the-pipe-operator"><i class="fa fa-check"></i><b>10.3.1</b> The Pipe Operator</a></li>
+</ul></li>
+<li class="chapter" data-level="10.4" data-path="dplyr.html"><a href="dplyr.html#grouped-operations"><i class="fa fa-check"></i><b>10.4</b> Grouped Operations</a></li>
+<li class="chapter" data-level="10.5" data-path="dplyr.html"><a href="dplyr.html#joins"><i class="fa fa-check"></i><b>10.5</b> Joins</a></li>
+<li class="chapter" data-level="10.6" data-path="dplyr.html"><a href="dplyr.html#non-standard-evaluation-vs.standard-evaluation"><i class="fa fa-check"></i><b>10.6</b> Non-Standard Evaluation vs. Standard Evaluation</a><ul>
+<li class="chapter" data-level="10.6.1" data-path="dplyr.html"><a href="dplyr.html#explicit-standard-evaluation"><i class="fa fa-check"></i><b>10.6.1</b> Explicit Standard Evaluation</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="dplyr.html"><a href="dplyr.html#resources-9"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="apis.html"><a href="apis.html"><i class="fa fa-check"></i><b>11</b> Accessing Web APIs</a><ul>
+<li class="chapter" data-level="11.1" data-path="apis.html"><a href="apis.html#what-is-a-web-api"><i class="fa fa-check"></i><b>11.1</b> What is a Web API?</a></li>
+<li class="chapter" data-level="11.2" data-path="apis.html"><a href="apis.html#restful-requests"><i class="fa fa-check"></i><b>11.2</b> RESTful Requests</a><ul>
+<li class="chapter" data-level="11.2.1" data-path="apis.html"><a href="apis.html#uris"><i class="fa fa-check"></i><b>11.2.1</b> URIs</a></li>
+<li class="chapter" data-level="11.2.2" data-path="apis.html"><a href="apis.html#http-verbs"><i class="fa fa-check"></i><b>11.2.2</b> HTTP Verbs</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="apis.html"><a href="apis.html#accessing-web-apis"><i class="fa fa-check"></i><b>11.3</b> Accessing Web APIs</a></li>
+<li class="chapter" data-level="11.4" data-path="apis.html"><a href="apis.html#json"><i class="fa fa-check"></i><b>11.4</b> JSON Data</a><ul>
+<li class="chapter" data-level="11.4.1" data-path="apis.html"><a href="apis.html#parsing-json"><i class="fa fa-check"></i><b>11.4.1</b> Parsing JSON</a></li>
+<li class="chapter" data-level="11.4.2" data-path="apis.html"><a href="apis.html#flattening-data"><i class="fa fa-check"></i><b>11.4.2</b> Flattening Data</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="apis.html"><a href="apis.html#resources-10"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="r-markdown.html"><a href="r-markdown.html"><i class="fa fa-check"></i><b>12</b> R Markdown</a><ul>
+<li class="chapter" data-level="12.1" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-and-rstudio"><i class="fa fa-check"></i><b>12.1</b> R Markdown and RStudio</a><ul>
+<li class="chapter" data-level="12.1.1" data-path="r-markdown.html"><a href="r-markdown.html#creating-.rmd-files"><i class="fa fa-check"></i><b>12.1.1</b> Creating <code>.Rmd</code> Files</a></li>
+<li class="chapter" data-level="12.1.2" data-path="r-markdown.html"><a href="r-markdown.html#rmd-content"><i class="fa fa-check"></i><b>12.1.2</b> <code>.Rmd</code> Content</a></li>
+<li class="chapter" data-level="12.1.3" data-path="r-markdown.html"><a href="r-markdown.html#knitting-documents"><i class="fa fa-check"></i><b>12.1.3</b> Knitting Documents</a></li>
+<li class="chapter" data-level="12.1.4" data-path="r-markdown.html"><a href="r-markdown.html#html"><i class="fa fa-check"></i><b>12.1.4</b> HTML</a></li>
+</ul></li>
+<li class="chapter" data-level="12.2" data-path="r-markdown.html"><a href="r-markdown.html#r-markdown-syntax"><i class="fa fa-check"></i><b>12.2</b> R Markdown Syntax</a><ul>
+<li class="chapter" data-level="12.2.1" data-path="r-markdown.html"><a href="r-markdown.html#r-code-chunks"><i class="fa fa-check"></i><b>12.2.1</b> R Code Chunks</a></li>
+<li class="chapter" data-level="12.2.2" data-path="r-markdown.html"><a href="r-markdown.html#inline-code"><i class="fa fa-check"></i><b>12.2.2</b> Inline Code</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-data"><i class="fa fa-check"></i><b>12.3</b> Rendering Data</a><ul>
+<li class="chapter" data-level="12.3.1" data-path="r-markdown.html"><a href="r-markdown.html#rendering-strings"><i class="fa fa-check"></i><b>12.3.1</b> Rendering Strings</a></li>
+<li class="chapter" data-level="12.3.2" data-path="r-markdown.html"><a href="r-markdown.html#rendering-lists"><i class="fa fa-check"></i><b>12.3.2</b> Rendering Lists</a></li>
+<li class="chapter" data-level="12.3.3" data-path="r-markdown.html"><a href="r-markdown.html#rendering-tables"><i class="fa fa-check"></i><b>12.3.3</b> Rendering Tables</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="r-markdown.html"><a href="r-markdown.html#resources-11"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="ggplot2.html"><a href="ggplot2.html"><i class="fa fa-check"></i><b>13</b> The <code>gglot2</code> Library</a><ul>
+<li class="chapter" data-level="13.1" data-path="ggplot2.html"><a href="ggplot2.html#a-grammar-of-graphics"><i class="fa fa-check"></i><b>13.1</b> A Grammar of Graphics</a></li>
+<li class="chapter" data-level="13.2" data-path="ggplot2.html"><a href="ggplot2.html#basic-plotting-with-ggplot2"><i class="fa fa-check"></i><b>13.2</b> Basic Plotting with <code>ggplot2</code></a><ul>
+<li class="chapter" data-level="13.2.1" data-path="ggplot2.html"><a href="ggplot2.html#ggplot2-library"><i class="fa fa-check"></i><b>13.2.1</b> <em>ggplot2</em> library</a></li>
+<li class="chapter" data-level="13.2.2" data-path="ggplot2.html"><a href="ggplot2.html#mpg-data"><i class="fa fa-check"></i><b>13.2.2</b> <em>mpg</em> data</a></li>
+<li class="chapter" data-level="13.2.3" data-path="ggplot2.html"><a href="ggplot2.html#our-first-ggplot"><i class="fa fa-check"></i><b>13.2.3</b> Our first ggplot</a></li>
+<li class="chapter" data-level="13.2.4" data-path="ggplot2.html"><a href="ggplot2.html#aesthetic-mappings"><i class="fa fa-check"></i><b>13.2.4</b> Aesthetic Mappings</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="ggplot2.html"><a href="ggplot2.html#complex-plots"><i class="fa fa-check"></i><b>13.3</b> Complex Plots</a><ul>
+<li class="chapter" data-level="13.3.1" data-path="ggplot2.html"><a href="ggplot2.html#specifying-geometry"><i class="fa fa-check"></i><b>13.3.1</b> Specifying Geometry</a></li>
+<li class="chapter" data-level="13.3.2" data-path="ggplot2.html"><a href="ggplot2.html#styling-with-scales"><i class="fa fa-check"></i><b>13.3.2</b> Styling with Scales</a></li>
+<li class="chapter" data-level="13.3.3" data-path="ggplot2.html"><a href="ggplot2.html#coordinate-systems"><i class="fa fa-check"></i><b>13.3.3</b> Coordinate Systems</a></li>
+<li class="chapter" data-level="13.3.4" data-path="ggplot2.html"><a href="ggplot2.html#facets"><i class="fa fa-check"></i><b>13.3.4</b> Facets</a></li>
+<li class="chapter" data-level="13.3.5" data-path="ggplot2.html"><a href="ggplot2.html#labels-annotations"><i class="fa fa-check"></i><b>13.3.5</b> Labels &amp; Annotations</a></li>
+</ul></li>
+<li class="chapter" data-level="13.4" data-path="ggplot2.html"><a href="ggplot2.html#plotting-in-scripts"><i class="fa fa-check"></i><b>13.4</b> Plotting in Scripts</a></li>
+<li class="chapter" data-level="13.5" data-path="ggplot2.html"><a href="ggplot2.html#other-visualization-libraries"><i class="fa fa-check"></i><b>13.5</b> Other Visualization Libraries</a></li>
+<li class="chapter" data-level="" data-path="ggplot2.html"><a href="ggplot2.html#resources-12"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="git-branches.html"><a href="git-branches.html"><i class="fa fa-check"></i><b>14</b> Git Branches</a><ul>
+<li class="chapter" data-level="14.1" data-path="git-branches.html"><a href="git-branches.html#git-branches-1"><i class="fa fa-check"></i><b>14.1</b> Git Branches</a></li>
+<li class="chapter" data-level="14.2" data-path="git-branches.html"><a href="git-branches.html#merging"><i class="fa fa-check"></i><b>14.2</b> Merging</a><ul>
+<li class="chapter" data-level="14.2.1" data-path="git-branches.html"><a href="git-branches.html#merge-conflicts"><i class="fa fa-check"></i><b>14.2.1</b> Merge Conflicts</a></li>
+</ul></li>
+<li class="chapter" data-level="14.3" data-path="git-branches.html"><a href="git-branches.html#undoing-changes"><i class="fa fa-check"></i><b>14.3</b> Undoing Changes</a></li>
+<li class="chapter" data-level="14.4" data-path="git-branches.html"><a href="git-branches.html#github-and-branches"><i class="fa fa-check"></i><b>14.4</b> GitHub and Branches</a><ul>
+<li class="chapter" data-level="14.4.1" data-path="git-branches.html"><a href="git-branches.html#github-pages"><i class="fa fa-check"></i><b>14.4.1</b> GitHub Pages</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-branches.html"><a href="git-branches.html#resources-13"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="git-collaboration.html"><a href="git-collaboration.html"><i class="fa fa-check"></i><b>15</b> Git Collaboration</a><ul>
+<li class="chapter" data-level="15.1" data-path="git-collaboration.html"><a href="git-collaboration.html#centralized-workflow"><i class="fa fa-check"></i><b>15.1</b> Centralized Workflow</a></li>
+<li class="chapter" data-level="15.2" data-path="git-collaboration.html"><a href="git-collaboration.html#feature-branch-workflow"><i class="fa fa-check"></i><b>15.2</b> Feature Branch Workflow</a></li>
+<li class="chapter" data-level="15.3" data-path="git-collaboration.html"><a href="git-collaboration.html#forking-workflow"><i class="fa fa-check"></i><b>15.3</b> Forking Workflow</a><ul>
+<li class="chapter" data-level="15.3.1" data-path="git-collaboration.html"><a href="git-collaboration.html#pull-requests"><i class="fa fa-check"></i><b>15.3.1</b> Pull Requests</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="git-collaboration.html"><a href="git-collaboration.html#resources-14"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="shiny.html"><a href="shiny.html"><i class="fa fa-check"></i><b>16</b> The <code>shiny</code> Framework</a><ul>
+<li class="chapter" data-level="16.1" data-path="shiny.html"><a href="shiny.html#creating-shiny-apps"><i class="fa fa-check"></i><b>16.1</b> Creating Shiny Apps</a><ul>
+<li class="chapter" data-level="16.1.1" data-path="shiny.html"><a href="shiny.html#application-structure"><i class="fa fa-check"></i><b>16.1.1</b> Application Structure</a></li>
+<li class="chapter" data-level="16.1.2" data-path="shiny.html"><a href="shiny.html#the-ui"><i class="fa fa-check"></i><b>16.1.2</b> The UI</a></li>
+<li class="chapter" data-level="16.1.3" data-path="shiny.html"><a href="shiny.html#the-server"><i class="fa fa-check"></i><b>16.1.3</b> The Server</a></li>
+</ul></li>
+<li class="chapter" data-level="16.2" data-path="shiny.html"><a href="shiny.html#publishing-shiny-apps"><i class="fa fa-check"></i><b>16.2</b> Publishing Shiny Apps</a></li>
+<li class="chapter" data-level="" data-path="shiny.html"><a href="shiny.html#resources-15"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="appendix"><span><b>Special Topics</b></span></li>
+<li class="chapter" data-level="A" data-path="plotly.html"><a href="plotly.html"><i class="fa fa-check"></i><b>A</b> Plotly</a><ul>
+<li class="chapter" data-level="A.1" data-path="plotly.html"><a href="plotly.html#getting-started"><i class="fa fa-check"></i><b>A.1</b> Getting Started</a></li>
+<li class="chapter" data-level="A.2" data-path="plotly.html"><a href="plotly.html#basic-charts"><i class="fa fa-check"></i><b>A.2</b> Basic Charts</a></li>
+<li class="chapter" data-level="A.3" data-path="plotly.html"><a href="plotly.html#layout"><i class="fa fa-check"></i><b>A.3</b> Layout</a></li>
+<li class="chapter" data-level="A.4" data-path="plotly.html"><a href="plotly.html#hovers"><i class="fa fa-check"></i><b>A.4</b> Hovers</a></li>
+<li class="chapter" data-level="" data-path="plotly.html"><a href="plotly.html#resources-16"><i class="fa fa-check"></i>Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="B" data-path="control-structures.html"><a href="control-structures.html"><i class="fa fa-check"></i><b>B</b> R Language Control Structures</a><ul>
+<li class="chapter" data-level="B.1" data-path="control-structures.html"><a href="control-structures.html#loops"><i class="fa fa-check"></i><b>B.1</b> Loops</a><ul>
+<li class="chapter" data-level="B.1.1" data-path="control-structures.html"><a href="control-structures.html#for-loop"><i class="fa fa-check"></i><b>B.1.1</b> For Loop</a></li>
+<li class="chapter" data-level="B.1.2" data-path="control-structures.html"><a href="control-structures.html#while-loop"><i class="fa fa-check"></i><b>B.1.2</b> While-loop</a></li>
+<li class="chapter" data-level="B.1.3" data-path="control-structures.html"><a href="control-structures.html#repeat-loop"><i class="fa fa-check"></i><b>B.1.3</b> repeat-loop</a></li>
+<li class="chapter" data-level="B.1.4" data-path="control-structures.html"><a href="control-structures.html#leaving-early-break-and-next"><i class="fa fa-check"></i><b>B.1.4</b> Leaving Early: <code>break</code> and <code>next</code></a></li>
+<li class="chapter" data-level="B.1.5" data-path="control-structures.html"><a href="control-structures.html#when-not-to-use-loops-in-r"><i class="fa fa-check"></i><b>B.1.5</b> When (Not) To Use Loops In R?</a></li>
+</ul></li>
+<li class="chapter" data-level="B.2" data-path="control-structures.html"><a href="control-structures.html#more-about-if-and-else"><i class="fa fa-check"></i><b>B.2</b> More about <code>if</code> and <code>else</code></a><ul>
+<li class="chapter" data-level="B.2.1" data-path="control-structures.html"><a href="control-structures.html#where-to-put-else"><i class="fa fa-check"></i><b>B.2.1</b> Where To Put Else</a></li>
+<li class="chapter" data-level="B.2.2" data-path="control-structures.html"><a href="control-structures.html#return-value"><i class="fa fa-check"></i><b>B.2.2</b> Return Value</a></li>
+</ul></li>
+<li class="chapter" data-level="B.3" data-path="control-structures.html"><a href="control-structures.html#switch-choosing-between-multiple-conditions"><i class="fa fa-check"></i><b>B.3</b> <code>switch</code>: Choosing Between Multiple Conditions</a></li>
+</ul></li>
+<li class="chapter" data-level="C" data-path="data-tables.html"><a href="data-tables.html"><i class="fa fa-check"></i><b>C</b> Thinking Big: Data Tables</a><ul>
+<li class="chapter" data-level="C.1" data-path="data-tables.html"><a href="data-tables.html#background-passing-by-value-and-passing-by-reference"><i class="fa fa-check"></i><b>C.1</b> Background: Passing By Value And Passing By Reference</a></li>
+<li class="chapter" data-level="C.2" data-path="data-tables.html"><a href="data-tables.html#data-tables-introduction"><i class="fa fa-check"></i><b>C.2</b> Data Tables: Introduction</a><ul>
+<li class="chapter" data-level="C.2.1" data-path="data-tables.html"><a href="data-tables.html#replacement-for-data-frames-sort-of"><i class="fa fa-check"></i><b>C.2.1</b> Replacement for Data Frames (Sort of)</a></li>
+<li class="chapter" data-level="C.2.2" data-path="data-tables.html"><a href="data-tables.html#fast-reading-and-writing"><i class="fa fa-check"></i><b>C.2.2</b> Fast Reading and Writing</a></li>
+</ul></li>
+<li class="chapter" data-level="C.3" data-path="data-tables.html"><a href="data-tables.html#indexing-the-major-powerhorse-of-data-tables"><i class="fa fa-check"></i><b>C.3</b> Indexing: The Major Powerhorse of Data Tables</a><ul>
+<li class="chapter" data-level="C.3.1" data-path="data-tables.html"><a href="data-tables.html#i-select-observations"><i class="fa fa-check"></i><b>C.3.1</b> i: Select Observations</a></li>
+<li class="chapter" data-level="C.3.2" data-path="data-tables.html"><a href="data-tables.html#j-work-with-columns"><i class="fa fa-check"></i><b>C.3.2</b> j: Work with Columns</a></li>
+<li class="chapter" data-level="C.3.3" data-path="data-tables.html"><a href="data-tables.html#group-in-by"><i class="fa fa-check"></i><b>C.3.3</b> Group in <code>by</code></a></li>
+</ul></li>
+<li class="chapter" data-level="C.4" data-path="data-tables.html"><a href="data-tables.html#create-variables-by-reference"><i class="fa fa-check"></i><b>C.4</b> <code>:=</code>–Create variables by reference</a></li>
+<li class="chapter" data-level="C.5" data-path="data-tables.html"><a href="data-tables.html#keys"><i class="fa fa-check"></i><b>C.5</b> keys</a></li>
+<li class="chapter" data-level="C.6" data-path="data-tables.html"><a href="data-tables.html#resources-17"><i class="fa fa-check"></i><b>C.6</b> Resources</a></li>
+</ul></li>
+<li class="chapter" data-level="D" data-path="remote-server.html"><a href="remote-server.html"><i class="fa fa-check"></i><b>D</b> Using Remote Server</a><ul>
+<li class="chapter" data-level="D.1" data-path="remote-server.html"><a href="remote-server.html#server-setup"><i class="fa fa-check"></i><b>D.1</b> Server Setup</a></li>
+<li class="chapter" data-level="D.2" data-path="remote-server.html"><a href="remote-server.html#connecting-to-the-remote-server"><i class="fa fa-check"></i><b>D.2</b> Connecting to the Remote Server</a></li>
+<li class="chapter" data-level="D.3" data-path="remote-server.html"><a href="remote-server.html#copying-files"><i class="fa fa-check"></i><b>D.3</b> Copying Files</a><ul>
+<li class="chapter" data-level="D.3.1" data-path="remote-server.html"><a href="remote-server.html#scp"><i class="fa fa-check"></i><b>D.3.1</b> scp</a></li>
+<li class="chapter" data-level="D.3.2" data-path="remote-server.html"><a href="remote-server.html#rsync"><i class="fa fa-check"></i><b>D.3.2</b> rsync</a></li>
+<li class="chapter" data-level="D.3.3" data-path="remote-server.html"><a href="remote-server.html#graphical-frontends"><i class="fa fa-check"></i><b>D.3.3</b> Graphical Frontends</a></li>
+<li class="chapter" data-level="D.3.4" data-path="remote-server.html"><a href="remote-server.html#remote-editing"><i class="fa fa-check"></i><b>D.3.4</b> Remote Editing</a></li>
+</ul></li>
+<li class="chapter" data-level="D.4" data-path="remote-server.html"><a href="remote-server.html#r-and-rscript"><i class="fa fa-check"></i><b>D.4</b> R and Rscript</a><ul>
+<li class="chapter" data-level="D.4.1" data-path="remote-server.html"><a href="remote-server.html#graphics-output-with-no-gui"><i class="fa fa-check"></i><b>D.4.1</b> Graphics Output with No GUI</a></li>
+</ul></li>
+<li class="chapter" data-level="D.5" data-path="remote-server.html"><a href="remote-server.html#life-on-server"><i class="fa fa-check"></i><b>D.5</b> Life on Server</a><ul>
+<li class="chapter" data-level="D.5.1" data-path="remote-server.html"><a href="remote-server.html#be-social"><i class="fa fa-check"></i><b>D.5.1</b> Be Social!</a></li>
+<li class="chapter" data-level="D.5.2" data-path="remote-server.html"><a href="remote-server.html#useful-things-to-do"><i class="fa fa-check"></i><b>D.5.2</b> Useful Things to Do</a></li>
+<li class="chapter" data-level="D.5.3" data-path="remote-server.html"><a href="remote-server.html#permissions-and-ownership"><i class="fa fa-check"></i><b>D.5.3</b> Permissions and ownership</a></li>
+<li class="chapter" data-level="D.5.4" data-path="remote-server.html"><a href="remote-server.html#more-than-one-connection"><i class="fa fa-check"></i><b>D.5.4</b> More than One Connection</a></li>
+</ul></li>
+<li class="chapter" data-level="D.6" data-path="remote-server.html"><a href="remote-server.html#advanced-usage"><i class="fa fa-check"></i><b>D.6</b> Advanced Usage</a><ul>
+<li class="chapter" data-level="D.6.1" data-path="remote-server.html"><a href="remote-server.html#ssh-keys-.sshconfig"><i class="fa fa-check"></i><b>D.6.1</b> ssh keys, .ssh/config</a></li>
+<li class="chapter" data-level="D.6.2" data-path="remote-server.html"><a href="remote-server.html#more-about-command-line-pipes-and-shell-patterns"><i class="fa fa-check"></i><b>D.6.2</b> More about command line: pipes and shell patterns</a></li>
+<li class="chapter" data-level="D.6.3" data-path="remote-server.html"><a href="remote-server.html#running-rscript-in-ssh-session"><i class="fa fa-check"></i><b>D.6.3</b> Running RScript in ssh Session</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">Technical Foundations of Informatics</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="apis" class="section level1">
+<h1><span class="header-section-number">Chapter 11</span> Accessing Web APIs</h1>
+<p>R is able to load data from external packages or read it from locally-saved <code>.csv</code> files, but it is also able to download data directly from web sites on the internet. This allows scripts to always work with the latest data available, performing analysis on data that may be changing rapidly (such as from social networks or other live events). Web services may make their data easily accessible to computer programs like R scripts by offering an <strong>Application Programming Interface (API)</strong>. A web service’s API specifies <em>where</em> and <em>how</em> particular data may be accessed, and many web services follow a particular style known as <em>Representational State Transfer (REST)</em>. This chapter will cover how to access and work with data from these <em>RESTful APIs</em>.</p>
+<div id="what-is-a-web-api" class="section level2">
+<h2><span class="header-section-number">11.1</span> What is a Web API?</h2>
+<p>An <strong>interface</strong> is the point at which two different systems meet and <em>communicate</em>: exchanging informations and instructions. An <strong>Application Programming Interface (API)</strong> thus represents a way of communicating with a computer application by writing a computer program (a set of formal instructions understandable by a machine). APIs commonly take the form of <strong>functions</strong> that can be called to give instructions to programs—the set of functions provided by a library like <code>dplyr</code> make up the API for that library.</p>
+<p>While most APIs provide an interface for utilizing <em>functionality</em>, other APIs provide an interface for accessing <em>data</em>. One of the most common sources of these data apis are <strong>web services</strong>: websites that offer an interface for accessing their data.</p>
+<!-- (Technically the interface is just the function **signature** which says how you _use_ the function: what name it has, what arguments it takes, and what value it returns. The actual library is an _implementation_ of this interface). -->
+<p>With web services, the interface (the set of “functions” you can call to access the data) takes the form of <strong>HTTP Requests</strong>—a <em>request</em> for data sent following the <em><strong>H</strong>yper<strong>T</strong>ext <strong>T</strong>ransfer <strong>P</strong>rotocol</em>. This is the same protocol (way of communicating) used by your browser to view a web page! An HTTP Request represents a message that your computer sends to a web server (another computer on the internet which “serves”, or provides, information). That server, upon receiving the request, will determine what data to include in the <strong>response</strong> it sends <em>back</em> to the requesting computer. With a web browser, the response data takes the form of HTML files that the browser can <em>render</em> as web pages. With data APIs, the response data will be structured data that you can convert into R structures such as lists or data frames.</p>
+<p>In short, loading data from a Web API involves sending an <strong>HTTP Request</strong> to a server for a particular piece of data, and then receiving and parsing the <strong>response</strong> to that request.</p>
+</div>
+<div id="restful-requests" class="section level2">
+<h2><span class="header-section-number">11.2</span> RESTful Requests</h2>
+<p>There are two parts to a request sent to an API: the name of the <strong>resource</strong> (data) that you wish to access, and a <strong>verb</strong> indicating what you want to do with that resource. In many ways, the <em>verb</em> is the function you want to call on the API, and the <em>resource</em> is an argument to that function.</p>
+<div id="uris" class="section level3">
+<h3><span class="header-section-number">11.2.1</span> URIs</h3>
+<p>Which <strong>resource</strong> you want to access is specified with a <strong>Uniform Resource Identifier (URI)</strong>. A URI is a generalization of a URL (Uniform Resource Locator)—what you commonly think of as “web addresses”. URIs act a lot like the <em>address</em> on a postal letter sent within a large organization such as a university: you indicate the business address as well as the department and the person, and will get a different response (and different data) from Alice in Accounting than from Sally in Sales.</p>
+<ul>
+<li>Note that the URI is the <strong>identifier</strong> (think: variable name) for the resource, while the <strong>resource</strong> is the actual <em>data</em> value that you want to access.</li>
+</ul>
+<p>Like postal letter addresses, URIs have a very specific format used to direct the request to the right resource.</p>
+<div class="figure">
+<img src="img/apis/uri-schema.png" title="URI schema" alt="The format (schema) of a URI." />
+<p class="caption">The format (schema) of a URI.</p>
+</div>
+<p>Not all parts of the format are required—for example, you don’t need a <code>port</code>, <code>query</code>, or <code>fragment</code>. Important parts of the format include:</p>
+<ul>
+<li><code>scheme</code> (<code>protocol</code>): the “language” that the computer will use to communicate the request to this resource. With web services this is normally <code>https</code> (<strong>s</strong>ecure HTTP)</li>
+<li><code>domain</code>: the address of the web server to request information from</li>
+<li><code>path</code>: which resource on that web server you wish to access. This may be the name of a file with an extension if you’re trying to access a particular file, but with web services it often just looks like a folder path!</li>
+<li><code>query</code>: extra <strong>parameters</strong> (arguments) about what resource to access.</li>
+</ul>
+<p>The <code>domain</code> and <code>path</code> usually specify the resource. For example, <code>www.domain.com/users</code> might be an <em>identifier</em> for a resource which is a list of users. Note that web services can also have “subresources” by adding extra pieces to the path: <code>www.domain.com/users/mike</code> might refer to the specific “mike” user in that list.</p>
+<p>With an API, the domain and path are often viewed as being broken up into two parts:</p>
+<ul>
+<li><p>The <strong>Base URI</strong> is the domain and part of the path that is included on <em>all</em> resources. It acts as the “root” for any particular resource. For example, the <a href="https://developer.github.com/v3/">GitHub API</a> has a base URI of <code>https://api.github.com/</code>.</p></li>
+<li><p>An <strong>Endpoint</strong>, or which resource on that domain you want to access. Each API will have <em>many</em> different endpoints.</p>
+<p>For example, GitHub includes endpoints such as:</p>
+<ul>
+<li><code>/users/{user}</code> to get information about a specific <code>:user:</code> <code>id</code> (the <code>{}</code> indicate a “variable”, in that you can put any username in there in place of the string <code>&quot;{user}&quot;</code>). Check out this <a href="https://api.github.com/users/mkfreeman">example</a> in your browser.</li>
+<li><code>/orgs/{organization}/repos</code> to get the repositories that are on an organization page. See an <a href="https://api.github.com/orgs/info201a-au17/repos">example</a>.</li>
+</ul></li>
+</ul>
+<p>Thus you can equivalently talk about accessing a particular <strong>resource</strong> and sending a request to a particular <strong>endpoint</strong>. The <strong>endpoint</strong> is appended to the end of the <strong>Base URI</strong>, so you could access a GitHub user by combining the <strong>Base URI</strong> (<code>https://api.github.com</code>) and <strong>endpoint</strong> (<code>/users/mkfreeman</code>) into a single string: <code>https://api.github.com/users/mkfreeman</code>. That URL will return a data structure of new releases, which you can request from your R program or simply view in your web-browser.</p>
+<div id="query-parameters" class="section level4">
+<h4><span class="header-section-number">11.2.1.1</span> Query Parameters</h4>
+<p>Often in order to access only partial sets of data from a resource (e.g., to only get some users) you also include a set of <strong>query parameters</strong>. These are like extra arguments that are given to the request function. Query parameters are listed after a question mark <strong><code>?</code></strong> in the URI, and are formed as key-value pairs similar to how you named items in <em>lists</em>. The <strong>key</strong> (<em>parameter name</em>) is listed first, followed by an equal sign <strong><code>=</code></strong>, followed by the <strong>value</strong> (<em>parameter value</em>); note that you can’t include any spaces in URIs! You can include multiple query parameters by putting an ampersand <strong><code>&amp;</code></strong> between each key-value pair:</p>
+<pre><code>?firstParam=firstValue&amp;secondParam=secondValue&amp;thirdParam=thirdValue</code></pre>
+<p>Exactly what parameter names you need to include (and what are legal values to assign to that name) depends on the particular web service. Common examples include having parameters named <code>q</code> or <code>query</code> for searching, with a value being whatever term you want to search for: in <a href="https://www.google.com/search?q=informatics"><code>https://www.google.com/search?q=informatics</code></a>, the <strong>resource</strong> at the <code>/search</code> <strong>endpoint</strong> takes a query parameter <code>q</code> with the term you want to search for!</p>
+</div>
+<div id="access-tokens-and-api-keys" class="section level4">
+<h4><span class="header-section-number">11.2.1.2</span> Access Tokens and API Keys</h4>
+<p>Many web services require you to register with them in order to send them requests. This allows them to limit access to the data, as well as to keep track of who is asking for what data (usually so that if someone starts “spamming” the service, they can be blocked).</p>
+<p>To facilitate this tracking, many services provide <strong>Access Tokens</strong> (also called <strong>API Keys</strong>). These are unique strings of letters and numbers that identify a particular developer (like a secret password that only works for you). Web services will require you to include your <em>access token</em> as a query parameter in the request; the exact name of the parameter varies, but it often looks like <code>access_token</code> or <code>api_key</code>. When exploring a web service, keep an eye out for whether they require such tokens.</p>
+<p><em>Access tokens</em> act a lot like passwords; you will want to keep them secret and not share them with others. This means that you <strong>should not include them in your committed files</strong>, so that the passwords don’t get pushed to GitHub and shared with the world. The best way to get around this in R is to create a separate script file in your repo (e.g., <code>api-keys.R</code>) which includes exactly one line: assigning the key to a variable:</p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb141-1" data-line-number="1"><span class="co"># in `api-keys.R`</span></a>
+<a class="sourceLine" id="cb141-2" data-line-number="2">api_key &lt;-<span class="st"> &quot;123456789abcdefg&quot;</span></a></code></pre></div>
+<p>You can then include this file_name_ in a <strong><code>.gitignore</code></strong> file in your repo; that will keep it from even possibly being committed with your code!</p>
+<p>In order to access this variable in your “main” script, you can use the <code>source()</code> function to load and run your <code>api-keys.R</code> script. This will execute the line of code that assigns the <code>api_key</code> variable, making it available in your environment for your use:</p>
+<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb142-1" data-line-number="1"><span class="co"># in `my-script.R`</span></a>
+<a class="sourceLine" id="cb142-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb142-3" data-line-number="3"><span class="co"># (make sure working directory is set)</span></a>
+<a class="sourceLine" id="cb142-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb142-5" data-line-number="5"><span class="kw">source</span>(<span class="st">&#39;api-keys.R&#39;</span>)  <span class="co"># load the script</span></a>
+<a class="sourceLine" id="cb142-6" data-line-number="6"><span class="kw">print</span>(api_key)  <span class="co"># key is now available!</span></a></code></pre></div>
+<p>Anyone else who runs the script will simply need to provide an <code>api_key</code> variable to access the API using their key, keeping everyone’s account separate!</p>
+<p class="alert alert-warning">
+Watch out for APIs that mention using <a href="https://en.wikipedia.org/wiki/OAuth">OAuth</a> when explaining API keys. OAuth is a system for performing <strong>authentification</strong>—that is, letting someone log into a website from your application (like what a “Log in with Facebook” button does). OAuth systems require more than one access key, and these keys <strong><em>must</em></strong> be kept secret and usually require you to run a web server to utilize them correctly (which requires lots of extra setup, see <a href="https://cran.r-project.org/web/packages/httr/httr.pdf">the full <code>httr</code> docs</a> for details). So for this course, we encourage you to avoid anything that needs OAuth
+</p>
+</div>
+</div>
+<div id="http-verbs" class="section level3">
+<h3><span class="header-section-number">11.2.2</span> HTTP Verbs</h3>
+<p>When you send a request to a particular resource, you need to indicate what you want to <em>do</em> with that resource. When you load web content, you are typically sending a request to retrieve information (logically, this is a <code>GET</code> request). However, there are other actions you can perform to modify the data structure on the server. This is done by specifying an <strong>HTTP Verb</strong> in the request. The HTTP protocol supports the following verbs:</p>
+<ul>
+<li><code>GET</code> Return a representation of the current state of the resource</li>
+<li><code>POST</code> Add a new subresource (e.g., insert a record)</li>
+<li><code>PUT</code> Update the resource to have a new state</li>
+<li><code>PATCH</code> Update a portion of the resource’s state</li>
+<li><code>DELETE</code> Remove the resource</li>
+<li><code>OPTIONS</code> Return the set of methods that can be performed on the resource</li>
+</ul>
+<p>By far the most common verb is <code>GET</code>, which is used to “get” (download) data from a web service. Depending on how you connect to your API (i.e., which programming language you are using), you’ll specify the verb of interest to indicate what we want to do to a particular resource.</p>
+<p>Overall, this structure of treating each datum on the web as a <strong>resource</strong> which we can interact with via <strong>HTTP Requests</strong> is referred to as the <strong>REST Architecture</strong> (REST stands for <em>REpresentational State Transfer</em>). This is a standard way of structuring computer applications that allows them to be interacted with in the same way as everyday websites. Thus a web service that enabled data access through named resources and responds to HTTP requests is known as a <strong>RESTful</strong> service, with a <em>RESTful API</em>.</p>
+</div>
+</div>
+<div id="accessing-web-apis" class="section level2">
+<h2><span class="header-section-number">11.3</span> Accessing Web APIs</h2>
+<p>To access a Web API, you just need to send an HTTP Request to a particular URI. You can easily do this with the browser: simply navigate to a particular address (base URI + endpoint), and that will cause the browser to send a <code>GET</code> request and display the resulting data. For example, you can send a request to search GitHub for repositories named <code>d3</code> by visiting:</p>
+<pre><code>https://api.github.com/search/repositories?q=d3&amp;sort=forks
+</code></pre>
+<p>This query accesses the <code>/search/repositories/</code> endpoint, and also specifies 2 query parameters:</p>
+<ul>
+<li><code>q</code>: The term(s) you are searching for, and</li>
+<li><code>sort</code>: The attribute of each repository that you would like to use to sort the results</li>
+</ul>
+<p>(Note that the data you’ll get back is structured in JSON format. See <a href="apis.html#json">below</a> for details).</p>
+<p>In <code>R</code> you can send GET requests using the <a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><code>httr</code></a> library. Like <code>dplyr</code>, you will need to install and load it to use it:</p>
+<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb144-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;httr&quot;</span>)  <span class="co"># once per machine</span></a>
+<a class="sourceLine" id="cb144-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;httr&quot;</span>)</a></code></pre></div>
+<p>This library provides a number of functions that reflect HTTP verbs. For example, the <strong><code>GET()</code></strong> function will send an HTTP GET Request to the URI specified as an argument:</p>
+<div class="sourceCode" id="cb145"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb145-1" data-line-number="1"><span class="co"># Get search results for artist</span></a>
+<a class="sourceLine" id="cb145-2" data-line-number="2">response &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://api.github.com/search/repositories?q=d3&amp;sort=forks&quot;</span>)</a></code></pre></div>
+<p>While it is possible to include <em>query parameters</em> in the URI string, <code>httr</code> also allows you to include them as a <em>list</em>, making it easy to set and change variables (instead of needing to do a complex <code>paste0()</code> operation to produce the correct string):</p>
+<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb146-1" data-line-number="1"><span class="co"># Equivalent to the above, but easier to read and change</span></a>
+<a class="sourceLine" id="cb146-2" data-line-number="2">query_params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">q =</span> <span class="st">&quot;d3&quot;</span>, <span class="dt">sort =</span> <span class="st">&quot;forks&quot;</span>)</a>
+<a class="sourceLine" id="cb146-3" data-line-number="3">response &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://api.github.com&quot;</span>, <span class="dt">query =</span> query_params)</a></code></pre></div>
+<p>If you try printing out the <code>response</code> variable, you’ll see information about the response:</p>
+<pre><code>Response [https://api.github.com/?q=d3&amp;sort=forks]
+  Date: 2017-10-22 19:05
+  Status: 200
+  Content-Type: application/json; charset=utf-8
+  Size: 2.16 kB</code></pre>
+<p>This is called the <strong>response header</strong>. Each <strong>response</strong> has two parts: the <strong>header</strong>, and the <strong>body</strong>. You can think of the response as a envelope: the <em>header</em> contains meta-data like the address and postage date, while the <em>body</em> contains the actual contents of the letter (the data).</p>
+<p>Since you’re almost always interested in working with the <em>body</em>, you will need to extract that data from the response (e.g., open up the envelope and pull out the letter). You can do this with the <code>content()</code> method:</p>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb148-1" data-line-number="1"><span class="co"># extract content from response, as a text string (not a list!)</span></a>
+<a class="sourceLine" id="cb148-2" data-line-number="2">body &lt;-<span class="st"> </span><span class="kw">content</span>(response, <span class="st">&quot;text&quot;</span>)</a></code></pre></div>
+<p>Note the second argument <code>&quot;text&quot;</code>; this is needed to keep <code>httr</code> from doing it’s own processing on the body data, since we’ll be using other methods to handle that; keep reading for details!</p>
+<p class="alert alert-info">
+<em>Pro-tip</em>: The URI shown when you print out the <code>response</code> is a good way to check exactly what URI you were sending the request to: copy that into your browser to make sure it goes where you expected!
+</p>
+</div>
+<div id="json" class="section level2">
+<h2><span class="header-section-number">11.4</span> JSON Data</h2>
+<p>Most APIs will return data in <strong>JavaScript Object Notation (JSON)</strong> format. Like CSV, this is a format for writing down structured data—but while <code>.csv</code> files organize data into rows and columns (like a data frame), JSON allows you to organize elements into <strong>key-value pairs</strong> similar to an R <em>list</em>! This allows the data to have much more complex structure, which is useful for web services (but can be challenging for us).</p>
+<p>In JSON, lists of key-value pairs (called <em>objects</em>) are put inside braces (<strong><code>{ }</code></strong>), with the key and value separated by a colon (<strong><code>:</code></strong>) and each pair separated by a comma (<strong><code>,</code></strong>). Key-value pairs are often written on separate lines for readability, but this isn’t required. Note that keys need to be character strings (so in quotes), while values can either be character strings, numbers, booleans (written in lower-case as <code>true</code> and <code>false</code>), or even other lists! For example:</p>
+<div class="sourceCode" id="cb149"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb149-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb149-2" data-line-number="2">  <span class="dt">&quot;first_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ada&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-3" data-line-number="3">  <span class="dt">&quot;job&quot;</span><span class="fu">:</span> <span class="st">&quot;Programmer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-4" data-line-number="4">  <span class="dt">&quot;salary&quot;</span><span class="fu">:</span> <span class="dv">78000</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-5" data-line-number="5">  <span class="dt">&quot;in_union&quot;</span><span class="fu">:</span> <span class="kw">true</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-6" data-line-number="6">  <span class="dt">&quot;favorites&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb149-7" data-line-number="7">    <span class="dt">&quot;music&quot;</span><span class="fu">:</span> <span class="st">&quot;jazz&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-8" data-line-number="8">    <span class="dt">&quot;food&quot;</span><span class="fu">:</span> <span class="st">&quot;pizza&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb149-9" data-line-number="9">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb149-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
+<p>(In JavaScript the period <code>.</code> has special meaning, so it is not used in key names; hence the underscores <code>_</code>). The above is equivalent to the <code>R</code> list:</p>
+<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb150-1" data-line-number="1"><span class="kw">list</span>(</a>
+<a class="sourceLine" id="cb150-2" data-line-number="2">  <span class="dt">first_name =</span> <span class="st">&quot;Ada&quot;</span>, <span class="dt">job =</span> <span class="st">&quot;Programmer&quot;</span>, <span class="dt">salary =</span> <span class="dv">78000</span>, <span class="dt">in_union =</span> <span class="ot">TRUE</span>,</a>
+<a class="sourceLine" id="cb150-3" data-line-number="3">  <span class="dt">favorites =</span> <span class="kw">list</span>(<span class="dt">music =</span> <span class="st">&quot;jazz&quot;</span>, <span class="dt">food =</span> <span class="st">&quot;pizza&quot;</span>) <span class="co"># nested list in the list!</span></a>
+<a class="sourceLine" id="cb150-4" data-line-number="4">)</a></code></pre></div>
+<p>Additionally, JSON supports what are called <em>arrays</em> of data. These are like lists without keys (and so are only accessed by index). Key-less arrays are written in square brackets (<strong><code>[ ]</code></strong>), with values separated by commas. For example:</p>
+<div class="sourceCode" id="cb151"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb151-1" data-line-number="1"><span class="ot">[</span><span class="st">&quot;Aardvark&quot;</span><span class="ot">,</span> <span class="st">&quot;Baboon&quot;</span><span class="ot">,</span> <span class="st">&quot;Camel&quot;</span><span class="ot">]</span></a></code></pre></div>
+<p>which is equvalent to the <code>R</code> list:</p>
+<div class="sourceCode" id="cb152"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb152-1" data-line-number="1"><span class="kw">list</span>(<span class="st">&quot;Aardvark&quot;</span>, <span class="st">&quot;Baboon&quot;</span>, <span class="st">&quot;Camel&quot;</span>)</a></code></pre></div>
+<p>(Like <em>objects</em> , array elements may or may not be written on separate lines).</p>
+<p>Just as R allows you to have nested lists of lists, and those lists may or may not have keys, JSON can have any form of nested <em>objects</em> and <em>arrays</em>. This can be arrays (unkeyed lists) within objects (keyed lists), such as a more complex set of data about Ada:</p>
+<div class="sourceCode" id="cb153"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb153-1" data-line-number="1"><span class="fu">{</span></a>
+<a class="sourceLine" id="cb153-2" data-line-number="2">  <span class="dt">&quot;first_name&quot;</span><span class="fu">:</span> <span class="st">&quot;Ada&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-3" data-line-number="3">  <span class="dt">&quot;job&quot;</span><span class="fu">:</span> <span class="st">&quot;Programmer&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-4" data-line-number="4">  <span class="dt">&quot;pets&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;rover&quot;</span><span class="ot">,</span> <span class="st">&quot;fluffy&quot;</span><span class="ot">,</span> <span class="st">&quot;mittens&quot;</span><span class="ot">]</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-5" data-line-number="5">  <span class="dt">&quot;favorites&quot;</span><span class="fu">:</span> <span class="fu">{</span></a>
+<a class="sourceLine" id="cb153-6" data-line-number="6">    <span class="dt">&quot;music&quot;</span><span class="fu">:</span> <span class="st">&quot;jazz&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-7" data-line-number="7">    <span class="dt">&quot;food&quot;</span><span class="fu">:</span> <span class="st">&quot;pizza&quot;</span><span class="fu">,</span></a>
+<a class="sourceLine" id="cb153-8" data-line-number="8">    <span class="dt">&quot;numbers&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="dv">12</span><span class="ot">,</span> <span class="dv">42</span><span class="ot">]</span></a>
+<a class="sourceLine" id="cb153-9" data-line-number="9">  <span class="fu">}</span></a>
+<a class="sourceLine" id="cb153-10" data-line-number="10"><span class="fu">}</span></a></code></pre></div>
+<p>JSON can also be structured as <em>arrays</em> of <em>objects</em> (unkeyed lists of keyed lists), such as a list of data about Seahawks games:</p>
+<div class="sourceCode" id="cb154"><pre class="sourceCode json"><code class="sourceCode json"><a class="sourceLine" id="cb154-1" data-line-number="1"><span class="ot">[</span></a>
+<a class="sourceLine" id="cb154-2" data-line-number="2">  <span class="fu">{</span> <span class="dt">&quot;opponent&quot;</span><span class="fu">:</span> <span class="st">&quot;Dolphins&quot;</span><span class="fu">,</span> <span class="dt">&quot;sea_score&quot;</span><span class="fu">:</span> <span class="dv">12</span><span class="fu">,</span> <span class="dt">&quot;opp_score&quot;</span><span class="fu">:</span> <span class="dv">10</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb154-3" data-line-number="3">  <span class="fu">{</span> <span class="dt">&quot;opponent&quot;</span><span class="fu">:</span> <span class="st">&quot;Rams&quot;</span><span class="fu">,</span> <span class="dt">&quot;sea_score&quot;</span><span class="fu">:</span> <span class="dv">3</span><span class="fu">,</span> <span class="dt">&quot;opp_score&quot;</span><span class="fu">:</span> <span class="dv">9</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb154-4" data-line-number="4">  <span class="fu">{</span> <span class="dt">&quot;opponent&quot;</span><span class="fu">:</span> <span class="st">&quot;49ers&quot;</span><span class="fu">,</span> <span class="dt">&quot;sea_score&quot;</span><span class="fu">:</span> <span class="dv">37</span><span class="fu">,</span> <span class="dt">&quot;opp_score&quot;</span><span class="fu">:</span> <span class="dv">18</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb154-5" data-line-number="5">  <span class="fu">{</span> <span class="dt">&quot;opponent&quot;</span><span class="fu">:</span> <span class="st">&quot;Jets&quot;</span><span class="fu">,</span> <span class="dt">&quot;sea_score&quot;</span><span class="fu">:</span> <span class="dv">27</span><span class="fu">,</span> <span class="dt">&quot;opp_score&quot;</span><span class="fu">:</span> <span class="dv">17</span> <span class="fu">}</span><span class="ot">,</span></a>
+<a class="sourceLine" id="cb154-6" data-line-number="6">  <span class="fu">{</span> <span class="dt">&quot;opponent&quot;</span><span class="fu">:</span> <span class="st">&quot;Falcons&quot;</span><span class="fu">,</span> <span class="dt">&quot;sea_score&quot;</span><span class="fu">:</span> <span class="dv">26</span><span class="fu">,</span> <span class="dt">&quot;opp_score&quot;</span><span class="fu">:</span> <span class="dv">24</span> <span class="fu">}</span></a>
+<a class="sourceLine" id="cb154-7" data-line-number="7"><span class="ot">]</span></a></code></pre></div>
+<p>The latter format is incredibly common in web API data: as long as each <em>object</em> in the <em>array</em> has the same set of keys, then you can easily consider this as a data table where each <em>object</em> (keyed list) represents an <strong>observation</strong> (row), and each key represents a <strong>feature</strong> (column) of that observation.</p>
+<div id="parsing-json" class="section level3">
+<h3><span class="header-section-number">11.4.1</span> Parsing JSON</h3>
+<p>When working with a web API, the usual goal is to take the JSON data contained in the <em>response</em> and convert it into an <code>R</code> data structure you can use, such as <em>list</em> or <em>data frame</em>. While the <code>httr</code> package is able to parse the JSON body of a response into a <em>list</em>, it doesn’t do a very clean job of it (particularly for complex data structures).</p>
+<p>A more effective solution is to use <em>another</em> library called <a href="https://cran.r-project.org/web/packages/jsonlite/jsonlite.pdf"><code>jsonlite</code></a>. This library provides helpful methods to convert JSON data into R data, and does a much more effective job of converting content into data frames that you can use.</p>
+<p>As always, you will need to install and load this library:</p>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb155-1" data-line-number="1"><span class="kw">install.packages</span>(<span class="st">&quot;jsonlite&quot;</span>)  <span class="co"># once per machine</span></a>
+<a class="sourceLine" id="cb155-2" data-line-number="2"><span class="kw">library</span>(<span class="st">&quot;jsonlite&quot;</span>)</a></code></pre></div>
+<p><code>jsonlite</code> provides a function called <strong><code>fromJSON()</code></strong> that allows you to convert a JSON string into a list—or even a data frame if the columns have the right lengths!</p>
+<div class="sourceCode" id="cb156"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb156-1" data-line-number="1"><span class="co"># send request for albums by David Bowie</span></a>
+<a class="sourceLine" id="cb156-2" data-line-number="2"><span class="op">&lt;</span><span class="er">&lt;&lt;&lt;&lt;&lt;&lt;</span><span class="st"> </span>HEAD</a>
+<a class="sourceLine" id="cb156-3" data-line-number="3">query.params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">q =</span> <span class="st">&quot;d3&quot;</span>, <span class="dt">sort =</span> <span class="st">&quot;forks&quot;</span>)</a>
+<a class="sourceLine" id="cb156-4" data-line-number="4">response &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://api.github.com/search/repositories&quot;</span>, <span class="dt">query =</span> query.params)</a>
+<a class="sourceLine" id="cb156-5" data-line-number="5"><span class="op">==</span><span class="er">=====</span></a>
+<a class="sourceLine" id="cb156-6" data-line-number="6">query_params &lt;-<span class="st"> </span><span class="kw">list</span>(<span class="dt">q =</span> <span class="st">&quot;d3&quot;</span>, <span class="dt">sort =</span> <span class="st">&quot;forks&quot;</span>)</a>
+<a class="sourceLine" id="cb156-7" data-line-number="7">response &lt;-<span class="st"> </span><span class="kw">GET</span>(<span class="st">&quot;https://api.github.com&quot;</span>, <span class="dt">query =</span> query_params)</a>
+<a class="sourceLine" id="cb156-8" data-line-number="8"><span class="op">&gt;</span><span class="er">&gt;&gt;&gt;&gt;&gt;&gt;</span><span class="st"> </span>112475b2d49fb2adbcb635aef504ee74c89a9a15</a>
+<a class="sourceLine" id="cb156-9" data-line-number="9">body &lt;-<span class="st"> </span><span class="kw">content</span>(response, <span class="st">&quot;text&quot;</span>)  <span class="co"># extract the body JSON</span></a>
+<a class="sourceLine" id="cb156-10" data-line-number="10">parsed_data &lt;-<span class="st"> </span><span class="kw">fromJSON</span>(body)  <span class="co"># convert the JSON string to a list</span></a></code></pre></div>
+<p>The <code>parsed_data</code> will contain a <em>list</em> built out of the JSON. Depending on the complexity of the JSON, this may already be a data frame you can <code>View()</code>… but more likely you’ll need to <em>explore</em> the list more to locate the “main” data you are interested in. Good strategies for this include:</p>
+<ul>
+<li>You can <code>print()</code> the data, but that is often hard to read (it requires a lot of scrolling).</li>
+<li>The <code>str()</code> method will produce a more organized printed list, though it can still be hard to read.</li>
+<li>The <code>names()</code> method will let you see a list of the what keys the list has, which is good for delving into the data.</li>
+</ul>
+<p>As an example continuing the above code:</p>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb157-1" data-line-number="1"><span class="kw">is.data.frame</span>(parsed_data)  <span class="co"># FALSE; not a data frame you can work with</span></a>
+<a class="sourceLine" id="cb157-2" data-line-number="2"><span class="kw">names</span>(parsed_data)  <span class="co"># &quot;href&quot; &quot;items&quot; &quot;limit&quot; &quot;next&quot; &quot;offset&quot; &quot;previous&quot; &quot;total&quot;</span></a>
+<a class="sourceLine" id="cb157-3" data-line-number="3">  <span class="co"># looking at the JSON data itself (e.g., in the browser), `items` is the</span></a>
+<a class="sourceLine" id="cb157-4" data-line-number="4">  <span class="co"># key that contains the value we want</span></a>
+<a class="sourceLine" id="cb157-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb157-6" data-line-number="6">items &lt;-<span class="st"> </span>parsed_data<span class="op">$</span>items  <span class="co"># extract that element from the list</span></a>
+<a class="sourceLine" id="cb157-7" data-line-number="7"><span class="kw">is.data.frame</span>(items)  <span class="co"># TRUE; you can work with that!</span></a></code></pre></div>
+</div>
+<div id="flattening-data" class="section level3">
+<h3><span class="header-section-number">11.4.2</span> Flattening Data</h3>
+<p>Because JSON supports—and in fact encourages—nested lists (lists within lists), parsing a JSON string is likely to produce a data frame whose columns <em>are themselves data frames</em>. As an example:</p>
+<div class="sourceCode" id="cb158"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb158-1" data-line-number="1"><span class="co"># A somewhat contrived example</span></a>
+<a class="sourceLine" id="cb158-2" data-line-number="2">people &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">names =</span> <span class="kw">c</span>(<span class="st">&quot;Spencer&quot;</span>, <span class="st">&quot;Jessica&quot;</span>, <span class="st">&quot;Keagan&quot;</span>)) <span class="co"># a data frame with one column</span></a>
+<a class="sourceLine" id="cb158-3" data-line-number="3"></a>
+<a class="sourceLine" id="cb158-4" data-line-number="4">favorites &lt;-<span class="st"> </span><span class="kw">data.frame</span>( <span class="co"># a data frame with two columns</span></a>
+<a class="sourceLine" id="cb158-5" data-line-number="5">  <span class="dt">food =</span> <span class="kw">c</span>(<span class="st">&quot;Pizza&quot;</span>, <span class="st">&quot;Pasta&quot;</span>, <span class="st">&quot;salad&quot;</span>),</a>
+<a class="sourceLine" id="cb158-6" data-line-number="6">  <span class="dt">music =</span> <span class="kw">c</span>(<span class="st">&quot;Bluegrass&quot;</span>, <span class="st">&quot;Indie&quot;</span>, <span class="st">&quot;Electronic&quot;</span>)</a>
+<a class="sourceLine" id="cb158-7" data-line-number="7">)</a>
+<a class="sourceLine" id="cb158-8" data-line-number="8"><span class="co"># Store second dataframe as column of first</span></a>
+<a class="sourceLine" id="cb158-9" data-line-number="9">people<span class="op">$</span>favorites &lt;-<span class="st"> </span>favorites <span class="co"># the `favorites` column is a data frame!</span></a>
+<a class="sourceLine" id="cb158-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb158-11" data-line-number="11"><span class="co"># This prints nicely...</span></a>
+<a class="sourceLine" id="cb158-12" data-line-number="12"><span class="kw">print</span>(people)</a>
+<a class="sourceLine" id="cb158-13" data-line-number="13"><span class="co">#     names favorites.food favorites.music</span></a>
+<a class="sourceLine" id="cb158-14" data-line-number="14"><span class="co"># 1 Spencer          Pizza       Bluegrass</span></a>
+<a class="sourceLine" id="cb158-15" data-line-number="15"><span class="co"># 2 Jessica          Pasta           Indie</span></a>
+<a class="sourceLine" id="cb158-16" data-line-number="16"><span class="co"># 3  Keagan          salad      Electronic</span></a>
+<a class="sourceLine" id="cb158-17" data-line-number="17"></a>
+<a class="sourceLine" id="cb158-18" data-line-number="18"><span class="co"># but doesn&#39;t actually work like you expect!</span></a>
+<a class="sourceLine" id="cb158-19" data-line-number="19">people<span class="op">$</span>favorites.food <span class="co"># NULL</span></a>
+<a class="sourceLine" id="cb158-20" data-line-number="20">people<span class="op">$</span>favorites<span class="op">$</span>food <span class="co"># [1] Pizza Pasta salad</span></a></code></pre></div>
+<p>Nested data frames make it hard to work with the data using previously established techniques. Luckily, the <code>jsonlite</code> package provides a helpful function for addressing this called <strong><code>flatten()</code></strong>. This function takes the columns of each <em>nested</em> data frame and converts them into appropriately named columns in the “outer” data frame:</p>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb159-1" data-line-number="1">people &lt;-<span class="st"> </span><span class="kw">flatten</span>(people)</a>
+<a class="sourceLine" id="cb159-2" data-line-number="2">people<span class="op">$</span>favorites.food  <span class="co"># this just got created! Woo!</span></a></code></pre></div>
+<p>Note that <code>flatten()</code> only works on values that are <em>already data frames</em>; thus you may need to find the appropriate element inside of the list (that is, the item which is the data frame you want to flatten).</p>
+<p>In practice, you will almost always want to flatten the data returned from a web API. Thus your “algorithm” for downloading web data is as follows:</p>
+<ol style="list-style-type: decimal">
+<li>Use <code>GET()</code> to download the data, specifying the URI (and any query parameters).</li>
+<li>Use <code>content()</code> to extract the data as a JSON string.</li>
+<li>Use <code>fromJSON()</code> to convert the JSON string into a list.</li>
+<li>Find which element in that list is your data frame of interest. You may need to go “multiple levels” deep.</li>
+<li>Use <code>flatten()</code> to flatten that data frame.</li>
+<li>…</li>
+<li>Profit!</li>
+</ol>
+<p class="alert alert-info">
+<em>Pro-tip</em>: JSON data can be quite messy when viewed in your web-browser. Installing a browser extension such as
+<a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc" target="_blank">JSONView</a> will format JSON responses in a more readable way, and even enable you to interactively explore the data structure.
+</p>
+</div>
+</div>
+<div id="resources-10" class="section level2 unnumbered">
+<h2>Resources</h2>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Uniform_Resource_Identifier">URIs (Wikipedia)</a></li>
+<li><a href="https://code.tutsplus.com/tutorials/http-the-protocol-every-web-developer-must-know-part-1--net-31177">HTTP Protocol Tutorial</a></li>
+<li><a href="http://www.programmableweb.com/">Programmable Web</a> (list of web APIs; may be out of date)</li>
+<li><a href="https://www.ics.uci.edu/~fielding/pubs/dissertation/rest_arch_style.htm">RESTful Architecture</a> (original specification; not for beginners)</li>
+<li><a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en">JSON View Extension</a></li>
+<li><a href="https://cran.r-project.org/web/packages/httr/vignettes/quickstart.html"><code>httr</code> documentation</a></li>
+<li><a href="https://cran.r-project.org/web/packages/jsonlite/jsonlite.pdf"><code>jsonlite</code> documentation</a></li>
+</ul>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="dplyr.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="r-markdown.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": true,
+"facebook": false,
+"twitter": false,
+"google": false,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"all": ["github", "facebook", "twitter", "google"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/info201/book/edit/master/apis.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"download": null,
+"toc": {
+"collapse": "section",
+"scroll_highlight": true
+}
+});
+});
+</script>
+
+</body>
+
+</html>
