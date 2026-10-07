@@ -5,31 +5,53 @@ import styles from "./styles/readingcontrols.scss"
 
 const ReadingControls: QuartzComponent = () => (
   <div class="reading-controls" role="group" aria-label="Opzioni di lettura">
-    <input
-      type="range"
-      min="80"
-      max="200"
-      step="1"
-      value="100"
-      data-text-size-slider
-      aria-label="Dimensione del testo"
-      aria-valuetext="100%"
-    />
-    <output data-text-size-value aria-label="Dimensione attuale">
-      100%
-    </output>
-    <button
-      type="button"
-      data-text-size-reset
-      title="Ripristina la dimensione al 100%"
-      aria-label="Ripristina la dimensione al 100%"
-    >
-      Reset
-    </button>
+    <div class="reading-controls-header">
+      <button
+        type="button"
+        class="reading-controls-handle"
+        data-reading-drag
+        title="Trascina per spostare. Tastiera: frecce per spostare, Home per ripristinare."
+        aria-label="Sposta il pannello di lettura"
+      >
+        <span aria-hidden="true">⠿</span> Trascina
+      </button>
+      <button type="button" data-reading-mode aria-pressed="false">
+        Lettura
+      </button>
+    </div>
+    <div class="reading-controls-zoom">
+      <button type="button" data-text-size-decrease aria-label="Riduci il testo">
+        −
+      </button>
+      <input
+        type="range"
+        min="80"
+        max="200"
+        step="5"
+        value="100"
+        data-text-size-slider
+        aria-label="Dimensione del testo"
+        aria-valuetext="100%"
+      />
+      <button type="button" data-text-size-increase aria-label="Ingrandisci il testo">
+        +
+      </button>
+      <output data-text-size-value aria-label="Dimensione attuale">
+        100%
+      </output>
+      <button
+        type="button"
+        data-text-size-reset
+        title="Ripristina la dimensione al 100%"
+        aria-label="Ripristina la dimensione al 100%"
+      >
+        Reset
+      </button>
+    </div>
   </div>
 )
 
 ReadingControls.css = styles
-ReadingControls.beforeDOMLoaded = script
+ReadingControls.afterDOMLoaded = script
 
 export default (() => ReadingControls) satisfies QuartzComponentConstructor

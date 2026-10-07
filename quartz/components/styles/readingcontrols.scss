@@ -1,59 +1,171 @@
 .reading-controls {
   position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  width: fit-content;
-  max-width: calc(100vw - 2rem);
+  top: 12px;
+  right: 12px;
+  z-index: 100;
+  width: 320px;
+  max-width: calc(100vw - 24px);
   box-sizing: border-box;
-  font-size: 16px;
-  margin-left: auto;
-  margin-bottom: 1rem;
-  padding: 0.25rem 0.5rem;
-  border: 1px solid var(--lightgray);
-  border-radius: 8px;
+  padding: 10px;
+  border: 1px solid var(--gray);
+  border-radius: 12px;
   background: var(--light);
-
-  & input[type="range"] {
-    width: clamp(60px, 20vw, 140px);
-    min-width: 0;
-    accent-color: var(--secondary);
+  color: var(--dark);
+  box-shadow: 0 4px 18px #0002;
+  font: 14px var(--bodyFont);
+  .reading-controls-header,
+  .reading-controls-zoom {
+    display: flex;
+    align-items: center;
+    gap: 6px;
   }
-
-  & output {
-    min-width: 4ch;
-    font-variant-numeric: tabular-nums;
+  .reading-controls-header {
+    justify-content: space-between;
+    padding-bottom: 8px;
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--lightgray);
   }
-
-  & input:focus-visible {
-    outline: 2px solid var(--secondary);
-    outline-offset: 2px;
-  }
-
-  & button {
-    cursor: pointer;
-    color: var(--darkgray);
-    background: none;
-    border: none;
-    min-width: 32px;
-    height: 32px;
+  button {
+    height: 36px;
+    min-width: 36px;
+    padding: 0 8px;
+    border: 1px solid var(--lightgray);
+    border-radius: 6px;
+    background: var(--light);
+    color: var(--dark);
     font: inherit;
-
+    cursor: pointer;
     &:disabled {
       opacity: 0.4;
       cursor: default;
     }
-
-    &:focus-visible {
-      outline: 2px solid var(--secondary);
-      outline-offset: 2px;
+    &:hover:not(:disabled) {
+      background: var(--highlight);
     }
   }
-
+  .reading-controls-handle {
+    border: 0;
+    color: var(--darkgray);
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    & span {
+      font-size: 24px;
+      vertical-align: middle;
+    }
+  }
+  &.is-dragging .reading-controls-handle {
+    cursor: grabbing;
+  }
+  [data-reading-mode][aria-pressed="true"] {
+    background: var(--secondary);
+    color: var(--light);
+  }
+  input[type="range"] {
+    appearance: none;
+    -webkit-appearance: none;
+    flex: 1;
+    width: 100%;
+    min-width: 40px;
+    height: 32px;
+    margin: 0;
+    background: transparent;
+    cursor: pointer;
+    &::-webkit-slider-runnable-track {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--gray);
+    }
+    &::-moz-range-track {
+      height: 6px;
+      border-radius: 3px;
+      background: var(--gray);
+    }
+    &::-webkit-slider-thumb {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 22px;
+      height: 22px;
+      margin-top: -8px;
+      border: 2px solid var(--light);
+      border-radius: 50%;
+      background: var(--secondary);
+      box-shadow: 0 0 0 1px var(--secondary);
+    }
+    &::-moz-range-thumb {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--light);
+      border-radius: 50%;
+      background: var(--secondary);
+      box-shadow: 0 0 0 1px var(--secondary);
+    }
+  }
+  output {
+    min-width: 4ch;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+  }
+  button:focus-visible,
+  input:focus-visible {
+    outline: 2px solid var(--secondary);
+    outline-offset: 3px;
+  }
+  @media (max-width: 600px) {
+    top: auto;
+    bottom: 12px;
+  }
   @media print {
     display: none;
+  }
+}
+
+// Scale the article while keeping navigation and controls stable.
+.page #quartz-body .center > article {
+  font-size: calc(1rem * var(--reading-font-scale, 1));
+  line-height: 1.6;
+  p,
+  ul,
+  ol,
+  li,
+  a,
+  blockquote {
+    line-height: 1.6;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  h2 {
+    font-size: 1.75em;
+  }
+  h3 {
+    font-size: 1.4em;
+  }
+  h4 {
+    font-size: 1.12em;
+  }
+  h5,
+  h6 {
+    font-size: 1em;
+  }
+  pre {
+    font-size: 0.85em;
+  }
+}
+:root[reader-mode="on"] .page #quartz-body {
+  .sidebar {
+    visibility: hidden;
+    pointer-events: none;
+  }
+}
+@media print {
+  :root {
+    --reading-font-scale: 1 !important;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .page {
+    padding-bottom: 140px;
   }
 }
