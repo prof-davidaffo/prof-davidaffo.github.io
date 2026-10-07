@@ -5,7 +5,7 @@ La raccolta segue una progressione dalle formule di base all'analisi di dati con
 ## Materiali introduttivi
 
 - [Guida per la lezione introduttiva](<GUIDA - Lezione introduttiva.md>) — una presentazione di 20 minuti su interfaccia, celle, fogli, apertura e salvataggio dei file.
-- [Formulario completo](FORMULARIO.md) — formule e funzioni di tutte le esercitazioni, organizzate per categoria con esempi e controlli.
+- [Formulario completo](Scuola/Didattica/Argomenti/Fogli%20elettronici/Esercitazioni/FORMULARIO.md) — formule e funzioni di tutte le esercitazioni, organizzate per categoria con esempi e controlli.
 
 ## Percorso
 

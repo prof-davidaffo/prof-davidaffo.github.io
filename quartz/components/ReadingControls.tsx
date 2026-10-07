@@ -11,7 +11,7 @@ const ReadingControls: QuartzComponent = (props) => (
     <input
       type="range"
       min="80"
-      max="150"
+      max="200"
       step="1"
       value="100"
       data-text-size-slider

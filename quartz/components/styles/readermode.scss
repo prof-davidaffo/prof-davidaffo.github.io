@@ -42,10 +42,3 @@
     margin-top: 5rem;
   }
 }
-
-:root[reader-mode="on"] .reading-controls {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 10;
-}

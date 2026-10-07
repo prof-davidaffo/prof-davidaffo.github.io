@@ -1,1 +1,1 @@
-[Apri la dispensa](.pages/codifiche)
+[Apri la dispensa](https://prof-davidaffo.github.io/pages/codifiche)

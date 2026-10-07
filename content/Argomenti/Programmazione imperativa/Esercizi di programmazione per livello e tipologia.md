@@ -22,7 +22,7 @@ Scrivere un programma che calcola la media tra tre numeri.
 Scrivere un programma che, per ciascuna di queste frasi, stampa la frase seguita dal simbolo = e da un’espressione booleana che calcola il suo valore di verità.
 
 > [!hint] Suggerimento
-> Per stampare i booleani come true e false invece che come 1 e 0 si deve impostare a true il flag boolalpha di cout. Per fare questo si usa la stessa sintassi della stampa, ovvero si deve “stampare” un comando, come segue: std::cout << std::boolalpha
+> Per stampare i booleani come true e false invece che come 1 e 0 si deve impostare a true il flag boolalpha di cout. Per fare questo si usa la stessa sintassi della stampa, ovvero si deve “stampare” un comando, come segue: cout << boolalpha
 
 • tre è maggiore di uno
 • quattro diviso due è minore di zero

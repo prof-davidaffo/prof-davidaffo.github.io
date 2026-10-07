@@ -2,7 +2,7 @@ const textSizeKey = "quartz-text-size"
 let textSize = 100
 try {
   const saved = Number(localStorage.getItem(textSizeKey))
-  if (Number.isFinite(saved) && saved >= 80 && saved <= 150) textSize = saved
+  if (Number.isFinite(saved) && saved >= 80 && saved <= 200) textSize = saved
 } catch {
   // Controls remain usable when storage is unavailable.
 }
@@ -20,7 +20,7 @@ const applyTextSize = () => {
 
 const setTextSize = (value: number) => {
   if (!Number.isFinite(value)) return
-  textSize = Math.max(80, Math.min(150, Math.round(value)))
+  textSize = Math.max(80, Math.min(200, Math.round(value)))
   applyTextSize()
   try {
     localStorage.setItem(textSizeKey, String(textSize))
