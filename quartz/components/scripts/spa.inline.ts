@@ -197,6 +197,55 @@ function createRouter() {
 createRouter()
 notifyNav(getFullSlug(window))
 
+// A direct fragment link is initially scrolled by the browser before the
+// asynchronous Explorer has rendered. Restore it only after the content index,
+// page resources and fonts are ready and nav handlers have finished their layout.
+async function restoreInitialAnchor() {
+  const hash = window.location.hash
+  if (!hash) return
+
+  const controller = new AbortController()
+  const cancel = () => controller.abort()
+  const options = { passive: true, signal: controller.signal }
+  window.addEventListener("wheel", cancel, options)
+  window.addEventListener("touchstart", cancel, options)
+  window.addEventListener("pointerdown", cancel, options)
+  window.addEventListener("hashchange", cancel, options)
+  window.addEventListener("popstate", cancel, options)
+  window.addEventListener(
+    "keydown",
+    (event) => {
+      if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(event.key))
+        cancel()
+    },
+    options,
+  )
+
+  try {
+    const loaded =
+      document.readyState === "complete"
+        ? Promise.resolve()
+        : new Promise<void>((resolve) =>
+            window.addEventListener("load", () => resolve(), { once: true }),
+          )
+    await Promise.allSettled([fetchData, document.fonts.ready, loaded])
+    // The Explorer awaits fetchData too. Let its promise continuations and the
+    // resulting layout run before making the anchor scroll the final operation.
+    await new Promise<void>((resolve) =>
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+    )
+    if (controller.signal.aborted || window.location.hash !== hash) return
+    document.getElementById(decodeURIComponent(hash.slice(1)))?.scrollIntoView({
+      behavior: "instant",
+      block: "start",
+    })
+  } finally {
+    controller.abort()
+  }
+}
+
+void restoreInitialAnchor().catch(console.error)
+
 if (!customElements.get("route-announcer")) {
   const attrs = {
     "aria-live": "assertive",
