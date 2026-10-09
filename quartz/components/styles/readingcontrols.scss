@@ -1,33 +1,31 @@
 .reading-controls {
-  position: fixed;
-  top: 12px;
-  right: 12px;
+  position: sticky;
+  top: 0;
   z-index: 100;
-  width: 320px;
-  max-width: calc(100vw - 24px);
+  width: 100%;
+  max-width: 100%;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 6px;
   border: 1px solid var(--gray);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--light);
   color: var(--dark);
   box-shadow: 0 4px 18px #0002;
   font: 14px var(--bodyFont);
-  .reading-controls-header,
+  display: flex;
+  align-items: center;
+  gap: 6px;
   .reading-controls-zoom {
     display: flex;
+    flex: 1;
+    min-width: 0;
     align-items: center;
     gap: 6px;
   }
-  .reading-controls-header {
-    justify-content: space-between;
-    padding-bottom: 8px;
-    margin-bottom: 6px;
-    border-bottom: 1px solid var(--lightgray);
-  }
   button {
     height: 36px;
-    min-width: 36px;
+    min-width: 32px;
+    flex-shrink: 0;
     padding: 0 8px;
     border: 1px solid var(--lightgray);
     border-radius: 6px;
@@ -43,20 +41,6 @@
       background: var(--highlight);
     }
   }
-  .reading-controls-handle {
-    border: 0;
-    color: var(--darkgray);
-    cursor: grab;
-    touch-action: none;
-    user-select: none;
-    & span {
-      font-size: 24px;
-      vertical-align: middle;
-    }
-  }
-  &.is-dragging .reading-controls-handle {
-    cursor: grabbing;
-  }
   [data-reading-mode][aria-pressed="true"] {
     background: var(--secondary);
     color: var(--light);
@@ -65,8 +49,8 @@
     appearance: none;
     -webkit-appearance: none;
     flex: 1;
-    width: 100%;
-    min-width: 40px;
+    width: 0;
+    min-width: 24px;
     height: 32px;
     margin: 0;
     background: transparent;
@@ -111,13 +95,13 @@
     outline: 2px solid var(--secondary);
     outline-offset: 3px;
   }
-  @media (max-width: 600px) {
-    top: auto;
-    bottom: 12px;
-  }
   @media print {
     display: none;
   }
+}
+
+.page #quartz-body .center > .reading-controls + .page-header {
+  margin-top: 1rem;
 }
 
 // Scale the article while keeping navigation and controls stable.
@@ -164,8 +148,7 @@
   }
 }
 
-@media screen and (max-width: 600px) {
-  .page {
-    padding-bottom: 140px;
-  }
+// Reserve room above anchors for the sticky toolbar.
+html:has(.reading-controls) {
+  scroll-padding-top: 60px;
 }

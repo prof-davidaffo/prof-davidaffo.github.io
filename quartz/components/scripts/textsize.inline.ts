@@ -1,6 +1,5 @@
 const textSizeKey = "quartz-text-size"
 const readerModeKey = "quartz-reader-mode"
-const panelPositionKey = "quartz-reading-position"
 
 const readPreference = (key: string) => {
   try {
@@ -32,7 +31,8 @@ const applyReadingPreferences = () => {
   })
   document.querySelectorAll<HTMLButtonElement>("[data-reading-mode]").forEach((button) => {
     button.setAttribute("aria-pressed", String(readerMode))
-    button.textContent = readerMode ? "Esci da lettura" : "Lettura"
+    button.textContent = "Lettura"
+    button.title = readerMode ? "Esci dalla modalità lettura" : "Attiva la modalità lettura"
   })
   document.querySelectorAll<HTMLButtonElement>("[data-text-size-decrease]").forEach((button) => {
     button.disabled = textSize <= 80
@@ -100,85 +100,6 @@ document.addEventListener("nav", () => {
         }),
       )
     })
-    const movePanel = (x: number, y: number) => {
-      const rect = panel.getBoundingClientRect()
-      const left = Math.max(8, Math.min(x, window.innerWidth - rect.width - 8))
-      const top = Math.max(8, Math.min(y, window.innerHeight - rect.height - 8))
-      panel.style.left = `${left}px`
-      panel.style.top = `${top}px`
-      panel.style.right = "auto"
-      panel.style.bottom = "auto"
-    }
-    const savePosition = () => {
-      const { left, top } = panel.getBoundingClientRect()
-      savePreference(panelPositionKey, JSON.stringify({ x: left, y: top }))
-    }
-    try {
-      const position = JSON.parse(readPreference(panelPositionKey) ?? "null")
-      if (position && Number.isFinite(position.x) && Number.isFinite(position.y)) {
-        movePanel(position.x, position.y)
-      }
-    } catch {
-      /* Invalid saved positions use the default corner. */
-    }
-    const handle = panel.querySelector<HTMLButtonElement>("[data-reading-drag]")
-    let drag: { id: number; x: number; y: number; left: number; top: number } | null = null
-    listen(handle, "pointerdown", (event) => {
-      if (event.button !== 0 || !handle) return
-      event.preventDefault()
-      const rect = panel.getBoundingClientRect()
-      drag = {
-        id: event.pointerId,
-        x: event.clientX,
-        y: event.clientY,
-        left: rect.left,
-        top: rect.top,
-      }
-      handle.setPointerCapture(event.pointerId)
-      panel.classList.add("is-dragging")
-    })
-    listen(handle, "pointermove", (event) => {
-      if (!drag || event.pointerId !== drag.id) return
-      movePanel(drag.left + event.clientX - drag.x, drag.top + event.clientY - drag.y)
-    })
-    const endDrag = () => {
-      if (!drag) return
-      drag = null
-      panel.classList.remove("is-dragging")
-      savePosition()
-    }
-    listen(handle, "pointerup", endDrag)
-    listen(handle, "pointercancel", endDrag)
-    listen(handle, "lostpointercapture", endDrag)
-    listen(handle, "keydown", (event) => {
-      if (event.key === "Home") {
-        event.preventDefault()
-        for (const property of ["left", "top", "right", "bottom"])
-          panel.style.removeProperty(property)
-        savePreference(panelPositionKey, "null")
-        return
-      }
-      const directions: Record<string, [number, number]> = {
-        ArrowLeft: [-1, 0],
-        ArrowRight: [1, 0],
-        ArrowUp: [0, -1],
-        ArrowDown: [0, 1],
-      }
-      const direction = directions[event.key]
-      if (!direction) return
-      event.preventDefault()
-      const rect = panel.getBoundingClientRect()
-      const step = event.shiftKey ? 40 : 10
-      movePanel(rect.left + direction[0] * step, rect.top + direction[1] * step)
-      savePosition()
-    })
-    const keepInViewport = () => {
-      if (!panel.style.left) return
-      const rect = panel.getBoundingClientRect()
-      movePanel(rect.left, rect.top)
-    }
-    window.addEventListener("resize", keepInViewport)
-    cleanups.push(() => window.removeEventListener("resize", keepInViewport))
     window.addCleanup(() => {
       cleanups.forEach((cleanup) => cleanup())
       delete panel.dataset.readingInitialized

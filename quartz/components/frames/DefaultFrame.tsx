@@ -29,6 +29,11 @@ export const DefaultFrame: PageFrame = {
           ))}
         </div>
         <div class="center">
+          {beforeBody
+            .filter((component) => component.displayName === "ReadingControls")
+            .map((Controls) => (
+              <Controls {...componentData} />
+            ))}
           <div class="page-header">
             <Header {...componentData}>
               {header.map((HeaderComponent) => (
@@ -36,9 +41,11 @@ export const DefaultFrame: PageFrame = {
               ))}
             </Header>
             <div class="popover-hint">
-              {beforeBody.map((BodyComponent) => (
-                <BodyComponent {...componentData} />
-              ))}
+              {beforeBody
+                .filter((component) => component.displayName !== "ReadingControls")
+                .map((BodyComponent) => (
+                  <BodyComponent {...componentData} />
+                ))}
             </div>
           </div>
           <Content {...componentData} />

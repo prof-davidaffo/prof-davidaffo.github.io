@@ -5,20 +5,9 @@ import styles from "./styles/readingcontrols.scss"
 
 const ReadingControls: QuartzComponent = () => (
   <div class="reading-controls" role="group" aria-label="Opzioni di lettura">
-    <div class="reading-controls-header">
-      <button
-        type="button"
-        class="reading-controls-handle"
-        data-reading-drag
-        title="Trascina per spostare. Tastiera: frecce per spostare, Home per ripristinare."
-        aria-label="Sposta il pannello di lettura"
-      >
-        <span aria-hidden="true">⠿</span> Trascina
-      </button>
-      <button type="button" data-reading-mode aria-pressed="false">
-        Lettura
-      </button>
-    </div>
+    <button type="button" data-reading-mode aria-pressed="false">
+      Lettura
+    </button>
     <div class="reading-controls-zoom">
       <button type="button" data-text-size-decrease aria-label="Riduci il testo">
         −
@@ -51,6 +40,16 @@ const ReadingControls: QuartzComponent = () => (
   </div>
 )
 
+ReadingControls.displayName = "ReadingControls"
+ReadingControls.beforeDOMLoaded = `
+  try {
+    const savedSize = Number(localStorage.getItem("quartz-text-size"))
+    const size = savedSize >= 80 && savedSize <= 200 ? Math.round(savedSize / 5) * 5 : 100
+    document.documentElement.style.setProperty("--reading-font-scale", String(size / 100))
+    document.documentElement.setAttribute("reader-mode",
+      localStorage.getItem("quartz-reader-mode") === "on" ? "on" : "off")
+  } catch {}
+`
 ReadingControls.css = styles
 ReadingControls.afterDOMLoaded = script
 
