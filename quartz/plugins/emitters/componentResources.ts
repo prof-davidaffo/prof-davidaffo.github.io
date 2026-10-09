@@ -5,8 +5,6 @@ import { QuartzEmitterPlugin } from "../types"
 // @ts-ignore
 import spaRouterScript from "../../components/scripts/spa.inline"
 // @ts-ignore
-import anchorScript from "../../components/scripts/anchors.inline"
-// @ts-ignore
 import popoverScript from "../../components/scripts/popover.inline"
 import baseStyles from "../../styles/base.scss"
 import customStyles from "../../styles/custom.scss"
@@ -15,7 +13,6 @@ import { BuildCtx } from "../../util/ctx"
 import { QuartzComponent } from "../../components/types"
 import { normalizeResource } from "../../util/resources"
 import { componentRegistry } from "../../components/registry"
-import { containExplorerScroll } from "../../components/scripts/explorerScroll"
 import {
   googleFontHref,
   googleFontSubsetHref,
@@ -61,8 +58,7 @@ function getComponentResources(ctx: BuildCtx): ComponentResources {
     const { css, beforeDOMLoaded, afterDOMLoaded } = component
     for (const c of normalizeResource(css)) componentResources.css.add(c)
     for (const b of normalizeResource(beforeDOMLoaded)) componentResources.beforeDOMLoaded.add(b)
-    for (const a of normalizeResource(afterDOMLoaded))
-      componentResources.afterDOMLoaded.add(containExplorerScroll(a))
+    for (const a of normalizeResource(afterDOMLoaded)) componentResources.afterDOMLoaded.add(a)
   }
 
   return {
@@ -87,7 +83,6 @@ async function joinScripts(scripts: string[]): Promise<string> {
 
 function addGlobalPageResources(ctx: BuildCtx, componentResources: ComponentResources) {
   const cfg = ctx.cfg.configuration
-  componentResources.beforeDOMLoaded.push(anchorScript)
 
   // popovers
   if (cfg.enablePopovers) {
