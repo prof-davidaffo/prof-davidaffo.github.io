@@ -400,11 +400,27 @@ In questi esempi i metodi sono `static`, quindi possono essere chiamati da `main
 
 ## Esercizi
 
-1. **Costo del parcheggio.** Un parcheggio applica una tariffa di 2 euro per la prima ora e 1 euro per ogni ora successiva, con un tetto di 10 euro per una singola sosta. Per questo esercizio la sosta può durare da 1 a 24 ore intere. Leggi le ore da tastiera, rifiuta i valori fuori intervallo con un messaggio e calcola il costo tramite `parkingCost(int hours)`, chiamato soltanto dopo il controllo dell'input. Verifica che 1, 3, 12 e 24 ore costino rispettivamente 2, 4, 10 e 10 euro e che 0 e 25 siano rifiutati.
-2. Leggi una sequenza di temperature intere terminata dal valore sentinella `999`. Senza usare array, stampa quante temperature sono state inserite, il minimo, il massimo e la media. Se `999` è il primo valore, stampa un messaggio specifico invece di calcolare la media.
-3. **Menu di conversione.** Scrivi un programma che mostri le scelte `1` Celsius → Fahrenheit, `2` Fahrenheit → Celsius, `3` numero di conversioni eseguite e `0` uscita. Dopo ogni operazione torna al menu. Usa `switch` per scegliere il comando e due metodi per le formule `F = C * 9.0 / 5 + 32` e `C = (F - 32) * 5.0 / 9`. Incrementa il contatore soltanto dopo una conversione; una scelta sconosciuta deve mostrare un errore e riproporre il menu. Verifica 0 °C → 32 °F, 212 °F → 100 °C e il conteggio finale di due conversioni.
-4. **Contare caratteri.** Scrivi `countOccurrences(String text, char searched)` usando un ciclo, `text.length()` per la lunghezza e `text.charAt(i)` per il carattere alla posizione `i`, a partire da zero. Il confronto distingue maiuscole e minuscole. Leggi una riga di testo e due caratteri, ciascuno su una riga contenente un solo carattere, poi indica quale compare più spesso oppure se c'è un pareggio. Con `banana`, `a` e `n` i conteggi devono essere 3 e 2; con testo vuoto devono essere entrambi zero.
-5. **Pagamento al distributore.** Il prezzo di un prodotto è un numero intero positivo di euro, letto all'avvio; se non è positivo, termina con un errore. Il distributore accetta monete da 1 e 2 euro: continua a leggerle finché il totale raggiunge o supera il prezzo. Ignora gli altri tagli con `continue`; `0` annulla l'acquisto e interrompe il ciclo con `break`. In caso di successo mostra il resto, altrimenti l'intero importo da restituire. Con prezzo 3 verifica le sequenze `2, 2` (acquisto e resto 1), `1, 5, 2` (5 ignorato, acquisto senza resto) e `2, 0` (annullamento e restituzione di 2 euro).
+Per questi esercizi puoi assumere che gli input numerici siano scritti in un formato corretto. Controlla invece gli intervalli richiesti dalle consegne. La gestione del testo non numerico verrà affrontata nel capitolo sulle eccezioni. Usa valori abbastanza piccoli da rientrare nei tipi scelti.
+
+1. **Preventivo per una visita al museo.** Il biglietto costa 8 euro a persona; per gruppi di almeno 10 persone costa 6 euro a persona. L'audioguida, facoltativa, aggiunge 2 euro a persona.
+
+   Leggi il numero di partecipanti e la scelta dell'audioguida, espressa con `s` o `n`. Se il numero non è positivo o la scelta è diversa, mostra un messaggio e termina. Scrivi `calculateTotal(int people, boolean audioGuide)`, che restituisce il totale in euro, e chiamalo dopo i controlli. Mostra tariffa per persona e totale. Verifica 9 persone senza audioguida → 72 euro; 10 senza audioguida → 60; 10 con audioguida → 80; zero persone → rifiuto.
+
+2. **Riepilogo delle temperature.** Una stazione riceve temperature intere fino all'inserimento di `999`, che conclude l'acquisizione e non è una misurazione.
+
+   Senza memorizzare l'intera sequenza, calcola numero di misure, minimo, massimo e media con parte decimale. Se non è stata inserita alcuna misura, stampa «Nessuna misurazione». Verifica `-3, 0, 6, 999` → 3 misure, minimo -3, massimo 6, media 1; prova anche una sola misura negativa e la sequenza composta soltanto da `999`.
+
+3. **Convertitore con menu.** Realizza un programma con le scelte `1` Celsius → Fahrenheit, `2` Fahrenheit → Celsius, `3` riepilogo delle conversioni e `0` uscita. Dopo ogni operazione ripresenta il menu; una scelta sconosciuta mostra un messaggio e non modifica il conteggio.
+
+   Usa `switch` e due metodi di conversione, con formule `F = C * 9.0 / 5 + 32` e `C = (F - 32) * 5.0 / 9`. Il riepilogo indica quante conversioni sono state eseguite nelle due direzioni. Prova 0 °C → 32 °F, 212 °F → 100 °C, una scelta inesistente e un riepilogo con totale 2. Prova anche l'uscita immediata.
+
+4. **Controllare un codice di accesso.** Un codice è accettabile se ha da 6 a 12 caratteri, contiene almeno una lettera minuscola fra `a` e `z` e almeno una cifra fra `0` e `9`, e non contiene altri caratteri.
+
+   Scrivi `isValidCode(String code)` e un programma che legga una riga e mostri l'esito. Per scorrere la stringa usa `length()` e `charAt(i)`, con indici a partire da zero; puoi confrontare i caratteri con espressioni come `c >= '0' && c <= '9'`. Verifica `abc123` → valido; `abcdef`, `123456`, `abc 12`, `Abc123`, stringa vuota e una stringa di 13 caratteri → non validi.
+
+5. **Acquisto al distributore.** Il prezzo di un prodotto è un numero intero positivo di euro, letto all'avvio. Se non è positivo, termina con un messaggio. Il distributore accetta monete da 1 e 2 euro; il valore `0` annulla l'acquisto.
+
+   Leggi monete finché il totale raggiunge il prezzo oppure viene richiesto l'annullamento. Segnala e ignora ogni altro valore. Al termine mostra acquisto e resto, oppure annullamento e importo da restituire. Con prezzo 3 verifica `2, 2` → resto 1; `1, 5, 2` → 5 ignorato e resto zero; `2, 0` → restituzione di 2 euro. Scegli dove rendono più chiaro il ciclo `break` e `continue`.
 
 ---
 
@@ -698,10 +714,21 @@ In questo primo esempio `Main` decide quali operazioni eseguire e stampa i risul
 
 ### Esercizi
 
-1. Modella una lampada con nome e stato acceso/spento. Il costruttore riceve il nome e la lampada nasce spenta; `turnOn()`, `turnOff()`, `isOn()` e `description()` costituiscono le operazioni disponibili. Crea due lampade, azionale in modo diverso e mostra che ogni oggetto conserva il proprio stato.
-2. **Serbatoio di carburante.** Crea `FuelTank(double capacity, double initialLevel)` con quantità espresse in litri. In questa prima versione puoi assumere che il costruttore riceva una capacità positiva e un livello compreso fra zero e la capacità. `add(double liters)` e `consume(double liters)` restituiscono `true` quando modificano il livello; restituiscono `false` senza modificarlo per quantità non positive, rifornimenti oltre la capacità o consumi oltre il livello disponibile. Aggiungi `getLevel()`. Da un serbatoio di capacità 50 e livello 20, prova nell'ordine `add(10)`, `add(30)`, `consume(5)` e `consume(40)`: livelli attesi 30, 30, 25 e 25.
-3. **Domande di un quiz.** Una domanda a risposta breve ha un testo, una risposta corretta e un punteggio intero positivo. Crea `QuizQuestion` con questi tre dati ricevuti dal costruttore. `checkAnswer(String answer)` restituisce `true` soltanto quando la risposta coincide esattamente con quella corretta; `pointsFor(String answer)` usa questo controllo e restituisce il punteggio oppure zero. Nel `main()` crea tre domande, leggi una risposta per ciascuna e stampa il totale. Per esempio, con domande da 2, 3 e 5 punti e risposte corretta, errata, corretta, il risultato deve essere 7.
-4. **Un termostato che non cambia temperatura.** Copia la classe seguente e, nel `main()`, crea due termostati inizialmente a 20 e 18 gradi. Chiama `increase()` soltanto sul primo e stampa entrambe le temperature: dovrebbero diventare 21 e 18, ma il codice contiene un difetto. Individua quale variabile cambia, correggi il metodo e ripeti la prova. Spiega se nella versione corretta `this` è necessario oppure facoltativo.
+Realizza le classi e un `main()` che ne mostri l'uso. In questa sezione puoi assumere validi gli argomenti dei costruttori; gli eventuali rifiuti delle operazioni sono specificati nelle singole consegne.
+
+1. **Lampade di una stanza.** Una `Lamp` ha un nome, ricevuto dal costruttore, e uno stato acceso/spento; inizialmente è spenta. Offre `turnOn()`, `turnOff()`, `isOn()` e `description()`, che restituisce nome e stato senza stampare.
+
+   Crea due lampade, accendi soltanto la prima e stampa entrambe le descrizioni. Poi spegni la prima e accendi la seconda. Chiamare due volte `turnOn()` deve lasciare la lampada accesa. Indica quali dati appartengono a ciascun oggetto e quali informazioni arrivano come parametri.
+
+2. **Serbatoio di carburante.** Crea `FuelTank(double capacity, double initialLevel)`, con quantità in litri, capacità positiva e livello iniziale compreso fra zero e capacità. Offre `getLevel()`, `getCapacity()`, `add(double liters)` e `consume(double liters)`.
+
+   Le operazioni di modifica restituiscono `true` se riescono; quantità non positive, rifornimenti eccessivi e consumi oltre il disponibile producono `false` senza modifiche. Da capacità 50 e livello 20 esegui `add(10)`, `add(30)`, `consume(5)`, `consume(40)`: i livelli devono essere 30, 30, 25, 25. Verifica anche un consumo esattamente pari al livello e un rifornimento che raggiunga esattamente la capacità.
+
+3. **Quiz a risposta breve.** Una `QuizQuestion` conserva testo, risposta corretta e punteggio intero positivo. Il costruttore riceve questi dati; `getText()` restituisce la domanda, `checkAnswer(String answer)` confronta esattamente la risposta e `pointsFor(String answer)` restituisce il punteggio oppure zero, riutilizzando il controllo.
+
+   Nel `main()` crea tre domande, mostra ciascun testo, leggi una risposta e accumula i punti. Non servono array o collezioni: puoi usare tre variabili. Con domande da 2, 3 e 5 punti e risposte corretta, errata, corretta, il totale deve essere 7; con tutte errate deve essere zero. Spiega perché il totale del quiz non è un campo della singola domanda.
+
+4. **Riparare un termostato.** La classe seguente dovrebbe aumentare di un grado la temperatura conservata nell'oggetto, ma non lo fa.
 
    ```java
    public class Thermostat {
@@ -721,6 +748,8 @@ In questo primo esempio `Main` decide quali operazioni eseguire e stampa i risul
        }
    }
    ```
+
+   Crea due termostati a 20 e 18 gradi. Chiama `increase()` sul primo: il risultato richiesto è 21 e 18. Prima di correggere il metodo, descrivi il valore del campo e quello della variabile locale durante la chiamata. Conserva una copia della versione difettosa e verifica la correzione anche con due incrementi consecutivi sullo stesso oggetto.
 
 ---
 
@@ -838,10 +867,19 @@ Il procedimento inverso permette di ricavare lo scheletro di una classe da un di
 
 ### Esercizi
 
-1. **Dal requisito al diagramma.** Un biglietto ferroviario conserva stazione di partenza, destinazione e prezzo in euro. Offre `description()`, che restituisce una stringa, e `discountedPrice(double percentage)`, che restituisce il prezzo scontato senza modificare quello originale. Assumi dati validi e una percentuale fra 0 e 100. Disegna `TrainTicket` indicando tipi, visibilità, costruttore, parametri e valori restituiti; poi scrivi lo scheletro Java corrispondente. Per un prezzo di 40 euro e uno sconto del 25%, il valore calcolato deve essere 30 e quello conservato deve restare 40.
-2. **Lo stato degli oggetti nel tempo.** Riprendi `FuelTank` dagli esercizi su classi e oggetti. Crea `first` con capacità 50 e livello 30 e `second` con capacità 40 e livello 20. Disegna un diagramma degli oggetti prima di `first.consume(15)` e uno dopo. Il primo serbatoio deve passare da 30 a 15 litri, il secondo restare a 20; usa gli stessi identificatori nei due diagrammi per mostrare che gli oggetti non sono stati sostituiti.
-3. **Completare un diagramma.** Un appunto descrive `Student` soltanto con i campi `name`, `credits` e i metodi `addCredits`, `description`. Il requisito completo è: il costruttore riceve il nome; i crediti partono da zero; `addCredits(int amount)` aggiunge quantità positive e restituisce `false` senza modifiche per le altre; `description()` restituisce nome e crediti. Completa il diagramma con tipi, visibilità e firme, poi implementa la classe. Con uno studente chiamato Anna, l'aggiunta di 6 crediti seguita da quella di -2 deve lasciare 6 crediti.
-4. **Una vendita e due distributori.** Modella `VendingMachine` con nome del prodotto, prezzo in euro e quantità disponibile. Per isolare la rappresentazione UML, non gestire il pagamento: `sellOne()` decrementa la quantità di uno e restituisce `true`, oppure restituisce `false` se la quantità è zero. Assumi dati iniziali validi. Disegna la classe e due diagrammi degli oggetti, prima e dopo una vendita soltanto dal distributore di acqua, inizialmente con 2 bottiglie. Il distributore di succhi, inizialmente con 3 confezioni, deve restare invariato.
+Nei diagrammi delle classi indica visibilità, tipi, costruttori e firme dei metodi. Nei diagrammi degli oggetti indica nome dell'oggetto, classe e valori dei campi; i metodi non vanno ripetuti.
+
+1. **Progettare un biglietto ferroviario.** Un `TrainTicket` conserva partenza, destinazione e prezzo in euro, ricevuti dal costruttore. Offre `description()` e `discountedPrice(double percentage)`, che calcola un prezzo scontato senza cambiare il biglietto. Assumi testi validi, prezzo non negativo e percentuale fra 0 e 100.
+
+   Disegna la classe, implementala e confronta ogni membro pubblico del codice con il diagramma. Crea un biglietto da 40 euro: uno sconto del 25% deve restituire 30, mentre la descrizione successiva deve riportare ancora 40. Disegna anche quell'istanza.
+
+2. **Due serbatoi, una sola modifica.** Usa `FuelTank` della sezione «Classi e oggetti». Crea `first` con capacità 50 e livello 30 e `second` con capacità 40 e livello 20.
+
+   Disegna lo stato iniziale, poi lo stato dopo `first.consume(15)` e infine dopo `second.add(30)`. Annota gli esiti delle due chiamate. Nei tre diagrammi devono comparire gli stessi due oggetti: la prima operazione lascia livelli 15 e 20, la seconda viene rifiutata e li lascia invariati. Distingui le informazioni che ricavi dal diagramma della classe da quelle visibili soltanto nel diagramma degli oggetti.
+
+3. **Documentare il contatore di ingressi.** Un `EntryCounter` ha una capienza positiva, ricevuta dal costruttore, e un numero di presenti inizialmente zero. `enter()` restituisce `true` e incrementa i presenti se c'è posto; `leave()` restituisce `true` e li decrementa se non sono zero. Negli altri casi restituiscono `false` senza modifiche. `getPresent()` e `getCapacity()` leggono lo stato.
+
+   Prepara il diagramma prima del codice e implementa la classe a partire da esso. Con capienza 2 rappresenta lo stato dopo tre tentativi di ingresso e dopo un'uscita. I presenti devono essere rispettivamente 2 e 1. Specifica quali regole di comportamento devono essere descritte a parole perché le sole firme UML non le esprimono.
 
 ---
 
@@ -888,12 +926,12 @@ Rendere privati i campi e controllarne l'accesso attraverso i metodi si chiama *
 
 `public` e `private` non sono le uniche possibilità. Java prevede quattro livelli di accesso:
 
-| Dichiarazione | Stessa classe | Stesso package | Sottoclasse fuori dal package | Altre classi |
-|---|:---:|:---:|:---:|:---:|
-| `private` | sì | no | no | no |
-| nessun modificatore | sì | sì | no | no |
-| `protected` | sì | sì | sì | no |
-| `public` | sì | sì | sì | sì |
+| Dichiarazione       | Stessa classe | Stesso package | Sottoclasse fuori dal package | Altre classi |
+| ------------------- | :-----------: | :------------: | :---------------------------: | :----------: |
+| `private`           |      sì       |       no       |              no               |      no      |
+| nessun modificatore |      sì       |       sì       |              no               |      no      |
+| `protected`         |      sì       |       sì       |              sì               |      no      |
+| `public`            |      sì       |       sì       |              sì               |      sì      |
 
 Un **package** raggruppa classi correlate. Quando non si scrive alcun modificatore, l'elemento è accessibile soltanto alle classi dello stesso package. Questo livello viene chiamato *package-private*:
 
@@ -1070,11 +1108,23 @@ Il campo `balance` rimane sempre maggiore o uguale a zero, anche quando il progr
 
 ### Esercizi
 
-1. **Ascensore entro i limiti.** Realizza `Elevator(int topFloor)`: i piani vanno da 0 a `topFloor`, e l'ascensore parte da 0. In questo esercizio assumi che il costruttore riceva `topFloor >= 1`; la validazione tramite eccezioni verrà affrontata più avanti. `goUp()` e `goDown()` spostano di un piano e restituiscono `true`, oppure `false` senza modifiche se si supera un limite. Aggiungi `getCurrentFloor()` e `isAtTop()`, senza setter del piano. Con `topFloor = 2`, verifica una discesa iniziale rifiutata, due salite riuscite e una terza rifiutata. Formula l'invariante dello stato.
-2. **Carta regalo.** Una `GiftCard` ha un codice non modificabile e un saldo espresso in centesimi interi, inizialmente zero. Assumi un codice valido. Espone `getCode()`, `getBalance()`, `topUp(int amount)` e `pay(int amount)`; le ultime due operazioni restituiscono un booleano. Ricariche e pagamenti devono essere positivi e un pagamento non può superare il saldo: ogni rifiuto lascia il saldo invariato. Implementa campi privati e queste sole operazioni. Dopo una ricarica di 5000, prova pagamenti di 1200 e 4000 e una ricarica di -100: esiti `true`, `false`, `false` e saldo finale 3800.
-3. **Voto ed esito coerenti.** Il modello iniziale di `Exam` espone tre campi pubblici: `String student`, `int grade` e `boolean passed`. Un client può quindi assegnare voto 3 ed esito positivo. In questo esercizio i voti ammessi vanno da 0 a 10 e la sufficienza è 6. Riscrivi la classe con studente e voto privati, esito calcolato da `isPassed()` e operazione `recordGrade(int grade)` che restituisce `false` per voti fuori intervallo senza cambiare lo stato. Il costruttore riceve lo studente e inizializza il voto a zero. Verifica 3 → non superato, 6 → superato e 11 → rifiutato. Spiega perché non serve conservare un campo `passed`.
-4. **Proteggere il volume.** Il volume di un dispositivo deve restare fra 0 e 10, estremi inclusi, e parte da 5. Crea una versione `UnsafeVolumeControl` il cui `setVolume(int)` assegni qualunque valore, poi una `VolumeControl` con campi privati, `getVolume()`, `increase()` e `decrease()`. Nella seconda versione le operazioni ai limiti restituiscono `false` e lasciano il volume invariato. Mostra che la prima accetta -1, mentre la seconda resta a 0 dopo sei tentativi di diminuzione. Formula l'invariante e spiega perché la sola visibilità `private` non basta se un metodo pubblico permette assegnazioni arbitrarie.
-5. **API di un account.** Un `UserAccount` conserva username e password. Chi lo usa deve poter verificare una password, cambiarla soltanto conoscendo quella corrente e ottenere una descrizione contenente il solo username. Proponi visibilità e firme per i campi e per `isPasswordCorrect`, `changePassword` e `description`, indicando parametri ed esiti. Non deve esistere un metodo che restituisca la password. Mostra una sequenza di chiamate con cambio riuscito e cambio rifiutato e giustifica quali membri rendi pubblici o privati.
+Per ogni classe scrivi l'invariante e indica come costruttore e metodi lo preservano. I campi devono essere privati. In questa sezione assumi validi i dati iniziali dei costruttori; gestisci gli argomenti delle operazioni come indicato.
+
+1. **Carta regalo.** Una `GiftCard(String code)` nasce con saldo zero in centesimi interi. Il codice è leggibile e non può essere cambiato. La classe offre `getCode()`, `getBalance()`, `boolean topUp(int amount)` e `boolean pay(int amount)`.
+
+   Ricariche e pagamenti devono essere positivi; un pagamento non può superare il saldo. Ogni rifiuto restituisce `false` e lascia lo stato invariato. Non aggiungere un setter del saldo. Dopo una ricarica di 5000, prova pagamenti di 1200 e 4000 e una ricarica di -100: esiti `true`, `false`, `false` e saldo 3800. In prove separate verifica pagamento dell'intero saldo, importo zero e ricarica positiva. Usa importi piccoli, senza rischio di overflow.
+
+2. **Ascensore.** Crea `Elevator(int topFloor)` con piani da 0 a `topFloor`, dove `topFloor >= 1`, e posizione iniziale 0. `goUp()` e `goDown()` si spostano di un piano e restituiscono se lo spostamento è riuscito. Ai limiti restituiscono `false` senza modifiche. Aggiungi `getCurrentFloor()` e `isAtTop()`.
+
+   Con ultimo piano 2 prova una discesa iniziale, tre salite e tre discese. Annota dopo ogni chiamata esito e piano. Valuta la proposta di aggiungere `setCurrentFloor(int floor)`: spiega quali responsabilità trasferirebbe al chiamante e perché le operazioni di movimento sono sufficienti per questa versione.
+
+3. **Esito di una prova scolastica.** Un registro conserva studente, voto da 0 a 10 ed esito superato/non superato, con sufficienza 6. Nella prima proposta tutti e tre sono campi pubblici.
+
+   Mostra una sequenza di assegnazioni che renda incoerenti voto ed esito. Progetta poi `Exam(String student, int initialGrade)` con `getStudent()`, `getGrade()`, `isPassed()` e `boolean recordGrade(int grade)`. I voti fuori intervallo vengono rifiutati senza modifiche; l'esito è calcolato dal voto. Da voto iniziale 5 verifica aggiornamenti a 6, 11 e 3, con esiti rispettivamente superato, ancora superato e non superato. Giustifica quali informazioni conservi e quali ricavi.
+
+4. **Prestito di un'attrezzatura.** Una `EquipmentLoan` rappresenta il prestito di un singolo oggetto identificato da codice. Nasce disponibile e offre `boolean borrow(String borrower)`, `boolean returnItem()`, `boolean isAvailable()` e `String description()`.
+
+   Il prestito riesce solo se l'oggetto è disponibile e il nome non è nullo o blank; la restituzione riesce solo se è in prestito. Un rifiuto non cambia lo stato. La descrizione mostra il codice e, quando presente, il nome dell'utilizzatore. Prova prestito ad Anna, secondo prestito a Luca rifiutato, restituzione, seconda restituzione rifiutata e nuovo prestito a Luca. Scegli una rappresentazione che non permetta di avere contemporaneamente «disponibile» e un utilizzatore assegnato.
 
 ---
 
@@ -1540,7 +1590,7 @@ Il controllo è utile quando l'assenza dell'oggetto ha un significato previsto d
 
 ### Esercizi
 
-1. **Seguire i riferimenti.** Per questo esercizio crea `Counter` con un campo intero inizialmente zero, `increment()` e `getValue()`. Traccia su carta la sequenza seguente: dopo ogni istruzione indica l'oggetto referenziato da ogni variabile già dichiarata, il valore dei contatori e gli oggetti ancora raggiungibili. Dai un nome diverso a ogni oggetto creato. Al termine stampa i valori attraverso `a` e `c` e confrontali con la previsione; non tentare di leggere il contatore attraverso `b`.
+1. **Seguire i riferimenti.** Crea `Counter` con valore iniziale zero, `increment()` e `getValue()`. Prima di eseguire la sequenza seguente, assegna un nome a ogni oggetto creato e traccia, dopo ogni istruzione, riferimenti e valori.
 
    ```java
    Counter a = new Counter();
@@ -1550,13 +1600,22 @@ Il controllo è utile quando l'assenza dell'oggetto ha un significato previsto d
    b.increment();
    Counter c = b;
    b = null;
+   a = c;
    ```
 
-2. **Modificare un oggetto o sostituire un parametro.** Crea `Player` con nome ricevuto dal costruttore, `getName()` e `setName(String name)`. Scrivi due metodi statici: `rename(Player player)` chiama `player.setName("Luca")`; `replace(Player player)` assegna al parametro un nuovo `Player("Sara")`. Nel `main()` crea un giocatore chiamato Anna e chiama prima `rename()` e poi `replace()`, stampando il nome dopo ciascuna chiamata. Disegna i riferimenti per spiegare perché il nome visto dal chiamante diventa Luca e poi resta Luca.
-3. **Copia superficiale e profonda.** Modella `Route` con un nome e un riferimento a `Destination`, oggetto mutabile con città e distanza in chilometri. Implementa due metodi distinti, `shallowCopy()` e `deepCopy()`, che restituiscano nuove `Route`: il primo condivide la destinazione, il secondo crea anche una nuova `Destination`. Non usare due costruttori con la stessa firma. In due prove separate parti da un percorso verso Roma: cambiare la città nella copia superficiale deve cambiarla anche nell'originale; cambiarla nella copia profonda deve lasciare Roma nell'originale. Controlla anche le identità con `==`.
-4. **Che cosa duplicare.** Crea una `Playlist` con `String owner` e `PlaybackSettings settings`; per questo esercizio non occorre un elenco di brani. Le impostazioni contengono volume intero e riproduzione casuale booleana, modificabili tramite metodi. Implementa `deepCopy()` e verifica che cambiare il volume della copia non cambi quello originale. Spiega perché il riferimento alle impostazioni deve essere diverso, mentre la stessa stringa del proprietario può essere condivisa senza introdurre modifiche visibili all'altro oggetto.
-5. **Prodotto assente e prodotto esaurito.** Crea `Product` con codice e quantità e un metodo `findProduct(Product first, Product second, String code)` che restituisca il prodotto con quel codice oppure `null`. Assumi due prodotti non nulli con codici diversi. Scrivi un chiamante che distingua tre messaggi: prodotto non trovato, prodotto esaurito (quantità zero), prodotto disponibile. Verifica i tre casi e spiega perché non si può chiamare `getQuantity()` prima di aver controllato il riferimento restituito.
-6. Valuta questa affermazione: «Quando un oggetto che rappresenta un file non è più raggiungibile, il file viene chiuso immediatamente». Spiega separatamente che cosa può recuperare il garbage collector, che cosa non garantisce e quale responsabilità rimane al programma.
+   Indica quando un oggetto smette di essere raggiungibile attraverso queste variabili e perché assegnare `null` a `b` non elimina l'oggetto condiviso con `c`. Stampa infine i valori attraverso `a` e `c` e confrontali con la previsione. Distingui perdita di raggiungibilità e momento effettivo del recupero di memoria.
+
+2. **Cambiare un giocatore o il parametro.** Crea `Player` con nome, costruttore, `getName()` e `setName(String name)`. Due metodi statici ricevono un giocatore: `rename(Player player)` cambia il nome in `"Luca"`; `replace(Player player)` assegna al parametro un nuovo `Player("Sara")`.
+
+   Nel chiamante crea Anna, esegui i due metodi e stampa il nome dopo ciascuno. Prima dell'esecuzione disegna i riferimenti dentro e fuori le chiamate. Il nome deve diventare Luca e poi restare Luca. Scrivi infine `Player replacement()` che restituisca Sara e mostra come il chiamante possa effettivamente sostituire il proprio riferimento.
+
+3. **Copia di un documento con formattazione.** Modella `Document` con titolo e un oggetto mutabile `TextStyle` contenente dimensione del carattere e nome del font. Assumi dati validi e fornisci metodi per leggere i dati e cambiare la dimensione.
+
+   Implementa `shallowCopy()` e `deepCopy()`: entrambi creano un nuovo documento, ma soltanto il secondo duplica lo stile. In due prove indipendenti modifica la dimensione nella copia e osserva l'originale. Verifica con `==` che i documenti siano sempre distinti e che gli stili siano condivisi solo nella copia superficiale. Spiega perché il titolo, essendo una `String`, può essere condiviso anche nella copia profonda.
+
+4. **Risultato di una ricerca.** Crea `Product` con codice immutabile, quantità non negativa, metodi di lettura e `setQuantity(int quantity)`; per questa prova assumi sempre quantità valide. Crea due prodotti con codici diversi e scrivi `findProduct(Product first, Product second, String code)`, che restituisce l'oggetto corrispondente oppure `null`. Assumi argomenti non nulli e confronta i codici con `equals()`.
+
+   Il chiamante deve distinguere prodotto assente, prodotto presente ma esaurito e prodotto disponibile. Prepara una prova per ciascun caso. Dopo una ricerca riuscita modifica la quantità attraverso il riferimento restituito e verifica che sia cambiato il prodotto originale: il metodo non ha creato una copia. Indica dove serve il controllo di `null` e che cosa accadrebbe omettendolo.
 
 ---
 
@@ -1850,11 +1909,27 @@ L'output è:
 
 ### Esercizi
 
-1. **Durate con costruttori sovraccaricati.** Crea `Duration` con un unico campo `totalSeconds` e i costruttori `Duration(int seconds)`, `Duration(int minutes, int seconds)` e `Duration(int hours, int minutes, int seconds)`. Per questa prova assumi valori non negativi e abbastanza piccoli da non causare overflow; minuti e secondi possono superare 59. Fai delegare i due costruttori più lunghi a quello che riceve i secondi totali. `format()` restituisce ore, minuti e secondi normalizzati, per esempio `1h 1m 1s`. Verifica che `new Duration(3661)`, `new Duration(61, 1)` e `new Duration(1, 1, 1)` producano quel risultato.
-2. **Overload del costo di spedizione.** Implementa in `ShippingCost` tre metodi `calculate(double weight)`, `calculate(double weight, boolean express)` e `calculate(double weight, boolean express, int insuredValue)`. Il peso è in kg e il valore assicurato in euro; assumi peso positivo e valore non negativo. La tariffa è 3 euro più 2 euro per kg, con 5 euro aggiuntivi se express e l'1% del valore assicurato. Verifica `calculate(2)` → 7, `calculate(2, true)` → 12 e `calculate(2, true, 100)` → 13.
-3. **Numerare le richieste di assistenza.** Crea `SupportTicket` con numero progressivo, oggetto della richiesta e stato inizialmente `"aperto"`. Il primo ticket ha numero 1; il contatore è `static`, gli altri dati appartengono all'istanza e il numero non può cambiare. Definisci `MAX_SUBJECT_LENGTH = 80` e `isSubjectValid(String subject)`, che accetta solo stringhe non nulle, non composte soltanto da spazi e lunghe al massimo 80 caratteri. Il `main()` deve validare prima di costruire. Prova un oggetto valido, uno vuoto e un altro valido: devono essere creati soltanto i ticket 1 e 2. In questa versione il costruttore può assumere che il controllo sia già stato eseguito.
-4. Scrivi un piccolo esperimento con un riferimento `final` a `FuelTank`: consuma carburante e poi prova a riassegnare la variabile. Prima di compilare, indica quale istruzione è valida e quale no; spiega la differenza fra rendere stabile il riferimento e rendere immutabile l'oggetto.
-5. **Quale firma viene scelta.** Crea `Calculator` con `calculate(int)`, `calculate(double)` e `calculate(int, int)`, tutti con ritorno `String`: ciascuno restituisce il testo della propria firma. Prima di eseguire, prevedi il risultato delle chiamate con `5`, `5.0` e `5, 2`. Aggiungi separatamente `calculate("5")`, osserva l'errore di compilazione e commenta quella riga per poter eseguire le altre. Spiega quali informazioni degli argomenti usa il compilatore per scegliere un overload.
+Assumi argomenti validi e valori numerici abbastanza piccoli da non causare overflow, salvo nelle prove di compilazione esplicitamente richieste. Mantieni le istruzioni non compilabili in una copia separata o commentale dopo aver osservato l'errore.
+
+1. **Durate espresse in modi diversi.** Crea `Duration` con un unico campo `final int totalSeconds` e costruttori per secondi, minuti e secondi, ore/minuti/secondi. Tutti i valori sono non negativi; minuti e secondi possono superare 59.
+
+   Delega a un solo costruttore la memorizzazione del totale. `getTotalSeconds()` restituisce il totale e `format()` lo rappresenta come ore, minuti e secondi normalizzati. Verifica che `(3661)`, `(61, 1)` e `(1, 1, 1)` producano tutti `1h 1m 1s`; prova anche zero e 90 secondi. Spiega perché non occorre conservare contemporaneamente totale, ore, minuti e secondi.
+
+2. **Costo di spedizione con opzioni.** In `ShippingCost` realizza gli overload `calculate(double weight)`, `calculate(double weight, boolean express)` e `calculate(double weight, boolean express, int insuredValue)`. Il peso è positivo in kg e il valore assicurato non negativo in euro.
+
+   La tariffa è 3 euro più 2 euro/kg, con supplemento express di 5 euro e assicurazione pari all'1% del valore. Gli overload più brevi devono delegare usando express disattivato e assicurazione zero come valori predefiniti. Verifica peso 2 → 7 euro, peso 2 express → 12, peso 2 express assicurato per 100 euro → 13. Motiva se questi metodi abbiano bisogno di uno stato di istanza.
+
+3. **Numerazione delle richieste di assistenza.** Crea `SupportTicket(String subject)` con numero progressivo a partire da 1, oggetto della richiesta e stato inizialmente `"aperto"`. Il numero e l'oggetto non cambiano; `close()` imposta lo stato a `"chiuso"`. Aggiungi metodi di lettura e una descrizione.
+
+   Scegli quali campi debbano essere `static` e quali `final`. Crea tre richieste, chiudi la seconda e controlla numeri 1, 2, 3 e indipendenza degli stati. Il contatore rappresenta le richieste create durante una singola esecuzione, senza salvataggio su file. Spiega perché renderlo un campo di istanza non garantirebbe la numerazione richiesta.
+
+4. **Un riferimento stabile a un oggetto modificabile.** Dichiara una variabile `final FuelTank` usando la classe della sezione «Classi e oggetti». Consuma carburante e poi tenta di assegnare alla variabile un nuovo serbatoio. Prevedi e verifica quali istruzioni compilino.
+
+   Crea poi un secondo riferimento allo stesso serbatoio e modifica il livello attraverso quello. Verifica il livello attraverso la variabile `final` e spiega quale vincolo riguarda il riferimento e quale riguarderebbe lo stato dell'oggetto.
+
+5. **Riconoscere gli overload.** Scrivi due metodi `show(int value)` e `show(double value)` che restituiscano stringhe riconoscibili. Prevedi e verifica le chiamate con `3` e `3.0`; prova poi ad aggiungere un altro `show(int)` con diverso tipo di ritorno.
+
+   Conserva il messaggio del compilatore e spiega perché il solo ritorno non permetta di scegliere un metodo. Prepara infine una tabella delle firme valide della classe e delle chiamate che le selezionano.
 
 ---
 
@@ -2109,10 +2184,23 @@ Il confronto `removedCar == car` conferma che il garage ha restituito lo stesso 
 
 ### Esercizi
 
-1. **Aprire la camera con una tessera.** Crea `KeyCard` con un numero di camera e `Door` con numero della propria camera e stato inizialmente chiuso. `Door.open(KeyCard card)` apre e restituisce `true` soltanto per una tessera con numero corrispondente; per una tessera diversa o nulla restituisce `false` senza modifiche. `Room(int number)` crea e conserva la propria porta e offre `enter(KeyCard card)` delegando l'apertura, senza restituire la porta al chiamante. Le tessere sono create dal `main()` e non vengono conservate nella porta. Per la camera 12 prova prima una tessera 7, poi una tessera 12. Disegna le relazioni e giustifica composizione e dipendenza in base a creazione e conservazione degli oggetti.
-2. **La macchina del caffè delega al serbatoio.** Crea `CoffeeMachine`, che costruisce internamente un `WaterTank` con capacità 1000 ml e livello iniziale zero. Espone `refill(int milliliters)`, `makeCoffee()` e `getWaterLevel()`; un caffè richiede 100 ml. Ricarica e consumo restituiscono `false` senza modifiche per quantità non positive, superamento della capacità o acqua insufficiente. Il client non deve ottenere il riferimento al serbatoio. Ricarica 150 ml e chiedi due caffè: il primo riesce, il secondo no e restano 50 ml. Disegna il diagramma di sequenza di una richiesta di caffè.
-3. **Un posto auto e un'automobile indipendente.** Crea `Car` con targa e `ParkingSpot` inizialmente vuoto. `park(Car car)` restituisce `false` se l'argomento è nullo o il posto è già occupato, altrimenti conserva il riferimento e restituisce `true`. `removeCar()` restituisce l'auto rimossa, oppure `null` se il posto era vuoto; `isEmpty()` indica l'assenza di un'auto. Nel `main()` parcheggia un'auto, prova a inserirne un'altra, rimuovi la prima e riutilizza il suo riferimento. Disegna l'associazione con molteplicità 0..1 sul lato dell'auto; per semplicità questo modello non coordina più posti auto.
-4. **Relazioni di un ordine con i collaboratori.** Un `Order` crea nel costruttore un `Receipt`, che conserva come parte del proprio stato. Il metodo `checkout(PaymentTerminal terminal, EmailSender sender)` usa il terminale ricevuto per il pagamento e il sender per inviare la ricevuta, senza memorizzarli. Infine `print(Printer printer)` passa la ricevuta alla stampante ricevuta. Assumi che il pagamento riesca. Scrivi uno scheletro con questi campi e firme e disegna le relazioni UML. Per ogni relazione indica chi crea gli oggetti, chi conserva i riferimenti e se il collaboratore continua a esistere indipendentemente dall'ordine.
+Nei programmi di questa sezione mostra la collaborazione nel `main()` e rappresentala con UML. Distingui gli oggetti conservati come campi da quelli utilizzati soltanto durante una chiamata.
+
+1. **Macchina del caffè e serbatoio.** `CoffeeMachine` costruisce internamente un `WaterTank` da 1000 ml, inizialmente vuoto. La macchina offre `boolean refill(int milliliters)`, `boolean makeCoffee()` e `int getWaterLevel()`. Ogni caffè consuma 100 ml.
+
+   Affida al serbatoio controlli e modifiche del livello: ricariche non positive, superamento della capacità e consumo oltre il disponibile vengono rifiutati senza modifiche. Il client non deve ricevere il riferimento al serbatoio. Dopo una ricarica di 150 ml, due richieste di caffè devono produrre successo, rifiuto e livello finale 50 ml. Disegna il diagramma delle classi e la sequenza della seconda richiesta, includendo i valori restituiti.
+
+2. **Camera d'albergo e tessera.** Crea `KeyCard` con numero di camera e `Door` con numero della propria camera e stato chiuso. `open(KeyCard card)` apre e restituisce `true` se la tessera non è nulla e il numero corrisponde; altrimenti restituisce `false` senza modifiche. `close()` richiude e `isOpen()` legge lo stato.
+
+   `Room(int number)` crea la propria porta ed espone `enter(KeyCard card)`, `closeDoor()` e `isDoorOpen()`, delegando le operazioni. Le tessere sono create esternamente e non vengono conservate dalla porta. Prova tessera errata, corretta, chiusura e tessera nulla. Disegna composizione e dipendenza e giustificale indicando chi crea e chi conserva gli oggetti.
+
+3. **Posto auto.** Una `Car` ha una targa; un `ParkingSpot` ha un numero e inizialmente è vuoto. `park(Car car)` conserva il riferimento e restituisce `true` soltanto se il posto è libero e l'auto non è nulla. `removeCar()` restituisce l'auto rimossa, oppure `null` se non c'è; `isEmpty()` legge lo stato.
+
+   Parcheggia un'auto, prova a inserirne un'altra, rimuovi la prima e usa il riferimento restituito per leggerne la targa. L'auto continua a esistere anche fuori dal posto. Disegna l'associazione, indicando che un posto contiene al massimo un'auto. Il programma gestisce un solo posto: non deve controllare il parcheggio contemporaneo della stessa auto in posti diversi.
+
+4. **Scontrino e stampante.** Crea `Receipt` con descrizione e totale in centesimi e `ReceiptPrinter` con `print(Receipt receipt)`, che simula la stampa su console. Un `Sale` conserva prodotto, quantità e prezzo unitario, ricevuti dal costruttore, e crea uno scontrino con `createReceipt()`; `printReceipt(ReceiptPrinter printer)` usa la stampante ricevuta senza conservarla.
+
+   Assumi dati validi. Con 3 quaderni da 250 centesimi verifica totale 750 e contenuto della stampa. Disegna i riferimenti conservati e la sequenza della stampa. Motiva perché la stampante possa essere riutilizzata da più vendite e perché riceverla come parametro non costituisca una composizione.
 
 ---
 
@@ -2378,11 +2466,23 @@ Questi modificatori permettono alla superclasse di dichiarare esplicitamente qua
 
 ### Esercizi
 
-1. **Biglietto intero e ridotto.** Crea `Ticket` con codice e prezzo base ricevuti dal costruttore, `getCode()`, `getPrice()` e `description()`. `ReducedTicket` aggiunge una percentuale di riduzione, chiama `super` per inizializzare la parte comune e ridefinisce `getPrice()` e `description()`. Assumi prezzi non negativi e percentuali fra 0 e 100. Le descrizioni devono mostrare codice e prezzo effettivo; quella ridotta anche la percentuale. Con prezzo base 40 e riduzione 25 verifica prezzo 30, codice ereditato e prezzo del biglietto intero ancora 40.
-2. **Dipendente e dipendente remoto.** Crea `Employee` con nome e ore settimanali, entrambi privati e ricevuti dal costruttore. `RemoteEmployee` aggiunge il paese dal quale lavora. La classe base offre `description()` e un metodo `protected commonDescription()` che restituisce nome e ore. La sottoclasse ridefinisce `description()` usando il metodo protetto e aggiungendo il paese. Crea un dipendente di 40 ore e uno remoto di 30 ore; verifica che le descrizioni contengano i dati corretti senza duplicare la costruzione della parte comune.
-3. **Correggere una relazione «ha un».** Una `Battery` conserva capacità in Wh e livello di carica e offre `recharge(int amount)` e `getCharge()`. Un modello iniziale dichiara `ElectricCar extends Battery` soltanto per riutilizzarne il codice. Spiega quale frase esprime questa dichiarazione e perché confonde automobile e batteria. Riscrivi `ElectricCar` con un campo `Battery` e una targa: l'auto delega `recharge()` alla batteria, ma possiede una propria identità. Disegna entrambi i modelli UML. Non è richiesto trovare operazioni della batteria inutili all'auto: il punto è distinguere sostituibilità e possesso.
-4. Valuta se `PremiumUser extends User`, `ElectricScooter extends Vehicle` e `Printer extends UsbPort` siano relazioni di ereditarietà plausibili. Per ciascuna scrivi una frase sostituendo `extends` con «è un» e controlla se stato e operazioni ereditati hanno senso per la sottoclasse. Implementa soltanto uno dei casi che ritieni corretti.
-5. **Impedire l'override di una regola.** Crea `AccessPass` con codice ricevuto dal costruttore e un metodo `getCode()`; `VisitorPass` aggiunge il nome del visitatore. Il codice assegnato deve essere quello restituito da qualunque pass, anche nelle sottoclassi. Usa `final` sul membro opportuno lasciando possibile estendere la classe e implementa una descrizione specifica in `VisitorPass`. Prova in una copia della sottoclasse a ridefinire `getCode()`, osserva l'errore e rimuovi la ridefinizione. Spiega quale garanzia offre `final` in questo caso.
+Assumi dati iniziali validi. Usa campi privati, costruttori espliciti e `@Override` sulle ridefinizioni. Per ogni gerarchia indica quale requisito rende sensata la relazione «è un».
+
+1. **Biglietti interi e ridotti.** `Ticket` conserva codice e prezzo base e offre `getCode()`, `getPrice()` e `description()`. `ReducedTicket` aggiunge una riduzione percentuale da 0 a 100 e ridefinisce prezzo e descrizione. Quest'ultima mostra codice, prezzo effettivo e riduzione.
+
+   Inizializza i dati comuni tramite `super`, senza duplicare campi nella sottoclasse. Con prezzo base 40 e riduzione 25 verifica prezzo ridotto 30 e prezzo intero 40. Prova anche riduzioni 0 e 100. La descrizione di un biglietto ridotto deve riportare lo stesso prezzo ottenuto da `getPrice()`.
+
+2. **Spedizioni con tracciamento.** Una `Shipment` conserva codice e destinazione e offre `description()`. Una `TrackedShipment` aggiunge l'ultima posizione nota, inizialmente `"in preparazione"`, e `updatePosition(String position)`.
+
+   La descrizione tracciata comprende i dati comuni e la posizione. Riutilizza la costruzione della parte comune mediante un metodo `protected`, lasciando privati i campi. Crea due spedizioni tracciate e aggiorna soltanto la prima. Verifica che posizione e descrizione della seconda restino invariate e che una spedizione ordinaria sia comunque descrivibile.
+
+3. **Automobile e batteria.** Un modello propone `ElectricCar extends Battery` per riutilizzare i metodi di ricarica. Una batteria ha capacità positiva e carica compresa fra zero e capacità; `recharge(int amount)` accetta soltanto incrementi positivi che non superino la capacità e restituisce se la ricarica è riuscita.
+
+   Spiega il significato della relazione proposta e riscrivi il modello con un'automobile che conserva targa e batteria. L'auto deve esporre la ricarica delegando alla batteria. Da capacità 60 e carica 20 verifica ricarica di 30 riuscita e di 20 rifiutata, con carica finale 50. Disegna il modello iniziale e quello corretto e motiva la scelta in base al significato degli oggetti.
+
+4. **Identificativo dei pass.** `AccessPass` conserva un codice non modificabile e lo rende disponibile tramite `getCode()`. `VisitorPass` aggiunge il nome del visitatore e una descrizione. Il requisito è che le sottoclassi possano estendere il pass ma non cambiare il comportamento del metodo che restituisce il codice.
+
+   Usa `final` sul membro opportuno e verifica codice e descrizione di un pass visitatore. In una prova separata tenta di ridefinire `getCode()` e osserva l'errore. Spiega perché dichiarare `final` soltanto il campo non impedirebbe alla sottoclasse di ridefinire il metodo.
 
 ---
 
@@ -2509,10 +2609,23 @@ Speaker Mini
 
 ### Esercizi
 
-1. **Rubrica telefonica.** Crea `Contact` con nome e numero di telefono, rappresentati da stringhe, e `ContactList` con una `ArrayList<Contact>` privata. `add(Contact contact)` restituisce `false` per un numero già presente; `findByPhone(String phone)` restituisce il contatto oppure `null`; `removeByPhone(String phone)` restituisce se la rimozione è avvenuta. Assumi contatti non nulli con dati validi e confronta i numeri esattamente come scritti. Nel `main()` inserisci quattro contatti e verifica duplicato, ricerca presente e assente, rimozione presente e seconda rimozione dello stesso numero. Nessuna operazione deve esporre la lista interna.
-2. **Durata di una playlist.** Crea `Song` con titolo e durata positiva in secondi e `Playlist` con una `ArrayList<Song>` privata. Implementa aggiunta, durata totale, ricerca del primo brano con un titolo dato e stampa dei brani con durata strettamente maggiore di una soglia. La ricerca restituisce `null` se non trova il titolo e distingue maiuscole e minuscole. Ogni operazione percorre la lista al massimo una volta. Con durate 180, 240 e 180, il totale deve essere 600 e la soglia 180 deve selezionare soltanto il secondo brano; una playlist vuota ha totale zero.
-3. **Iscrizioni con capienza.** Crea `Student` con nome e matricola e `Classroom(int capacity)` con capienza positiva e lista privata. `enroll(Student student)` restituisce `false` se l'aula è piena o la matricola è già presente; `findByName(String name)` restituisce il primo studente con quel nome oppure `null`; `size()` restituisce gli iscritti. Assumi dati validi. In un'aula da due posti, iscrivi due studenti, tenta un terzo e controlla che la dimensione resti 2. Prova anche il duplicato prima di riempire l'aula.
-4. **Selezionare i prodotti disponibili.** Crea `Product` con nome e quantità non negativa. Implementa `availableProducts(ArrayList<Product> products)`, che restituisce una nuova lista con i soli prodotti di quantità maggiore di zero, mantenendo l'ordine originale. Non modificare la lista ricevuta e non duplicare gli oggetti `Product`. Verifica lista vuota, tutti esauriti e una lista con quantità 0, 3, 0, 1. Controlla che svuotare la lista restituita non cambi la dimensione di quella originale.
+Usa `ArrayList` e cicli, con liste interne private. Assumi oggetti e testi non nulli e dati iniziali validi. Per le ricerche testuali il confronto è esatto, salvo diversa indicazione.
+
+1. **Rubrica telefonica.** Crea `Contact` con nome e numero, entrambi stringhe non modificabili, e `ContactList` con `boolean add(Contact contact)`, `Contact findByPhone(String phone)`, `boolean removeByPhone(String phone)` e `int size()`.
+
+   Il numero identifica un contatto: un duplicato viene rifiutato senza sostituire l'originale. Ricerca assente e rimozione assente restituiscono rispettivamente `null` e `false`. Prova una rubrica vuota, due inserimenti, un duplicato con nome diverso e due rimozioni consecutive dello stesso numero. Mostra gli esiti nel `main()` senza esporre la lista interna.
+
+2. **Playlist musicale.** Crea `Song` con titolo e durata positiva in secondi e `Playlist` con `add(Song song)`, `int totalDuration()`, `Song findByTitle(String title)` e `ArrayList<Song> longerThan(int seconds)`.
+
+   Sono ammessi brani ripetuti. La ricerca restituisce il primo titolo corrispondente oppure `null`; il filtro restituisce una nuova lista con durate strettamente maggiori della soglia, nello stesso ordine. Con durate 180, 240 e 180 verifica totale 600 e soglia 180 → solo il secondo brano. Prova anche playlist vuota e titoli duplicati. Svuotare il risultato del filtro non deve modificare la playlist.
+
+3. **Iscrizioni a un laboratorio.** Crea `Student` con matricola e nome non modificabili e `Workshop(int capacity)` con capienza positiva. `enroll(Student student)` restituisce `false` per matricola già iscritta o capienza raggiunta; `cancel(String studentId)` restituisce se ha rimosso l'iscrizione; `size()` legge il numero degli iscritti.
+
+   In un laboratorio da due posti iscrivi A, tenta un'altra istanza con matricola A, iscrivi B, tenta C, cancella A e iscrivi C. Le dimensioni devono essere 1, 1, 2, 2, 1, 2. Verifica anche la cancellazione di una matricola assente. Nessun rifiuto deve modificare gli iscritti.
+
+4. **Riepilogo di un magazzino.** Crea `Product` con codice, nome e quantità non negativa e scrivi `int totalQuantity(ArrayList<Product> products)` e `ArrayList<Product> availableProducts(ArrayList<Product> products)`.
+
+   Il filtro mantiene soltanto quantità positive, conserva l'ordine e restituisce gli stessi oggetti in una nuova lista. Con quantità 0, 3, 0, 1 verifica totale 4 e due prodotti disponibili; prova lista vuota e prodotti tutti esauriti. Controlla separatamente che le due liste siano distinte e che i prodotti selezionati conservino la loro identità.
 
 ---
 
@@ -2673,10 +2786,21 @@ Se in futuro viene aggiunta un'altra sottoclasse di `Device` che ridefinisce `de
 
 ### Esercizi
 
-1. **Inviare notifiche diverse.** Crea `Notification` con destinatario e testo e un metodo `send()` che stampi una notifica generica. `EmailNotification` e `SmsNotification` ridefiniscono `send()` stampando anche il canale usato; non occorre inviare messaggi reali. Inserisci entrambe in una `ArrayList<Notification>` e chiama `send()` con un solo ciclo. Aggiungi poi `PushNotification` senza modificare il ciclo. Per ogni elemento indica il tipo dichiarato della variabile del ciclo, il tipo effettivo dell'oggetto e l'implementazione eseguita.
-2. **Costo di consegna senza scelta del tipo nel client.** Una prima `Delivery` conserva `String vehicle` e `double distanceKm`; `cost()` usa uno `switch`: `"bike"` costa 2 euro più 0,50 euro/km, `"van"` 5 euro più 1 euro/km. Scrivi questa versione assumendo dati validi. Poi realizza una seconda versione con classe base `Delivery` e sottoclassi `BikeDelivery` e `VanDelivery` che ridefiniscono `cost()`. Crea una collezione mista e stampa i costi con un unico ciclo. Su 4 km i costi devono essere 4 e 9 euro in entrambe le versioni. Indica dove viene scelto il tipo concreto e perché il ciclo non deve più conoscerlo.
-3. **Tipo della variabile e tipo dell'oggetto.** Crea `Device` con `description()` che restituisce `"Dispositivo"`; `Smartphone` e `Smartwatch` lo ridefiniscono restituendo rispettivamente `"Telefono"` e `"Orologio"`. Soltanto `Smartphone` offre anche `takePhoto()`. Scrivi una sequenza che assegni un telefono a una variabile `Device`, stampi `description()`, poi assegni un orologio e stampi di nuovo. Prevedi l'output. Prova separatamente `device.takePhoto()` quando la variabile contiene il telefono, osserva l'errore e commenta la chiamata. Spiega perché il tipo effettivo sceglie l'override, ma non rende disponibili tutti i metodi della sottoclasse.
-4. **Stampare report attraverso un tipo comune.** Crea `Report` con titolo e `content()`, poi `SalesReport` con totale delle vendite e `InventoryReport` con numero di prodotti disponibili. Le sottoclassi ridefiniscono `content()` includendo titolo e dati specifici. Scrivi `printAll(ArrayList<Report> reports)`, che chiama soltanto `content()` sugli elementi e stampa il risultato. Aggiungi `AttendanceReport` con numero dei presenti: il metodo di stampa deve funzionare senza modifiche e senza `instanceof`.
+1. **Notifiche su canali diversi.** Crea `Notification` con destinatario e testo e `send()`, che stampa una notifica generica. `EmailNotification` e `SmsNotification` lo ridefiniscono mostrando anche il canale; le operazioni sono simulate su console.
+
+   Inserisci notifiche diverse in una `ArrayList<Notification>` e inviale con un unico ciclo. Aggiungi `PushNotification` e usala lasciando invariato quel ciclo. Per ogni invio annota tipo dichiarato della variabile, tipo effettivo dell'oggetto e metodo eseguito. Le sottoclassi devono riutilizzare i dati comuni.
+
+2. **Preventivo delle consegne.** Una `Delivery` conserva la distanza positiva e offre `cost()`. `BikeDelivery` costa 2 euro più 0,50 euro/km; `VanDelivery` costa 5 euro più 1 euro/km. Implementa le sottoclassi e `double totalCost(ArrayList<Delivery> deliveries)`, che somma i costi chiamando soltanto il metodo comune.
+
+   Per due consegne di 4 km verifica costi 4 e 9 e totale 13; per lista vuota il totale è zero. Aggiungi `ExpressVanDelivery`, con supplemento fisso di 3 euro sul furgone, e verifica che venga inclusa correttamente senza modificare `totalCost()`. Indica dove il programma decide quali oggetti concreti creare.
+
+3. **Che cosa permette il tipo dichiarato.** Crea `Device` con `description()`; `Smartphone` e `Smartwatch` restituiscono descrizioni diverse. Soltanto lo smartphone offre `takePhoto()`, che stampa un messaggio.
+
+   Assegna uno smartphone a una variabile `Device`, chiama `description()`, poi assegna uno smartwatch e ripeti. Prevedi e verifica l'output. In una prova di compilazione separata chiama `takePhoto()` attraverso la variabile `Device`, anche quando contiene lo smartphone. Spiega la differenza fra scelta dell'override e disponibilità di un metodo, senza risolvere l'esercizio con cast.
+
+4. **Report di un negozio.** Crea `Report` con titolo e `content()`. `SalesReport` aggiunge il totale delle vendite in centesimi e `InventoryReport` il numero di prodotti disponibili; ciascuno produce un testo con titolo e dati specifici.
+
+   Scrivi `printAll(ArrayList<Report> reports)` che stampi i contenuti senza controllare il tipo degli elementi. Verifica una lista mista, una vuota e due report dello stesso tipo con dati diversi. Aggiungi `AttendanceReport` con numero dei presenti e mostra quale codice devi aggiungere per includerlo nella stampa.
 
 ---
 
@@ -2979,11 +3103,21 @@ Le interfacce dovrebbero rimanere concentrate su un ruolo preciso. Separare `Fly
 
 ### Esercizi
 
-1. **Titoli di viaggio diversi.** Crea la classe astratta `TransportPass` con identificativo e `public abstract boolean canEnter()`. `DailyPass` riceve un booleano che indica se è ancora valido; `RidePass` riceve le corse rimaste e permette l'ingresso quando sono maggiori di zero. Per questa prova `canEnter()` è soltanto una consultazione: non consuma corse e non legge l'orologio. Inserisci in una collezione comune un giornaliero valido, uno scaduto, un pass da due corse e uno da zero corse. Un unico ciclo deve produrre gli esiti `true`, `false`, `true`, `false`.
-2. **Capacità senza una superclasse comune.** Definisci `Rechargeable` con `void recharge(int amount)` e `Scannable` con `String scanCode()`. `TransitCard` implementa entrambe, conserva credito e codice; `PaperTicket` implementa solo `Scannable`; `DigitalWallet` solo `Rechargeable`. Assumi ricariche positive e codici validi. Crea una `ArrayList<Rechargeable>` e una `ArrayList<Scannable>`: inserisci la stessa tessera in entrambe, il portafoglio soltanto nella prima e il biglietto soltanto nella seconda. Ricarica con un ciclo e stampa i codici con l'altro. Non introdurre ereditarietà tra queste tre classi.
-3. **Un comportamento predefinito nell'interfaccia.** Definisci `Exportable` con `String export()` e `default String fileName()` che restituisce `"export.txt"`. Crea `ShoppingList` con un testo da esportare e `TemperatureReading` con un valore numerico: entrambe restituiscono una rappresentazione testuale, ma soltanto la seconda ridefinisce `fileName()` con `"temperature.txt"`. Attraverso variabili `Exportable`, stampa contenuto e nome di file. Non è richiesta la scrittura su disco.
-4. Per ciascun requisito scegli classe concreta, classe astratta o interfaccia e motiva la scelta: stato e codice condivisi fra conti bancari; capacità di essere stampato per documenti non correlati; oggetto completamente istanziabile senza varianti; base incompleta con un algoritmo comune e un passaggio variabile.
-5. **UML delle capacità.** Disegna il diagramma dell'esercizio 2 mostrando le due interfacce, le tre classi e le relazioni di realizzazione. Verifica che ciascuna freccia corrisponda a un `implements`. Aggiungi a fianco la gerarchia dell'esercizio 1 e usa frecce di generalizzazione per i suoi `extends`. Spiega perché nel primo modello non compaiono relazioni di generalizzazione tra le tre classi concrete.
+1. **Figure con area e perimetro.** Crea la classe astratta `Shape`, con nome ricevuto dal costruttore, `getName()`, `abstract double area()` e `abstract double perimeter()`. Implementa `Rectangle` con base e altezza e `Circle` con raggio; assumi dimensioni positive.
+
+   Una funzione riceve una lista di `Shape` e stampa per ogni elemento nome, area e perimetro. Con rettangolo 3 × 4 verifica area 12 e perimetro 14; con cerchio di raggio 1 verifica valori approssimati π e 2π usando `Math.PI`. Spiega quale parte della classe base è completa e perché non è possibile costruire direttamente una `Shape`.
+
+2. **Stampare oggetti di classi diverse.** Definisci `Printable` con `String printText()`. Implementala in `Invoice`, con numero e totale in centesimi, e in `EventTicket`, con evento e posto: non introdurre una superclasse comune per queste due classi.
+
+   Crea `printAll(ArrayList<Printable> documents)` che simuli la stampa del testo. Inserisci fatture e biglietti nella stessa lista e verifica che i dati specifici compaiano nel risultato. Aggiungi una terza classe stampabile, scelta da te, e mostra che la funzione continua a funzionare. Disegna le relazioni UML di realizzazione.
+
+3. **Capacità combinabili.** Aggiungi `Scannable` con `String scanCode()`. `EventTicket` dell'esercizio precedente implementa anche questa interfaccia, usando un codice ricevuto dal costruttore. Crea inoltre `MembershipCard`, che conserva nome e codice e implementa soltanto `Scannable`.
+
+   Scrivi una funzione che riceva una `ArrayList<Scannable>` e stampi i codici. Usa lo stesso biglietto sia nella lista stampabile sia in quella scansionabile. Mostra quali oggetti possono entrare in ciascuna lista e giustifica le esclusioni in base alle capacità richieste. Assumi dati validi; non occorre simulare un lettore reale.
+
+4. **Esportazione testuale con un valore predefinito.** Definisci `Exportable` con `String export()` e `default String fileName()` che restituisce `"export.txt"`. Implementala in `ShoppingList`, con una lista di nomi di prodotti, e `TemperatureReading`, con luogo e temperatura.
+
+   La lista esporta un prodotto per riga e usa il nome predefinito; la misura esporta luogo e valore e usa `"temperature.txt"`. Attraverso variabili `Exportable`, stampa nome del file e contenuto. Verifica anche una lista vuota. Spiega quando il comportamento predefinito viene riutilizzato e quando viene ridefinito; non è richiesta la scrittura su disco.
 
 ---
 
@@ -3351,17 +3485,27 @@ Uguaglianza e ordinamento rispondono infine a domande diverse. `equals()` stabil
 
 ### Esercizi
 
-1. Progetta una classe finale `TrainSeat` identificata da numero del treno, carrozza e posto. Due oggetti con gli stessi tre valori devono essere logicamente uguali anche se creati separatamente. Implementa `toString()`, `equals()` e `hashCode()`, poi verifica riflessività, simmetria, transitività, confronto con `null` e confronto con un tipo diverso.
-2. **Un overload scambiato per `equals`.** Crea `Product` con codice e il metodo errato `public boolean equals(Product other)`, che confronta i codici. Crea due prodotti distinti con codice `"P1"` e confrontali prima con `first.equals(second)`, poi con `first.equals((Object) second)`: prevedi e verifica i risultati. Correggi il metodo usando la firma di `Object.equals`, `@Override` e un `hashCode()` coerente. Dopo la correzione entrambi i confronti devono dare `true`; verifica anche `null` e un oggetto di altro tipo.
-3. **Uguaglianza di un profilo.** Un `UserProfile` ha username univoco e immutabile e descrizione modificabile. Nel sistema lo username identifica il profilo: modificare la descrizione non crea un nuovo utente. Implementa `equals()` e `hashCode()` in base a questo requisito. Crea due istanze con lo stesso username e descrizioni diverse e una terza con username diverso ma descrizione uguale. Verifica quali siano uguali e che modificare la descrizione non cambi l'hash code. Spiega quale diverso requisito giustificherebbe un confronto di tutti i campi.
-4. **Un hash code incoerente.** Crea una classe finale `CatalogItem` con codice, categoria e descrizione. Riproduci una versione errata in cui `equals()` usa codice e categoria e `hashCode()` restituisce `description.hashCode()`. Usa due oggetti con codice `"P1"`, categoria `"libri"` e descrizioni `"A"` e `"B"`: verifica uguaglianza e hash diversi. Correggi `hashCode()` usando i dati dell'uguaglianza. Spiega quale implicazione impone il contratto e perché l'implicazione inversa non è garantita.
-5. Confronta la rappresentazione prodotta da `Object.toString()` con una ridefinizione utile per il debug di `TrainSeat`. La nuova stringa deve permettere di riconoscere tutti i dati identificativi, ma non deve essere usata per stabilire l'uguaglianza.
+1. **Identificare un posto su un treno.** Crea la classe finale immutabile `TrainSeat` con codice del treno, numero della carrozza e numero del posto. Assumi codice non nullo e numeri positivi. L'uguaglianza dipende da tutti e tre i dati.
+
+   Implementa `equals()`, `hashCode()` e una `toString()` che permetta di riconoscere il posto. Usa tre istanze distinte con dati uguali per verificare riflessività, simmetria e transitività; prova anche `null`, un altro tipo e istanze che differiscano in un solo dato. Oggetti uguali devono produrre hash uguali. La rappresentazione testuale non deve essere usata per implementare l'uguaglianza.
+
+2. **Un metodo `equals` con la firma sbagliata.** Crea `Product` con codice non nullo e una prima versione `public boolean equals(Product other)` che confronti i codici e gestisca `null`.
+
+   Con due istanze distinte di codice `"P1"`, prevedi e verifica `first.equals(second)` e `first.equals((Object) second)`. Correggi poi la classe usando la firma di `Object.equals`, `@Override` e un `hashCode()` coerente. Entrambi i confronti devono diventare `true`. Spiega perché la prima versione era un overload e quale errore avrebbe segnalato l'aggiunta di `@Override` prima della correzione.
+
+3. **Identità di un profilo.** Crea una classe finale `UserProfile` con username immutabile e descrizione modificabile. Lo username identifica l'utente e il confronto distingue maiuscole e minuscole; cambiare descrizione non cambia identità.
+
+   Implementa uguaglianza, hash e rappresentazione secondo questo requisito. Confronta due profili con lo stesso username e descrizioni diverse e due con username diversi e descrizione uguale. Modifica una descrizione e verifica che uguaglianza e hash restino coerenti. Spiega perché un confronto automatico di tutti i campi non rappresenterebbe il requisito.
+
+4. **Riparare il contratto dell'hash.** Una classe finale `CatalogItem` conserva codice, categoria e descrizione non nulli. Il suo `equals()` confronta codice e categoria, mentre `hashCode()` restituisce l'hash della descrizione.
+
+   Riproduci il difetto con codice `"P1"`, categoria `"libri"` e descrizioni `"A"` e `"B"`. Verifica che due oggetti uguali producano hash diversi e correggi il metodo. Scrivi esplicitamente l'implicazione richiesta dal contratto. Per mostrare che l'implicazione inversa non vale, considera anche una versione che restituisca sempre zero: distingui correttezza del contratto e utilità della distribuzione degli hash.
 
 ---
 
-# Programmi robusti
+# Eccezioni
 
-## Eccezioni
+## Introduzioni
 
 Nel capitolo precedente il costruttore di `Book` assumeva che ISBN e titolo fossero validi. Se ricevesse `null`, però, costruirebbe un oggetto sul quale `equals()` e `hashCode()` potrebbero causare una `NullPointerException`. Un ISBN vuoto sarebbe altrettanto inutile, anche se non produrrebbe subito un errore.
 
@@ -3743,11 +3887,23 @@ Il nome del tipo permette al chiamante di gestire separatamente i due casi. L'ec
 
 ### Esercizi
 
-1. **Trasferimento fra conti.** Per questo esercizio crea una nuova `BankAccount` con saldo in centesimi interi, ricevuto dal costruttore e non negativo, e `getBalance()`. Implementa `transfer(BankAccount source, BankAccount destination, int amount)`: argomenti nulli, stesso conto e importo non positivo producono `IllegalArgumentException`; fondi insufficienti producono una tua `InsufficientFundsException` checked. Controlla tutte le condizioni prima di modificare i saldi. Lavora con importi piccoli, senza overflow o operazioni concorrenti. Da saldi 10000 e 2000, trasferire 3000 deve produrre 7000 e 5000; in prove indipendenti, un trasferimento di 11000 e uno di 0 devono lasciare i saldi iniziali invariati. Il chiamante gestisce separatamente i due tipi di errore.
-2. **Validare una prenotazione.** Crea `Reservation` con ospiti e notti, leggibili ma non modificabili. Scrivi `parseReservation(String guestsText, String nightsText)`: assume stringhe non nulle, le converte con `Integer.parseInt`, accetta 1–8 ospiti e 1–30 notti e costruisce l'oggetto soltanto dopo tutti i controlli. Lascia propagare `NumberFormatException` per testo non numerico e usa `IllegalArgumentException` per numeri fuori intervallo. Nel chiamante metti i `catch` nell'ordine appropriato, dato che la prima eccezione è una sottoclasse della seconda. Prova `"2", "3"`, `"due", "3"` e `"2", "0"`: prenotazione, errore di formato, errore di intervallo.
-3. **Leggere una configurazione.** Scrivi `readConfiguration(Path path)`, che restituisce un oggetto con nome dell'applicazione e massimo numero di tentativi. Il file deve contenere esattamente due righe: un nome non vuoto e un intero da 1 a 10. Eventuali righe successive sono ammesse soltanto se vuote o composte da spazi. Usa `BufferedReader` e try-with-resources; propaga `IOException` per problemi di accesso e lancia `IllegalArgumentException` per contenuto non conforme. Il `main()` gestisce separatamente le due categorie. Prepara file valido, seconda riga assente, valore `abc`, valore 0 e una terza riga non vuota; prova anche un percorso inesistente.
-4. **Posto già prenotato.** Crea `SeatBooking` con dieci posti numerati da 1 a 10 e `book(int seatNumber)`. Un numero fuori intervallo produce `IllegalArgumentException`; un posto già occupato produce `SeatAlreadyBookedException`, eccezione checked definita da te. Una chiamata riuscita occupa soltanto il posto richiesto. Aggiungi `isBooked(int seatNumber)` per verificare lo stato. Nel chiamante, per numero non valido chiedi di correggere il dato; per posto occupato suggerisci di sceglierne un altro. Prova la prenotazione del posto 3, il suo duplicato e il posto 11, controllando che nessun altro posto sia stato occupato.
-5. **Una chiusura saltata.** Copia il metodo seguente e crea un file la cui prima riga sia `abc`. Indica quale istruzione lancia l'eccezione e perché `close()` non viene raggiunto. Riscrivi il metodo con try-with-resources conservando la propagazione degli errori, poi prova anche un file con `12` e uno vuoto. In quest'ultimo caso segnala esplicitamente il contenuto mancante. Spiega perché la chiusura non deve dipendere dal garbage collector.
+1. **Trasferimento fra conti.** Crea `BankAccount` con saldo in centesimi interi non negativo e `getBalance()`. Colloca nella classe il metodo statico `transfer(BankAccount source, BankAccount destination, int amount)`, così può aggiornare i campi privati dei due conti.
+
+   Costruttore con saldo negativo, conti nulli, stesso conto e importo non positivo producono `IllegalArgumentException`; fondi insufficienti producono una tua `InsufficientFundsException` checked. Verifica tutte le condizioni prima di modificare i saldi. Assumi importi piccoli e nessuna concorrenza. Da 10000 e 2000, trasferire 3000 produce 7000 e 5000. In prove indipendenti verifica 11000, zero e trasferimento sullo stesso conto: ogni errore lascia invariati entrambi i saldi. Nel chiamante gestisci separatamente argomenti errati e fondi insufficienti.
+
+2. **Prenotazione da input testuale.** Crea `Reservation` con ospiti da 1 a 8 e notti da 1 a 30, leggibili e non modificabili. Il costruttore protegge questi vincoli con `IllegalArgumentException`. `parseReservation(String guestsText, String nightsText)` converte due stringhe non nulle con `Integer.parseInt()` e costruisce la prenotazione.
+
+   Nel chiamante distingui testo non numerico da numeri fuori intervallo, ordinando i `catch` in modo valido. Prova `"2", "3"`, `"due", "3"`, `"2", "0"` e una costruzione diretta con 9 ospiti. Spiega perché controllare i vincoli soltanto nel parser lascerebbe possibile costruire oggetti invalidi da altri punti del programma.
+
+3. **Configurazione da file.** Scrivi `readConfiguration(Path path)` che restituisca un oggetto con nome dell'applicazione e numero massimo di tentativi. Il formato prevede due righe: nome non blank e intero da 1 a 10. Dopo queste sono ammesse soltanto righe vuote o blank.
+
+   Usa `BufferedReader` e try-with-resources. Propaga `IOException` per problemi di accesso e segnala con `IllegalArgumentException` i contenuti invalidi, comprese righe mancanti e numeri non leggibili. Il chiamante mostra messaggi distinti per accesso e formato. Prova un file valido, file vuoto, seconda riga assente, numero `abc`, numero 0, terza riga non vuota e percorso inesistente.
+
+4. **Posti già prenotati.** Crea `SeatBooking` con dieci posti da 1 a 10, tutti inizialmente liberi. Puoi conservare i numeri occupati in una `ArrayList<Integer>`. `book(int seatNumber)` occupa il posto; un numero fuori intervallo produce `IllegalArgumentException`, un posto già occupato una tua `SeatAlreadyBookedException` checked.
+
+   Aggiungi `isBooked(int seatNumber)`, con lo stesso controllo dell'intervallo. Nel chiamante gestisci il duplicato suggerendo un altro posto e il numero errato chiedendo di correggerlo. Verifica prenotazione del posto 3, duplicato, posto 11 e successiva prenotazione del posto 4. Dopo i rifiuti devono risultare occupati soltanto i posti prenotati con successo.
+
+5. **Chiudere una risorsa anche in caso di errore.** Questo metodo non garantisce la chiusura del lettore:
 
    ```java
    public static int readLimit(java.nio.file.Path path)
@@ -3759,6 +3915,8 @@ Il nome del tipo permette al chiamante di gestire separatamente i due casi. L'ec
        return limit;
    }
    ```
+
+   Usa un file con prima riga `abc` per individuare il percorso che salta `close()`. Riscrivi con try-with-resources, mantenendo la propagazione degli errori di accesso e di conversione; per file vuoto lancia esplicitamente `IllegalArgumentException` con un messaggio comprensibile. Prova anche prima riga `12`. Spiega perché né un `catch` che ignora l'errore né l'attesa del garbage collector risolvano la gestione della risorsa.
 
 ---
 
@@ -4339,12 +4497,29 @@ La **notazione O** descrive come cresce il lavoro al crescere del numero `n` di 
 
 ### Esercizi
 
-1. Progetta le collezioni di un sistema per una conferenza: programma ordinato degli interventi, badge unici dei presenti, partecipante associato al codice del badge, richieste di assistenza elaborate in ordine di arrivo. Per ogni dato scegli interfaccia e implementazione, motiva se duplicati e ordine contano e indica le operazioni più frequenti.
-2. Realizza un analizzatore di parole che riceva una `List<String>` e costruisca: l'insieme delle parole distinte nell'ordine della prima comparsa e una mappa parola-numero di occorrenze. Stampa infine soltanto le parole ripetute, con il relativo conteggio. L'algoritmo deve funzionare anche con lista vuota.
-3. **Registro per matricola.** Crea uno `Student` immutabile con matricola e nome e `CourseRegistry`, basato su una `Map<String, Student>`. `register(Student student)` restituisce `false` per una matricola già presente senza sostituire l'iscritto; `find(String id)` restituisce lo studente oppure `null`; `remove(String id)` restituisce se ha rimosso un elemento. Assumi dati validi. `getAll()` restituisce una copia della collezione, senza promettere un ordine. Prova due registrazioni, un duplicato con nome diverso, ricerca assente e doppia rimozione. Svuotare la collezione restituita non deve svuotare il registro.
-4. **FIFO e LIFO con lo stesso tipo di contenitore.** Crea `Command` con una descrizione e metodi `execute()` e `undo()` che stampino l'azione simulata. In una prima prova usa un `ArrayDeque<Command>` come coda: aggiungi A, B e C ed eseguili nell'ordine A, B, C. In una seconda prova indipendente usa un altro `ArrayDeque<Command>` come pila dei comandi già eseguiti: dopo A, B, C, annullali nell'ordine C, B, A. Indica per ogni prova le estremità di inserimento e rimozione e gestisci il contenitore vuoto. Le due strutture rappresentano ruoli diversi e non condividono i comandi ancora in attesa con quelli già eseguiti.
-5. **Presenze senza duplicati.** Crea uno `Student` immutabile con matricola e nome: l'uguaglianza dipende soltanto dalla matricola. Un registro deve contenere ogni matricola una sola volta e iterare nell'ordine del primo ingresso. Scegli il `Set` adatto e prova ingressi A, B, A, C, usando due istanze distinte per A: l'ordine deve essere A, B, C. Rimuovi B e inseriscilo nuovamente: deve comparire dopo C. Spiega quale garanzia d'ordine perderesti usando `HashSet`.
-6. **Catalogo con ordine e sostituzione.** Riprendi `BookCatalog` del capitolo: possiede già ricerca per ISBN e rifiuto dei duplicati. Aggiungi `replace(Book book)`, che sostituisce il libro con lo stesso ISBN, lancia `NoSuchElementException` se manca e rifiuta `null` con `IllegalArgumentException`. Introduci il requisito che `getAll()` restituisca i libri nell'ordine del primo inserimento: la sostituzione non cambia posizione, mentre rimozione e nuovo inserimento collocano il libro in fondo. Scegli la rappresentazione adatta e conserva la copia difensiva. Con ISBN A, B, C verifica sostituzione di B e poi rimozione e reinserimento di A.
+1. **Dati di una conferenza.** Devi gestire programma degli interventi nell'ordine previsto, codici unici dei badge presenti, partecipanti ricercabili per codice del badge e richieste di assistenza da evadere nell'ordine di arrivo.
+
+   Per ciascun insieme di dati scegli interfaccia e implementazione della libreria standard e motiva ordine, duplicati e operazioni principali. Realizza una piccola dimostrazione con almeno tre elementi per struttura, includendo un badge ripetuto, una ricerca assente e l'estrazione di tutte le richieste. Distingui l'ordine richiesto dal problema da quello eventualmente offerto dall'implementazione.
+
+2. **Frequenze delle parole.** Ricevi una `List<String>` di parole non nulle già separate. Per questo esercizio `"Java"` e `"java"` sono parole diverse.
+
+   Costruisci l'insieme delle parole distinte nell'ordine della prima comparsa e una mappa parola → numero di occorrenze. Stampa soltanto le parole ripetute, nello stesso ordine di prima comparsa. Con `java, classi, java, oggetti, classi, java` devi ottenere parole distinte `java, classi, oggetti` e riepilogo `java: 3`, `classi: 2`. Prova anche lista vuota e parole tutte diverse.
+
+3. **Registro per matricola.** Crea `Student` immutabile con matricola e nome e `CourseRegistry` basato su `Map<String, Student>`. Assumi dati validi. `register(Student student)` restituisce `false` per matricola già presente senza sostituire lo studente; `find(String id)` restituisce lo studente oppure `null`; `remove(String id)` restituisce se ha rimosso un elemento.
+
+   `getAll()` restituisce una nuova lista modificabile senza promettere un ordine. Prova due registrazioni, un duplicato con nome diverso, ricerca assente e doppia rimozione. Dopo il duplicato controlla il nome ancora registrato. Svuota la lista restituita da `getAll()` e verifica che il registro conservi i dati.
+
+4. **Richieste in attesa e cronologia.** Crea `Command` con descrizione e due metodi che stampino azione e annullamento simulati. Usa una `Deque<Command>` come coda delle richieste e un'altra come pila delle operazioni eseguite.
+
+   Inserisci A, B e C in attesa. Ogni esecuzione estrae dalla coda e aggiunge alla cronologia; ogni annullamento estrae dalla cronologia. Esegui le tre azioni e annullale: gli ordini devono essere A, B, C e C, B, A. Un comando non eseguito non deve comparire nella cronologia. Gestisci coda e pila vuote con un messaggio. Indica le estremità usate per ogni inserimento ed estrazione.
+
+5. **Presenze senza duplicati.** Crea `Student` immutabile con matricola e nome, con uguaglianza e hash basati soltanto sulla matricola. Il registro deve contenere ogni matricola una sola volta e attraversare gli studenti nell'ordine del primo ingresso.
+
+   Scegli un `Set` appropriato e prova A, B, A, C, usando due istanze distinte per A: devi ottenere A, B, C. Rimuovi B e inseriscilo di nuovo: deve comparire in fondo. Spiega il ruolo congiunto di `equals()`, `hashCode()` e implementazione della collezione. Indica quale garanzia perderesti scegliendo `HashSet`.
+
+6. **Catalogo ordinato e aggiornabile.** Estendi `BookCatalog` del capitolo con `replace(Book book)`: sostituisce il libro con lo stesso ISBN, rifiuta `null` con `IllegalArgumentException` e segnala ISBN assente con `NoSuchElementException`. Gli errori non modificano il catalogo.
+
+   Introduci inoltre l'ordine del primo inserimento per `getAll()`: sostituire non cambia posizione, rimuovere e reinserire porta in fondo. Scegli la mappa adatta e conserva la copia difensiva. Inserisci ISBN A, B, C, sostituisci B con un titolo aggiornato, poi rimuovi e reinserisci A: controlla prima A, B, C e poi B, C, A, oltre al titolo aggiornato. Mantieni il rifiuto dei duplicati di `add()`.
 
 ---
 
@@ -4925,13 +5100,31 @@ I generics, infine, non accettano tipi primitivi: `List<int>` è illegale e si u
 
 ### Esercizi
 
-1. **Portare un errore dal runtime alla compilazione.** Costruisci `ObjectCache` con una `Map<Object, Object>`, `put(Object key, Object value)` e `Object get(Object key)`. Inserisci sotto la chiave `"attempts"` la stringa `"tre"`, poi prova a leggerla con un cast a `Integer` e osserva il fallimento. Riscrivi il contenitore come `Cache<K, V>` e crea una `Cache<String, Integer>`. Mostra che l'inserimento di `"tre"` ora viene rifiutato dal compilatore e che leggere il valore corretto non richiede cast. Tieni la chiamata non compilabile commentata nel programma finale.
-2. Progetta `Pair<A, B>` e usala per rappresentare sia coordinate `Pair<Integer, Integer>` sia traduzioni `Pair<String, String>`. Aggiungi un metodo generico `swap(Pair<A, B>)` che restituisca `Pair<B, A>` e verifica che i tipi risultanti siano dedotti correttamente.
-3. **Massimo generico.** Scrivi un metodo statico `max(List<T> values)` dichiarando un parametro di tipo con limite che consenta `compareTo()`. La lista e gli elementi sono non nulli; per lista vuota lancia `NoSuchElementException` e in caso di parità restituisci il primo massimo incontrato. Provalo con interi e con `Product` del capitolo, il cui ordine naturale è per codice. Verifica che il massimo dei prodotti sia scelto dal codice, non dal prezzo. In una prova di compilazione separata usa una classe senza `Comparable` e spiega il rifiuto.
-4. **Liste da leggere e liste da riempire.** Per questa prova crea `Device` con `activate()` e le sottoclassi `Smartphone` e `Smartwatch`. `activateAll` deve accettare liste di una qualunque di queste classi e chiamare `activate()` senza aggiungere elementi. `addDefaultSmartphone` deve aggiungere un nuovo telefono a liste di `Smartphone`, `Device` oppure `Object`. Scegli le firme fra `List<Device>`, `List<?>`, `List<? extends Device>` e `List<? super Smartphone>`, implementa i metodi e verifica le chiamate richieste. Mostra anche perché una lista di orologi non può essere passata al metodo che aggiunge telefoni.
-5. **Copiare fra liste compatibili.** Implementa il metodo statico generico `copyAll(List<? extends T> source, List<? super T> destination)`, che aggiunge in fondo tutti i riferimenti della sorgente, mantenendone l'ordine e senza svuotare la destinazione. Assumi liste non nulle e distinte. Usa la gerarchia dell'esercizio 4 e prevedi quali copie siano ammesse: smartphone → dispositivi, smartphone → oggetti, dispositivi → smartphone, oggetti → dispositivi. Verifica le chiamate accettate e osserva gli errori delle altre in prove separate; non usare cast per aggirare i vincoli.
-6. **Wildcard o parametro di tipo.** Scrivi `printAll`, che stampa elementi di qualsiasi lista e non restituisce dati, e un metodo generico `reversedPair`, che riceve due argomenti di tipo `T` e restituisce una `Pair<T, T>` nell'ordine inverso. Usa `Pair` dell'esercizio 2. Scegli una wildcard per il primo metodo e un parametro di tipo per il secondo; mostra con chiamate concrete quale relazione fra argomenti e risultato deve essere conservata. Non dare per scontato che `T` obblighi i due oggetti ad avere la stessa classe effettiva: possono essere sottotipi di un tipo comune.
-7. Ordina una lista di `Product` secondo l'ordine naturale per codice e, separatamente, con `Comparator` per prezzo e poi nome. Inserisci prodotti con lo stesso prezzo per verificare il secondo criterio e controlla che l'ordinamento naturale non sia stato modificato.
+Usa tipi parametrizzati senza tipi raw e senza cast per aggirare i controlli. Nelle prove di compilazione conserva separatamente le chiamate rifiutate. Salvo diversa indicazione, assumi riferimenti ed elementi non nulli.
+
+1. **Archivio di impostazioni tipizzato.** Crea una prima `ObjectCache` basata su `Map<Object, Object>`, con `put(Object key, Object value)` e `Object get(Object key)`. Inserisci `"tre"` sotto la chiave `"attempts"` e prova a recuperarlo con un cast a `Integer`.
+
+   Riscrivi il contenitore come `Cache<K, V>`, con inserimento che sostituisce il valore della stessa chiave e ricerca assente che restituisce `null`. Usa `Cache<String, Integer>` e verifica inserimento, sostituzione e ricerca assente. Mostra che leggere un intero non richiede cast e che inserire `"tre"` viene rifiutato prima dell'esecuzione. Confronta il momento in cui emerge l'errore nelle due versioni.
+
+2. **Coppie di dati e scambio.** Crea `Pair<A, B>` immutabile con costruttore e metodi di lettura. Usala per un nome con punteggio (`String`, `Integer`) e per una coppia di coordinate (`Integer`, `Integer`).
+
+   Scrivi il metodo statico generico `swap(Pair<A, B> pair)`, con risultato `Pair<B, A>`. Da `("Anna", 18)` devi ottenere `(18, "Anna")` senza modificare l'originale. Assegna il risultato a una variabile con tipo esplicito e spiega quale relazione fra input e output viene conservata. Scambiare due volte deve ripristinare i valori e i tipi iniziali, senza richiedere la stessa identità dell'oggetto.
+
+3. **Massimo secondo l'ordine naturale.** Scrivi un metodo statico generico `max(List<T> values)` con un limite su `T` che renda disponibile `compareTo()`. Lista vuota → `NoSuchElementException`; in caso di parità restituisci il primo massimo incontrato. La lista non viene modificata.
+
+   Prova interi e `Product` del capitolo, il cui ordine naturale è per codice. Usa prodotti per cui il codice massimo non coincida con il prezzo massimo e verifica il riferimento restituito in una parità. In una prova separata passa oggetti privi di `Comparable` e spiega il rifiuto del compilatore.
+
+4. **Leggere da liste di dispositivi.** Crea `Device` con `activate()` e sottoclassi `Smartphone` e `Smartwatch`. Scrivi `activateAll` perché accetti liste di tutti e tre i tipi e invochi `activate()` su ciascun elemento, senza aggiungerne.
+
+   Scrivi poi `addDefaultSmartphone`, che aggiunga un nuovo telefono a liste di `Smartphone`, `Device` oppure `Object`. Scegli le wildcard appropriate e verifica tutte le chiamate richieste. Prova separatamente una lista di smartwatch come destinazione dell'aggiunta: deve essere rifiutata. Motiva le firme in base a ciò che ciascun metodo legge o scrive.
+
+5. **Copia fra liste compatibili.** Scrivi il metodo statico generico `copyAll(List<? extends T> source, List<? super T> destination)`. Deve aggiungere in fondo i riferimenti della sorgente, nello stesso ordine, senza cancellare il contenuto già presente né modificare la sorgente. Assumi liste distinte e destinazione modificabile.
+
+   Usa i dispositivi dell'esercizio precedente e prepara una tabella delle copie ammesse: smartphone → dispositivi, smartphone → oggetti, dispositivi → smartphone, oggetti → dispositivi. Verifica le previsioni con il compilatore e prova sorgente vuota e destinazione già popolata. Spiega perché copiare i riferimenti non crea copie profonde degli elementi.
+
+6. **Due ordinamenti per gli stessi prodotti.** Usa `Product` del capitolo e una lista con codici e prezzi in ordini diversi. Ordina una copia secondo l'ordine naturale per codice e un'altra per prezzo crescente, poi nome alfabetico e infine codice come spareggio.
+
+   Implementa il secondo criterio in una classe `Comparator<Product>`, includendo prodotti con uguale prezzo e con uguale prezzo e nome. Stampa i due risultati e verifica che l'originale conservi il suo ordine. Spiega perché una regola di presentazione alternativa non richieda di cambiare `compareTo()` nella classe.
 
 ---
 
@@ -5662,13 +5855,31 @@ Ricerca e inserimento costano O(h), dove `h` è l'altezza. In un albero bilancia
 
 ### Esercizi
 
-1. **Inserimento per posizione e rimozione in coda.** Estendi `SimpleLinkedList<E>` del capitolo con `void insert(int index, E element)` ed `E removeLast()`. L'inserimento accetta indici da 0 a `size`, inclusi; gli altri producono `IndexOutOfBoundsException`. Conserva la politica del capitolo per gli elementi nulli. `removeLast()` restituisce l'elemento rimosso e lancia `NoSuchElementException` sulla lista vuota. Prima dell'implementazione disegna `head`, `tail` e `size` per lista vuota, unico nodo, inserimento in testa, in coda e interno. Verifica che inserire A a 0, C a 1 e B a 1 produca A, B, C e che tre rimozioni in coda riportino la lista allo stato vuoto.
-2. **Ricerca, sostituzione e svuotamento.** Aggiungi a `SimpleLinkedList<E>` `boolean contains(E element)`, `E set(int index, E element)` e `void clear()`. `contains` usa l'uguaglianza logica, includendo il caso di elementi nulli; per consentire la sostituzione, modifica il campo `element` del nodo, che nella versione del capitolo è `final`. `set` restituisce il vecchio elemento e accetta soltanto indici da 0 a `size - 1`, altrimenti lancia `IndexOutOfBoundsException`; `clear` ripristina `head`, `tail` e `size` dello stato vuoto. Mantieni la politica della classe sugli elementi nulli. Verifica elemento presente e assente, sostituzione in testa e coda, indici -1 e `size`, e due svuotamenti consecutivi. Dopo gli errori la lista deve restare invariata.
-3. Usa `LinkedStack<Character>` per controllare se in una stringa le parentesi `()`, `[]` e `{}` sono bilanciate e correttamente annidate. Il metodo deve rifiutare `([)]`, accettare testo senza parentesi e spiegare quale informazione viene conservata nella pila.
-4. **Lavori di stampa in ordine di arrivo.** Crea `PrintJob` con nome e numero positivo di pagine e usa `LinkedQueue<PrintJob>` del capitolo. Simula l'elaborazione stampando nome e pagine del lavoro estratto; se la coda è vuota mostra un messaggio senza chiamare `dequeue()`. Inserisci A e B, elabora A, inserisci C e poi elabora fino a svuotare la coda: l'ordine deve essere A, B, C. Non occorre gestire una stampante reale o thread.
-5. **Forma e altezza del BST.** Estendi `BinarySearchTree<E>` con `min()` e `max()` (eccezione `NoSuchElementException` se vuoto), `height()` e visite `preOrder()` e `postOrder()` che restituiscano liste. Definisci altezza -1 per albero vuoto e 0 per un solo nodo. Usa gli interi da 1 a 7 e tre ordini di inserimento: `4, 2, 6, 1, 3, 5, 7`; crescente; decrescente. Confronta altezze, visite e numero di nodi esaminati per cercare 1 e 7. Minimo e massimo devono restare 1 e 7 e la visita in-order deve restare ordinata.
-6. **BST con conteggio dei duplicati.** Parti dal BST del capitolo, che rifiuta un valore se `compareTo()` restituisce zero. Realizza una variante in cui ogni nodo conserva anche il numero di occorrenze: un duplicato incrementa quel conteggio senza creare un nodo. In questa variante `size()` conta le occorrenze totali, `add()` restituisce sempre `true` per un valore valido e `inOrder()` riporta ogni valore tante volte quante è stato inserito. Con `4, 2, 4, 7, 2` ottieni dimensione 5 e visita `2, 2, 4, 4, 7`. Riscrivi l'invariante distinguendo ordinamento dei nodi e conteggio delle occorrenze.
-7. Confronta una struttura costruita nel capitolo con la corrispondente collezione standard. Indica che cosa hai imparato implementandola, quali garanzie mancano nella versione didattica e quale useresti in un'applicazione reale motivando la risposta.
+Parti dalle implementazioni complete del capitolo. Prima di modificare i collegamenti disegna i casi limite; dopo ogni operazione controlla contenuto, dimensione e possibilità di riutilizzare la struttura.
+
+1. **Inserimento nella lista concatenata.** Aggiungi a `SimpleLinkedList<E>` `void insert(int index, E element)`. Sono ammessi indici da 0 a `size`, inclusi; gli altri producono `IndexOutOfBoundsException` senza modifiche. Come nella lista del capitolo, sono ammessi elementi nulli.
+
+   Gestisci lista vuota, testa, posizione interna e coda, aggiornando `head`, `tail` e `size` dove necessario. Inserisci A a 0, C a 1 e B a 1: devi ottenere A, B, C. Aggiungi poi un elemento con `addLast()` per verificare la coda. Prova indici -1 e `size + 1` e indica il costo dell'inserimento nelle diverse posizioni.
+
+2. **Rimozione in coda e svuotamento.** Aggiungi `E removeLast()` e `void clear()` alla lista. La rimozione restituisce l'elemento eliminato; sulla lista vuota lancia `NoSuchElementException`. `clear()` deve essere valido anche su una lista già vuota.
+
+   Da A, B, C rimuovi tre volte e controlla C, B, A, poi lista vuota con entrambi gli estremi nulli. Prova rimozione su lista vuota, due `clear()` consecutivi e nuovo inserimento dopo lo svuotamento. Spiega perché in una lista semplicemente concatenata conservare `tail` non renda costante la rimozione dell'ultimo nodo.
+
+3. **Parentesi bilanciate.** Usa `LinkedStack<Character>` per implementare `boolean hasBalancedBrackets(String text)`. Considera `()`, `[]`, `{}` e ignora gli altri caratteri. La stringa è non nulla.
+
+   Una chiusura senza apertura, una chiusura di tipo diverso e aperture rimaste al termine devono dare `false`. Verifica stringa vuota, testo senza parentesi, `a*(b+[c-d])`, `([)]`, `())` e `(()`. Spiega quali dati conserva la pila e perché il solo conteggio delle parentesi non sia sufficiente.
+
+4. **Coda di stampa.** Crea `PrintJob` con nome e numero positivo di pagine e usa `LinkedQueue<PrintJob>` per simulare una stampante. Un'operazione di elaborazione estrae il prossimo lavoro e stampa nome e pagine; se la coda è vuota mostra un messaggio.
+
+   Inserisci A e B, elabora A, inserisci C ed elabora fino allo svuotamento: l'ordine deve essere A, B, C. Inserisci D dopo lo svuotamento e verifica che possa essere estratto normalmente. Controlla dimensione e stato vuoto dopo ogni passaggio; non servono thread o una stampante reale.
+
+5. **Forma di un albero di ricerca.** Estendi `BinarySearchTree<E>` con `min()`, `max()` e `height()`. Minimo e massimo su albero vuoto producono `NoSuchElementException`; l'altezza è -1 per albero vuoto e 0 per un solo nodo.
+
+   Inserisci i numeri da 1 a 7 in tre alberi: ordine `4, 2, 6, 1, 3, 5, 7`, crescente e decrescente. Disegna gli alberi e verifica altezze 2, 6 e 6, minimo 1, massimo 7 e stessa visita in-order. Conta i nodi esaminati nelle ricerche di 1 e 7. Collega le differenze di costo alla forma; questo BST non esegue bilanciamento automatico.
+
+6. **Duplicati nel BST.** Realizza una variante del BST in cui ciascun nodo conserva il numero di occorrenze. Un confronto zero incrementa il conteggio del nodo senza crearne uno nuovo; `size()` conta tutte le occorrenze e `inOrder()` ripete i valori secondo il conteggio. Conserva il rifiuto di `null` della versione del capitolo.
+
+   In questa variante `add()` restituisce `true` per ogni inserimento valido. Con `4, 2, 4, 7, 2` verifica dimensione 5, tre nodi e visita `2, 2, 4, 4, 7`. Formula l'invariante di ordinamento e quello sui conteggi; confronta il significato di dimensione con quello della versione originale.
 
 ---
 
@@ -5882,12 +6093,29 @@ Java permette anche classi locali, dichiarate dentro un metodo, e classi anonime
 
 ### Esercizi
 
-1. **Stati di una richiesta di assistenza.** Riprendi `SupportTicket` e sostituisci lo stato stringa con `TicketStatus`: `OPEN`, `IN_PROGRESS`, `CLOSED`. Sono ammesse soltanto OPEN → IN_PROGRESS, IN_PROGRESS → CLOSED e CLOSED → OPEN; richiedere lo stesso stato è un rifiuto. L'enum offre `canTransitionTo(TicketStatus next)` e il ticket `changeStatus(TicketStatus next)`, che restituisce `false` senza modifiche per transizioni vietate o valore nullo. Verifica un ciclo valido, OPEN → CLOSED rifiutato e CLOSED → IN_PROGRESS rifiutato.
-2. **Ciclo di un semaforo.** Definisci l'enum `TrafficLight` con `RED`, `GREEN`, `YELLOW` e durate rispettive di 30, 25 e 5 secondi. Offre `getDurationSeconds()` e `next()`, con sequenza RED → GREEN → YELLOW → RED. Simula due cicli stampando stato e durata, senza attendere davvero e senza una catena di `if` nel programma chiamante. Come approfondimento, valuta il requisito «in modalità notturna il giallo lampeggia e il ciclo normale è sospeso»: spiega se preferisci uno stato aggiuntivo o una modalità separata, senza obbligo di implementarla.
-3. **Valori validati con record.** Crea `EmailAddress(String value)` e `Money(int cents, String currency)` con costruttori compatti. Per questa prova una email è valida se non nulla, senza spazi, con una sola `@` e testo non vuoto prima e dopo: non è richiesta una validazione completa degli indirizzi reali. Il denaro ammette centesimi non negativi e soltanto valuta `"EUR"` o `"USD"`. Gli errori producono `IllegalArgumentException`. Usa questi record in `Payment(EmailAddress recipient, Money amount)`, rifiutando componenti nulli. Prova una costruzione valida ed errori di email, importo, valuta e componenti assenti.
-4. **Record con una lista protetta.** Crea il record `Course(String name, List<String> students)`: richiedi nome non nullo e non blank e lista non nulla, senza elementi nulli. Nel costruttore compatto conserva una copia non modificabile della lista. Costruisci un corso a partire da una lista modificabile con Anna e Luca; aggiungi Sara alla lista originale e verifica che il corso contenga ancora due nomi. Prova poi a modificare `course.students()` e verifica che l'operazione sia rifiutata. Spiega quale protezione offre la copia e perché, con elementi `String`, non occorre duplicare ogni elemento.
-5. **Una mappa con entry private.** Implementa `SimpleMap<K, V>` usando una lista privata di `Entry<K, V>`, classe annidata statica privata con chiave e valore. La mappa offre `put(K key, V value)`, che inserisce o sostituisce, `get(K key)`, che restituisce il valore oppure `null`, e `size()`. Rifiuta chiavi e valori nulli; confronta le chiavi con `equals()`. Inserisci `"A" → 1`, `"B" → 2`, poi `"A" → 3`: la dimensione deve restare 2 e la lettura di A restituire 3. Spiega perché le entry non devono essere esposte o conservare un riferimento implicito alla mappa esterna.
-6. **Comandi legati all'istanza esterna.** Crea `Counter` con valore inizialmente zero, `getValue()` e una inner class pubblica non statica `IncrementCommand` con `execute()`, che incrementa il contatore esterno. Aggiungi `newCommand()` per costruire un comando del contatore. Crea due contatori A e B e un comando per ciascuno; esegui il comando di A, quello di B e ancora quello di A. I valori finali devono essere 2 e 1. Spiega quale istanza esterna viene conservata da ciascun comando.
+1. **Stati di una richiesta di assistenza.** Riprendi `SupportTicket` della sezione su `static` e `final`. Sostituisci lo stato stringa con `TicketStatus`: `OPEN`, `IN_PROGRESS`, `CLOSED`. Sono ammesse soltanto OPEN → IN_PROGRESS, IN_PROGRESS → CLOSED e CLOSED → OPEN.
+
+   L'enum offre `boolean canTransitionTo(TicketStatus next)`; il ticket sostituisce `close()` con `boolean changeStatus(TicketStatus next)`. Stato nullo, stesso stato e passaggi vietati producono `false` senza modifiche. Mantieni numerazione e dati del ticket. Verifica un ciclo completo, un salto OPEN → CLOSED e un passaggio CLOSED → IN_PROGRESS rifiutati.
+
+2. **Tariffe di consegna nell'enum.** Definisci `ShippingMethod` con `STANDARD`, `EXPRESS`, `PICKUP`, etichetta e costo rispettivamente 500, 1000 e 0 centesimi. L'enum offre metodi di lettura e `int totalFor(int subtotalInCents)`, che somma costo e subtotale non negativo e rifiuta valori negativi con `IllegalArgumentException`.
+
+   Stampa un riepilogo di tutte le modalità per un ordine da 2000 centesimi: totali 2500, 3000, 2000. Usa `values()` per attraversarle e conserva costi ed etichette nell'enum. Valuta poi il requisito «ogni negozio configura le proprie tariffe»: spiega quale parte del modello dovrebbe cambiare, senza forzare costanti universali per dati configurabili.
+
+3. **Valori validati con record.** Crea `EmailAddress(String value)` e `Money(int cents, String currency)` con costruttori compatti. Per questo esercizio l'indirizzo deve avere una sola `@`, testo prima e dopo e nessun carattere di spazio; non è richiesta la validazione completa degli indirizzi reali. Il denaro ammette centesimi non negativi e valuta esattamente `"EUR"` o `"USD"`.
+
+   Rifiuta dati nulli o invalidi con `IllegalArgumentException`. Crea `Payment(EmailAddress recipient, Money amount)`, che rifiuta componenti nulli. Verifica una costruzione valida, due pagamenti uguali e almeno un errore per ogni vincolo. Indica quali metodi dei record vengono generati e quali regole devi implementare tu.
+
+4. **Record con lista protetta.** Crea `Course(String name, List<String> students)`, con nome non nullo e non blank e lista non nulla senza elementi nulli. Conserva nel costruttore compatto una copia non modificabile della lista.
+
+   Costruisci un corso da una lista con Anna e Luca, aggiungi Sara alla lista originale e controlla che il corso conservi due nomi. Prova a modificare `course.students()` e verifica il rifiuto. Costruisci un secondo corso con gli stessi dati e verifica l'uguaglianza. Spiega perché il caso con stringhe è diverso da una lista di studenti modificabili.
+
+5. **Entry come dettaglio di una mappa.** Implementa `SimpleMap<K, V>` con una lista privata di `Entry<K, V>`, classe annidata statica privata con chiave e valore. La mappa offre `void put(K key, V value)`, `V get(K key)` e `int size()`; `put` sostituisce il valore della stessa chiave, `get` restituisce `null` se assente.
+
+   Rifiuta chiavi e valori nulli con `IllegalArgumentException` e confronta le chiavi con `equals()`. Con A → 1, B → 2, A → 3 verifica dimensione 2 e A → 3. Prova chiave assente e argomenti nulli senza modifiche alla mappa. Motiva visibilità e natura statica delle entry.
+
+6. **Un iteratore legato alla sua collezione.** Crea `NameList(List<String> names)` con una copia privata della lista di stringhe non nulle e una inner class non statica `Cursor`. Assumi argomenti validi; la classe non offre metodi di modifica dei nomi. `newCursor()` crea un cursore posizionato all'inizio; il cursore offre `hasNext()` e `next()`, che restituisce il prossimo nome o lancia `NoSuchElementException` alla fine.
+
+   Ogni cursore conserva soltanto la propria posizione e legge la lista dell'istanza esterna. Prepara due liste e due cursori sulla prima: avanzare un cursore non deve spostare gli altri. Non modificare le liste durante l'attraversamento. Spiega quale riferimento esterno rende possibile l'accesso ai nomi e quale stato appartiene a ogni cursore.
 
 ---
 
@@ -6315,12 +6543,29 @@ Stream e cicli non sono livelli di qualità diversi. Si sceglie la forma che ren
 
 ### Esercizi
 
-1. **Intervallo con passo.** Estendi `Range` del capitolo con `Range(int start, int end, int step)`: estremo iniziale incluso, finale escluso, `end >= start` e passo strettamente positivo; gli argomenti non validi producono `IllegalArgumentException`. Mantieni anche il costruttore a due argomenti con passo 1. Il cursore deve fermarsi prima di raggiungere o superare `end`, senza produrre un valore finale artificiale. Verifica `(2, 9, 3)` → 2, 5, 8; `(2, 2, 1)` → vuoto; `(2, 5, 10)` → solo 2. Usa anche due iteratori alternati e controlla il comportamento di `next()` dopo la fine. Evita overflow nello stato del cursore, per esempio usando internamente un `long`.
-2. Completa `SimpleLinkedList<E>` affinché implementi `Iterable<E>`. Scrivi un programma che avanzi due iteratori indipendenti e un ciclo for-each che calcoli il numero di elementi senza accedere ai nodi. Spiega quale stato appartiene alla lista e quale al singolo iteratore.
-3. **Un iteratore filtrato.** Implementa `FilterIterator<E>`, che riceve un `Iterator<E>` sorgente e un `Predicate<? super E>` e restituisce soltanto gli elementi accettati. `hasNext()` deve poter essere chiamato più volte senza saltare elementi; `next()` deve funzionare anche senza una chiamata preventiva a `hasNext()` e lanciare `NoSuchElementException` dopo la fine. Non materializzare prima tutti i risultati in una lista. Provalo con numeri pari e stringhe non vuote, includendo sorgente vuota, nessuna corrispondenza e più corrispondenze separate da elementi scartati.
-4. **Trasformare un iteratore.** Implementa `MapIterator<S, T>`, che riceve `Iterator<S>` e `Function<? super S, ? extends T>` e applica la funzione a ciascun elemento quando viene richiesto con `next()`. Mantieni il comportamento di fine dell'iteratore sorgente. Crea prodotti con nome e quantità, filtra quelli con quantità positiva usando `FilterIterator` e trasformali nei loro nomi con `MapIterator`. Con Penna: 3, Quaderno: 0, Matita: 2, la sequenza deve essere Penna, Matita. Le due classi di iteratori devono restare generiche.
-5. **Clienti con ordini sopra soglia.** Crea il record `Order(String customerCode, int totalInCents)` e una lista di ordini. Scrivi un'elaborazione stream che selezioni totali strettamente maggiori di una soglia, ricavi i codici cliente, elimini duplicati e li ordini alfabeticamente. Con ordini B: 6000, A: 7000, B: 8000, C: 5000 e soglia 5000, ottieni A, B. Riscrivi l'elaborazione con un ciclo e collezioni e verifica risultati uguali anche per lista vuota.
-6. **Totale e media delle misurazioni.** Da una `List<Integer>` di misurazioni calcola il totale con una riduzione e poi la media dividendo per il numero di elementi, con divisione decimale. Assumi valori piccoli senza overflow. Per lista vuota il totale è zero e la media non è definita: il programma deve mostrare un messaggio invece di dividere per zero. Verifica `2, 3, 6` → totale 11 e media circa 3,67, e la lista vuota. Spiega perché la scelta per il caso vuoto è una regola del problema.
+1. **Intervallo attraversabile con passo.** Estendi `Range` del capitolo con `Range(int start, int end, int step)`: inizio incluso, fine esclusa, `end >= start`, passo positivo. Conserva il costruttore a due argomenti con passo 1; argomenti invalidi → `IllegalArgumentException`.
+
+   Verifica `(2, 9, 3)` → 2, 5, 8; estremi uguali → nessun elemento; `(2, 5, 10)` → solo 2. Ogni iteratore deve avere un cursore indipendente e `next()` a fine sequenza deve lanciare `NoSuchElementException`. Usa internamente un cursore `long` per evitare overflow quando il passo supera la distanza residua e prova anche estremi vicini a `Integer.MAX_VALUE`.
+
+2. **For-each sulla lista concatenata.** Completa `SimpleLinkedList<E>` affinché implementi `Iterable<E>`, seguendo l'adattamento del capitolo. Ogni chiamata a `iterator()` crea un nuovo cursore; `hasNext()` non avanza e `next()` esaurito lancia `NoSuchElementException`.
+
+   Prova lista vuota, un elemento, più elementi e un elemento nullo. Alterna l'avanzamento di due iteratori della stessa lista e conta gli elementi con for-each. Durante le prove non modificare la struttura. Spiega perché il cursore non debba essere un unico campo condiviso della lista.
+
+3. **Filtro senza lista intermedia.** Implementa `FilterIterator<E>` con sorgente `Iterator<E>` e condizione `Predicate<? super E>`, entrambi non nulli. Deve restituire soltanto gli elementi accettati, nello stesso ordine, cercandoli quando serve.
+
+   Chiamate ripetute a `hasNext()` non devono perdere elementi; `next()` deve funzionare anche senza `hasNext()` preventivo e lanciare `NoSuchElementException` alla fine. Prova numeri pari con 1, 2, 3, 4, 5, sorgente vuota e nessuna corrispondenza. Prova anche una sorgente con `null` e un predicato che lo accetti: la presenza di un elemento pronto non può essere rappresentata dal solo fatto che il suo valore sia diverso da `null`.
+
+4. **Trasformare gli elementi durante l'attraversamento.** Implementa `MapIterator<S, T>` con sorgente `Iterator<S>` e `Function<? super S, ? extends T>`, non nulli. La funzione viene applicata una volta per ogni elemento richiesto con `next()`; `hasNext()` non deve applicarla. Conserva il comportamento di fine della sorgente.
+
+   Crea prodotti con nome e quantità, filtra quelli disponibili usando `FilterIterator` e trasformali nei nomi. Con Penna: 3, Quaderno: 0, Matita: 2 ottieni Penna, Matita. Usa un contatore delle applicazioni della funzione per verificare che chiamare due volte `hasNext()` non trasformi nulla e che estrarre due nomi la applichi due volte.
+
+5. **Clienti con ordini sopra soglia.** Crea `Order(String customerCode, int totalInCents)` e una lista di ordini validi. Con uno stream seleziona totali strettamente maggiori di una soglia, ricava i codici cliente, elimina duplicati e ordina alfabeticamente.
+
+   Con B: 6000, A: 7000, B: 8000, C: 5000 e soglia 5000 ottieni A, B. Verifica lista vuota, tutti gli ordini sotto soglia e totale uguale alla soglia. Riscrivi il calcolo con cicli e collezioni e confronta i risultati; entrambe le versioni devono lasciare invariata la lista originale.
+
+6. **Riepilogo delle misurazioni.** Ricevi una `List<Integer>` non nulla con elementi non nulli e abbastanza piccoli da evitare overflow. Calcola il totale con una riduzione e ricava la media con divisione decimale.
+
+   Per lista vuota il totale è zero e la media non è definita: mostra un messaggio invece di dividere per zero. Verifica 2, 3, 6 → totale 11 e media circa 3,67; prova anche un solo valore e valori negativi. Confronta il risultato con un ciclo e spiega il ruolo dell'identità zero nella somma.
 
 ---
 
@@ -6684,12 +6929,27 @@ I nomi dei tipi sono normalmente sostantivi; quelli dei metodi esprimono azioni 
 
 ### Esercizi
 
-1. **Organizzare un piccolo programma scolastico.** Costruisci inizialmente nel package predefinito cinque classi: `Student` con matricola e nome; `Course` con titolo e capienza; `EnrollmentService` con l'elenco degli iscritti a un corso e `enroll(Student)` che rifiuta matricole duplicate o aula piena; `ConsoleMenu` che legge matricola e nome e mostra l'esito; `Main` che crea un corso e avvia il menu. Assumi dati non vuoti e capienza positiva. Poi raggruppa le classi in package, disegna le dipendenze, aggiorna dichiarazioni e import e compila. Con un corso da due posti verifica due iscrizioni riuscite e una terza rifiutata prima e dopo la riorganizzazione.
-2. **Spostare l'interazione fuori dai dati.** In una copia del programma dell'esercizio 1 aggiungi temporaneamente a `Student` un metodo statico `readFromConsole(Scanner scanner)` che legge matricola e nome, stampa un messaggio e restituisce lo studente. Fai usare quel metodo al menu e disegna le dipendenze risultanti. Poi sposta lettura e messaggi in `ConsoleMenu`, lasciando a `Student` soltanto dati e accesso ai dati. Verifica lo stesso scenario di iscrizione e confronta le dipendenze prima e dopo: il modello non deve più usare `Scanner` o `System.out`.
-3. **Un dettaglio condiviso dentro un package.** Nel package che contiene `Student` e `Course`, crea `TextValidator` package-private con `isValid(String text)`, che controlla testo non nullo e non blank. Entrambe le classi lo usano nel costruttore e lanciano `IllegalArgumentException` per dati invalidi. Colloca `Main` in un package diverso e prova una chiamata diretta al validatore: deve fallire in compilazione. Mantieni il validatore non pubblico e verifica gli errori attraverso i costruttori pubblici. Spiega perché questo dettaglio non deve diventare parte dell'API.
-4. **Rimuovere una dipendenza circolare.** In una variante del modello, `students.Student` conserva una `List<courses.Course>` e `courses.Course` una `List<students.Student>`. Entrambi espongono metodi per aggiornare il proprio elenco. Disegna il ciclo fra package e spiega il rischio di aggiornare soltanto uno dei due lati. Sostituisci gli elenchi con `Enrollment` e `EnrollmentRegistry` in un terzo package `enrollments`: rappresentano e gestiscono le associazioni tra studenti e corsi. `Student` e `Course` non devono conoscere il registro. Verifica che iscrizione e ricerca dei corsi di uno studente restino possibili e disegna il nuovo grafo.
-5. **Da sorgenti a progetto Gradle.** Porta il programma dell'esercizio 1 in un progetto Gradle con wrapper, `settings.gradle`, `build.gradle` e sorgenti in `src/main/java`. Per ora non sono richiesti test JUnit: la cartella dei test può essere vuota. Esegui `classes`, `test` e `build`, indicando quali task hanno realmente lavorato e quali non hanno trovato sorgenti. Individua le classi compilate e il JAR in `build`; controlla che i package siano conservati nel JAR. Spiega perché i sorgenti si modificano in `src`, non in `build`.
-6. **Dipendenza, import e repository.** In una copia del progetto Gradle aggiungi la dipendenza Jackson mostrata nel capitolo e usa `ObjectMapper` in una piccola classe compilabile. Descrivi come coordinate, repository e classpath rendano disponibile il tipo e quale ruolo abbia invece l'import. Togli la dipendenza mantenendo l'import e osserva l'errore di compilazione. Ripristina la dipendenza, elimina la dichiarazione del repository e ripeti la build; se una cache o configurazione esterna impedisce di riprodurre l'errore, annotalo e spiega il ruolo che il repository avrebbe nella risoluzione. Ripristina infine il progetto funzionante.
+Gli esercizi 2–4 estendono il progetto dell'esercizio 1. Puoi scegliere un prefisso di package, mantenendolo coerente in dichiarazioni, cartelle e import.
+
+1. **Progetto per le iscrizioni.** Realizza `Student` con matricola e nome immutabili, `Course` con titolo e capienza positiva, `EnrollmentService` che conserva un corso e i suoi iscritti. `boolean enroll(Student student)` rifiuta matricole duplicate o corso pieno; `List<Student> getEnrolled()` restituisce una copia. Richiedi oggetti e testi non nulli, testi non blank e capienza positiva; dati invalidi → `IllegalArgumentException`.
+
+   Un `ConsoleMenu` riceve il servizio e offre iscrizione, elenco e uscita; `Main` costruisce e collega gli oggetti. Organizza modello, servizio e interazione in package con responsabilità riconoscibili. Compila ed esegui: con due posti verifica A, duplicato di A, B e C, con esiti successo, rifiuto, successo, rifiuto. Consegna albero dei sorgenti e grafo delle dipendenze fra package.
+
+2. **Validazione interna al package.** Nel package del modello raccogli il controllo dei testi di `Student` e `Course` in `TextValidator`, classe package-private con metodo statico. Mantieni pubblici i costruttori dei due tipi e il loro comportamento.
+
+   Da `Main`, in un altro package, verifica che un dato blank venga rifiutato attraverso il costruttore. Prova separatamente una chiamata diretta a `TextValidator`: deve essere rifiutata in compilazione. Spiega quali tipi fanno parte dell'API del modello e quali sono dettagli interni. Il modello non deve leggere dalla console né stampare messaggi.
+
+3. **Iscrizioni a più corsi.** Estendi il progetto a più corsi, aggiungendo un codice immutabile a `Course`. Ogni coppia matricola/codice corso deve essere iscritta al massimo una volta e ogni corso mantiene la sua capienza.
+
+   Rappresenta l'associazione con `Enrollment`, che conserva studente e corso, e affidane la gestione a `EnrollmentRegistry`: `boolean enroll(Student student, Course course)` rifiuta duplicati e corso pieno, `List<Course> coursesFor(String studentId)` restituisce una nuova lista, vuota se non trova iscrizioni. Assumi argomenti validi e codici che identifichino univocamente ciascun corso; non occorre un archivio separato. Conserva il collegamento in un solo punto: `Student` e `Course` non devono dipendere dal registro o contenere elenchi reciproci. Prova uno studente in due corsi, un duplicato e un corso pieno; disegna il grafo dei package e mostra dove vengono controllati i vincoli.
+
+4. **Build riproducibile con Gradle.** Porta il progetto in una struttura Gradle con wrapper, `settings.gradle`, `build.gradle` e sorgenti sotto `src/main/java`, usando la configurazione del capitolo. Da una cartella di progetto priva di risultati precedenti esegui `classes`, `test` e `build` tramite wrapper.
+
+   Annota quali task eseguono lavoro, quali sono aggiornati e quali non trovano sorgenti di test. Individua classi compilate e JAR e controlla che i package siano conservati. Modifica un messaggio del menu nei sorgenti, ricostruisci e verifica la modifica. Spiega quali file vanno conservati con il progetto e quali vengono rigenerati.
+
+5. **Libreria esterna e import.** In una copia del progetto aggiungi la dipendenza Jackson indicata nel capitolo e una classe che costruisca un `ObjectMapper` usando gli import corrispondenti. Verifica che la compilazione riesca.
+
+   Togli la dipendenza e ripeti la compilazione lasciando l'import; poi ripristina la dipendenza e usa il nome completo del tipo al posto dell'import. Confronta i risultati. Spiega il ruolo distinto di coordinate della dipendenza, repository, classpath e import. Consegna infine una versione compilabile del progetto; non occorre anticipare la serializzazione JSON.
 
 ---
 
@@ -7389,12 +7649,25 @@ Per procedere con controllo:
 
 ### Esercizi
 
-1. **Responsabilità di un gestore ordini.** Un negozio usa una sola `OrderManager` per cinque compiti: leggere dalla console codice prodotto e quantità, calcolare prezzo × quantità, applicare uno sconto del 10% per subtotali almeno di 100 euro, salvare codice/quantità/totale in un elenco in memoria e stampare la ricevuta. Assumi quantità positiva e prodotto esistente. Descrivi prima il flusso in questa classe, poi proponi una divisione in oggetti con responsabilità coerenti e disegna le dipendenze. Mostra dove cambierebbe il codice per sostituire la console con una GUI o la memoria con un file. Non è richiesta una classe per ciascuna operazione elementare.
-2. **Estendere le politiche di spedizione.** Scrivi un calcolatore che usa uno `switch` su `"STANDARD"`, `"EXPRESS"`, `"PICKUP"`: costi rispettivamente 5, 10 e 0 euro per qualsiasi ordine. Rifattorizzalo con un'interfaccia di politica e implementazioni sostituibili, poi aggiungi `"SAME_DAY"` al costo di 15 euro. Il servizio che calcola il totale deve ricevere la politica e non contenere lo `switch`; la configurazione può conservarne uno per scegliere l'implementazione. Verifica lo stesso ordine con tutte le politiche e indica quale parte cambia quando ne aggiungi una.
-3. **Sottotipi e contratto dei prelievi.** Un `WithdrawableAccount` promette che `withdraw(int amount)` accetta ogni importo positivo non superiore al saldo in centesimi, senza altri vincoli. Valuta due sottotipi: il primo rifiuta importi sotto 2000 centesimi, il secondo rifiuta il secondo prelievo della stessa giornata. Per ciascuno costruisci una sequenza valida secondo il contratto base ma rifiutata dal sottotipo e spiega la violazione di LSP. Proponi un modello in cui questi conti non siano esposti attraverso quel contratto oppure un nuovo contratto che dichiari esplicitamente la possibilità e le ragioni del rifiuto.
-4. **Interfacce secondo le esigenze dei client.** Un'interfaccia `OfficeMachine` offre `print`, `scan`, `fax` e `bind`. Un client stampa documenti, uno digitalizza pagine, uno produce fascicoli stampando e rilegando; nessuno dei tre usa il fax. Definisci le capacità separate e fai dipendere ciascun client soltanto da quelle necessarie. Implementa una stampante semplice e un dispositivo che stampa, scansiona e rilega; non servono funzioni reali, basta una simulazione su console. Mostra quali dispositivi possono essere passati a ciascun client senza metodi vuoti o eccezioni «operazione non supportata».
-5. **Dipendenze di un servizio di report.** Un `ReportService` deve salvare un report testuale e inviarlo a un destinatario, ma nella prima versione costruisce direttamente un `FileReportRepository` e un `EmailSender`. Definisci `ReportRepository` con `save(String report)` e `ReportSender` con `send(String recipient, String report)`. Riscrivi il servizio ricevendo entrambe le dipendenze dal costruttore. Per verificare il flusso usa un repository in memoria che conserva l'ultimo report e un sender che stampa; non è richiesta una connessione email o una scrittura su file. Indica dove è invertita la dipendenza e dove sono iniettati i collaboratori.
-6. Scegli una classe già realizzata nella dispensa e individua un problema concreto di coesione, accoppiamento o incapsulamento. Proponi un solo refactoring alla volta, specifica quale comportamento deve restare invariato e confronta il costo della modifica con il beneficio: è ammesso concludere che non conviene applicare un principio.
+1. **Responsabilità di un gestore ordini.** Un negozio riceve codice prodotto e quantità dalla console, recupera il prezzo da un catalogo in memoria, applica il 10% di sconto quando il subtotale raggiunge 10000 centesimi, conserva l'ordine e stampa una ricevuta. Un'unica `OrderManager` svolge tutto il lavoro.
+
+   Proponi una divisione in oggetti e realizza una versione minima con prodotti e ordini in memoria. Assumi prodotti esistenti, quantità positive e prezzi multipli di 10 centesimi. Verifica 4 unità da 2500 → subtotale 10000, sconto 1000, totale 9000; 3 unità → totale 7500. Disegna le dipendenze e indica quali classi cambierebbero sostituendo console con GUI o memoria con file. Motiva le responsabilità senza assegnare automaticamente una classe a ogni riga di calcolo.
+
+2. **Nuove politiche di spedizione.** Un servizio somma al subtotale un costo scelto con uno `switch` su STANDARD, EXPRESS e PICKUP: rispettivamente 500, 1000 e 0 centesimi.
+
+   Scrivi questa versione e rifattorizzala introducendo una politica ricevuta dall'esterno. Aggiungi SAME_DAY da 1500 centesimi senza modificare il servizio. Per subtotale 2000 verifica totali 2500, 3000, 2000, 3500. Confronta i punti modificati prima e dopo: la configurazione deve comunque scegliere una politica. Spiega quale variazione il progetto rende più semplice e quale costo aggiunge.
+
+3. **Sottotipi e contratto dei prelievi.** `WithdrawableAccount.withdraw(int amount)` promette di riuscire per ogni importo positivo non superiore al saldo. Un sottotipo rifiuta importi sotto 2000 centesimi; un altro ammette un solo prelievo al giorno.
+
+   Per ciascuno costruisci un client che rispetti il contratto base ma ottenga un rifiuto. Spiega la violazione di sostituibilità e proponi un contratto diverso che ammetta esplicitamente tali limiti, oppure separa questi conti dalla gerarchia. Descrivi come il client possa conoscere e gestire l'esito senza dover identificare la classe concreta.
+
+4. **Interfacce richieste dai client.** Un'interfaccia `OfficeMachine` espone stampa, scansione, fax e rilegatura. Devi servire tre client: stampa di documenti, digitalizzazione di pagine e produzione di fascicoli tramite stampa e rilegatura.
+
+   Definisci interfacce di capacità con firme complete e implementa una stampante semplice e un dispositivo che stampi, scansioni e rileghi. Le operazioni possono stampare messaggi. Fai ricevere a ogni client soltanto le capacità necessarie; specifica se quello dei fascicoli riceva due collaboratori o un'interfaccia che combini le due capacità. Mostra combinazioni valide e un tentativo rifiutato dal compilatore, senza metodi vuoti per funzioni non supportate.
+
+5. **Dipendenze di un servizio di report.** `ReportService` deve salvare un testo e inviarlo a un destinatario. Nella versione iniziale costruisce direttamente collaboratori concreti per file ed email.
+
+   Definisci `ReportRepository.save(String report)` e `ReportSender.send(String recipient, String report)` e fai ricevere entrambe le dipendenze al servizio. Realizza un repository in memoria e un sender che registri gli invii, senza accessi esterni. Assumi argomenti validi e operazioni riuscite; richiedi salvataggio seguito da un solo invio dello stesso testo. Dimostra il flusso e disegna direzione delle dipendenze e punto di costruzione degli oggetti.
 
 ---
 
@@ -7663,12 +7936,31 @@ Il test che ha riprodotto il difetto va conservato: da quel momento controllerà
 
 ### Esercizi
 
-1. **Test della carta regalo.** Riprendi `GiftCard` dagli esercizi sull'incapsulamento, con saldo in centesimi, `topUp` e `pay` che restituiscono booleani. Scrivi test JUnit preceduti da una tabella di casi e risultati attesi. Da saldo 1000 prova separatamente pagamenti di 999, 1000, 1001, 0 e -1; verifica esito e saldo finale. Aggiungi ricarica positiva, zero e negativa. Ogni test deve creare la propria carta e preparare il saldo senza dipendere dai test precedenti.
-2. **Test del catalogo.** Usa `BookCatalog` nella versione completa mostrata nel capitolo sulle collezioni standard, senza richiedere ordine di iterazione. Verifica aggiunta e ricerca di un libro, ISBN duplicato con `IllegalArgumentException` senza sostituzione, ricerca assente con `NoSuchElementException` e indipendenza della lista restituita da `getAll()`. Per quest'ultima prova svuota la copia e controlla che il catalogo conservi il libro. Organizza i test JUnit in Arrange, Act, Assert e usa nomi che descrivano condizione ed esito.
-3. Per `SimpleLinkedList`, costruisci test sulle transizioni vuota → un elemento → più elementi → un elemento → vuota. Quando un'operazione deve fallire, verifica tipo di eccezione e stato rimasto invariato; evita di concentrare l'intera sequenza in un solo test difficile da diagnosticare.
-4. **Testare l'invio di un promemoria.** Estendi `ReminderService` del capitolo con `remindIfOverdue(String recipient, Book book, LocalDate dueDate, LocalDate today)`. Il prestito è scaduto soltanto quando `today` è successiva a `dueDate`; quel giorno stesso non è ancora scaduto. Gli argomenti sono validi e forniti dal chiamante, senza leggere la data corrente. Il messaggio deve restare `"Restituisci: "` seguito dal titolo. Estendi `FakeMessageSender` con un contatore di invii e verifica destinatario, testo e una sola chiamata per un prestito scaduto; per scadenza odierna e futura non deve esserci alcuna chiamata. Usa un fake nuovo in ogni test.
-5. **Una scadenza deterministica.** Crea `ReservationExpiry` con `isExpired(LocalDate createdOn)`: una prenotazione è scaduta dalla data `createdOn.plusDays(7)`, inclusa. Scrivi una prima versione che usa `LocalDate.now()` e un test con data di creazione fissa, poi spiega perché quel test può cambiare esito col tempo. Fai ricevere un `Clock` al servizio e usa `LocalDate.now(clock)`. Con creazione 1 marzo 2026, verifica tramite orologi fissi il 7 marzo (non scaduta), l'8 e il 9 marzo (scaduta). Usa lo stesso fuso UTC in tutte le prove.
-6. **Dal difetto alla regressione.** Riprendi il `Thermostat` difettoso fornito negli esercizi su classi e oggetti. Scrivi un test che crea un termostato a 20 gradi, chiama `increase()` e si aspetta 21: deve fallire con quella versione. Usa il debugger per osservare campo e variabile locale prima e dopo l'incremento, formula la causa e correggi il metodo. Conserva il test e aggiungi il controllo che un secondo termostato non venga modificato. Se scegli un altro difetto, fornisci nel lavoro consegnato codice iniziale, input riproducibile ed esito atteso.
+Usa JUnit Jupiter e test indipendenti. Ogni test prepara il proprio stato e verifica risultati osservabili; i messaggi stampati manualmente non sostituiscono le asserzioni.
+
+1. **Casi limite della carta regalo.** Usa `GiftCard` della sezione «Incapsulamento e invarianti». Prepara una tabella con stato iniziale, operazione, esito e saldo finale, poi traducila in test.
+
+   Da saldo 1000 prova separatamente pagamenti di 999, 1000, 1001, 0 e -1. Aggiungi ricariche positiva, zero e negativa e una sequenza ricarica → pagamento → pagamento rifiutato. Ogni rifiuto deve preservare il saldo. Il saldo iniziale va preparato tramite l'API pubblica, senza dipendere dall'ordine di esecuzione dei test.
+
+2. **Contratto del catalogo.** Usa la versione completa di `BookCatalog` mostrata nella teoria sulle collezioni standard, prima delle estensioni degli esercizi. Verifica aggiunta e ricerca, ISBN duplicato con `IllegalArgumentException`, ricerca assente con `NoSuchElementException`, rimozione riuscita e rimozione assente.
+
+   Per il duplicato controlla anche che il libro originale non venga sostituito. Svuota il risultato di `getAll()` e verifica che il catalogo conservi i libri. Non fare assunzioni sull'ordine. Organizza i test in Arrange, Act, Assert e usa nomi che descrivano condizione ed esito.
+
+3. **Transizioni della lista concatenata.** Prepara test per `SimpleLinkedList` del capitolo sulle strutture dati: lista vuota, un elemento, più elementi, rimozione dell'unico elemento e nuovo inserimento dopo lo svuotamento.
+
+   Copri `addFirst`, `addLast`, `removeFirst`, `remove`, `get` e `reverse`, rispettando firme ed eccezioni della classe. Verifica contenuto e dimensione e includi un elemento nullo. Per gli indici invalidi controlla eccezione e stato invariato. Distribuisci gli scenari in test diagnosticabili: un solo test con molte operazioni non deve essere l'unica verifica della struttura.
+
+4. **Promemoria senza invii reali.** Estendi `ReminderService` del capitolo con `remindIfOverdue(String recipient, Book book, LocalDate dueDate, LocalDate today)`. Il prestito è scaduto soltanto se `today` è successiva alla scadenza. Assumi argomenti validi e usa date fornite dal chiamante.
+
+   Estendi `FakeMessageSender` con un contatore e verifica: scadenza ieri → un invio al destinatario giusto con testo `"Restituisci: "` seguito dal titolo; scadenza oggi o domani → nessun invio. Ogni test usa un fake nuovo. Spiega quale comportamento puoi controllare senza rete e quali aspetti dell'invio reale restano fuori dal test unitario.
+
+5. **Scadenza indipendente dal giorno del test.** Crea `ReservationExpiry` che riceva un `Clock` e offra `isExpired(LocalDate createdOn)`. Una prenotazione scade dalla data `createdOn.plusDays(7)`, inclusa; il servizio legge oggi tramite `LocalDate.now(clock)`.
+
+   Con creazione 1 marzo 2026 usa orologi fissi UTC per verificare 7 marzo → non scaduta; 8 e 9 marzo → scaduta. Spiega perché un test con data di creazione fissa e orologio reale potrebbe cambiare esito nel tempo e indica come costruire il servizio per l'uso normale dell'applicazione.
+
+6. **Dal difetto al test di regressione.** Riprendi la versione difettosa di `Thermostat` conservata nell'esercizio «Riparare un termostato». Scrivi un test che parta da 20, chiami `increase()` e richieda 21; verifica che fallisca prima della correzione.
+
+   Usa un breakpoint nel metodo per osservare campo e variabile locale e formula la causa prima di modificare il codice. Correggi, riesegui e conserva il test. Aggiungi una prova con due incrementi e una con due termostati indipendenti. Consegna codice iniziale, correzione ed esito delle prove, rendendo riproducibile il difetto.
 
 ---
 
@@ -7923,12 +8215,29 @@ Possono comparire nello stesso progetto, ma non formano una struttura obbligator
 
 ### Esercizi
 
-1. **Strategy per la spedizione.** Definisci `ShippingPolicy` con `int costInCents(int subtotalInCents, double weightKg)` e un servizio che la riceve dal costruttore. Implementa tariffa fissa di 500 centesimi, tariffa di 500 gratuita per subtotale almeno 10000, e tariffa di 200 centesimi per kg arrotondata al centesimo più vicino. Assumi subtotale non negativo e peso positivo. Per subtotale 12000 e peso 3 verifica costi 500, 0 e 600. Aggiungi tramite lambda una quarta tariffa express fissa di 1000 senza cambiare il servizio.
-2. **Factory di notificatori.** Definisci `Notifier` con `send(String recipient, String message)` e tre implementazioni che simulano email, SMS e console stampando il canale e i dati. Scrivi una factory che riceve esattamente `"email"`, `"sms"` o `"console"` e restituisce il notificatore corrispondente; un valore nullo o diverso produce `IllegalArgumentException`. Il chiamante usa soltanto l'interfaccia. Testa tutti i valori e spiega perché questa factory concentra la costruzione senza essere il pattern Factory Method.
-3. **Observer dello stato di consegna.** Crea `Delivery` con stato iniziale `PREPARING` e stati successivi `IN_TRANSIT`, `DELIVERED`. Permetti solo queste transizioni in avanti; quelle non valide non cambiano lo stato e non notificano. Gli osservatori ricevono il nuovo stato, possono essere registrati e rimossi e vengono chiamati nell'ordine di registrazione. La doppia registrazione della stessa istanza è ignorata; rimuovere un'istanza assente non ha effetto. Registra A e B, cambia stato, rimuovi A, cambia ancora: A deve ricevere una notifica e B due. Prova anche senza osservatori. Non è richiesta la modifica delle registrazioni durante una notifica.
-4. **Due repository, un contratto.** Crea un `Product` immutabile con codice e nome e `ProductRepository` con `add(Product product)`, `Optional<Product> findByCode(String code)` e `boolean removeByCode(String code)`. Codici nulli o blank e prodotti nulli producono `IllegalArgumentException`; l'aggiunta di un codice esistente è rifiutata con la stessa eccezione senza sostituzione. La ricerca assente restituisce `Optional.empty()` e la rimozione assente `false`. Implementa una versione con lista e una con mappa. Esegui lo stesso insieme di test di contratto su entrambe, includendo ricerca e stato dopo un duplicato rifiutato.
-5. **Preventivo con Strategy e Repository.** Crea un prodotto con codice e prezzo in centesimi, un repository che lo cerchi per codice e una `DiscountPolicy` che restituisca lo sconto in centesimi sul prezzo ricevuto. `QuoteService.quote(String code)` recupera il prodotto, applica la politica e restituisce prezzo meno sconto; per codice assente lancia `NoSuchElementException`. Assumi politiche che producano sconti fra zero e prezzo. Disegna la sequenza e usa fake per verificare codice cercato e prezzo passato alla politica. Con prezzo 2000 e sconto 200 il risultato deve essere 1800; se il prodotto manca, la politica non deve essere chiamata.
-6. **Valutare il costo di un pattern.** Un programma locale contiene una lista di prodotti nel `main()`, un'unica tariffa fissa di spedizione e una ricevuta stampata su console. Non ci sono altre destinazioni o modalità di salvataggio. Per Strategy, factory, Observer e Repository proponi un requisito futuro concreto che ne giustificherebbe l'introduzione. Per il programma attuale confronta la soluzione diretta con le classi e dipendenze aggiuntive richieste da ciascun pattern; è ammesso motivare perché non introdurlo. Non è richiesta l'implementazione di quattro pattern senza un'esigenza.
+1. **Strategy per la spedizione.** Definisci `ShippingPolicy` con `int costInCents(int subtotalInCents, double weightKg)` e un servizio che riceva la politica dal costruttore e calcoli subtotale più spedizione. Assumi subtotale non negativo, peso positivo e importi piccoli.
+
+   Implementa tariffa fissa di 500 centesimi, tariffa di 500 gratuita da 10000 centesimi di subtotale e tariffa di 200 centesimi/kg arrotondata al centesimo più vicino. Con subtotale 12000 e peso 3 verifica costi 500, 0, 600. Prova la soglia gratuita a 9999 e 10000 e un peso frazionario. Aggiungi tramite lambda una tariffa express fissa di 1000 e verifica il servizio senza modificarlo.
+
+2. **Factory di notificatori.** Definisci `Notifier` con `void send(String recipient, String message)` e tre implementazioni che simulino email, SMS e console. Ognuna rende riconoscibili canale, destinatario e testo; non effettua invii reali.
+
+   Scrivi una factory con `Notifier create(String channel)` che accetti esattamente `"email"`, `"sms"`, `"console"`; altro testo o `null` → `IllegalArgumentException`. Nel chiamante fai scegliere il canale e usa soltanto l'interfaccia per inviare. Verifica tutti i canali e gli errori. Indica quali decisioni di costruzione vengono concentrate e distingui questa factory dal pattern Factory Method.
+
+3. **Observer di una consegna.** Crea `Delivery` con stati `PREPARING`, `IN_TRANSIT`, `DELIVERED`, inizialmente nel primo. `boolean advanceTo(DeliveryStatus next)` ammette soltanto il passaggio allo stato immediatamente successivo e notifica dopo la modifica. Un rifiuto restituisce `false`, non cambia stato e non notifica; anche `null` e stesso stato sono rifiuti.
+
+   Definisci l'interfaccia degli osservatori, registrazione e rimozione. Notifica nell'ordine di registrazione, ignora la doppia registrazione della stessa istanza e la rimozione di un'istanza assente; osservatore nullo → `IllegalArgumentException`. Assumi callback che non lancino eccezioni né cambino le registrazioni. Registra A e B, avanza, rimuovi A e avanza: A riceve una notifica e B due. Verifica anche salto di stato rifiutato e consegna senza osservatori.
+
+4. **Due repository con lo stesso contratto.** Crea `Product` immutabile con codice e nome non blank e `ProductRepository` con `void add(Product product)`, `Optional<Product> findByCode(String code)` e `boolean removeByCode(String code)`.
+
+   Prodotto nullo, codice nullo o blank e duplicato producono `IllegalArgumentException`; il duplicato non sostituisce. Ricerca assente → `Optional.empty()`, rimozione assente → `false`. Implementa una versione con lista e una con mappa. Esegui le stesse prove JUnit su entrambe, includendo dati originali dopo duplicato e ricerca dopo rimozione. Non introdurre assunzioni sull'ordine che il contratto non promette.
+
+5. **Preventivo con due collaboratori.** Crea `PricedProduct` con codice e prezzo non negativo in centesimi, `PricedProductRepository` con ricerca per codice tramite `Optional` e `DiscountPolicy` con `int discountFor(int priceInCents)`. Assumi codici validi e politiche che restituiscano uno sconto fra zero e prezzo.
+
+   `QuoteService`, che riceve entrambi i collaboratori, offre `int quote(String code)`: prodotto assente → `NoSuchElementException`, altrimenti prezzo meno sconto. Con fake verifica codice cercato, prezzo passato alla politica e risultato 1800 da prezzo 2000 e sconto 200. Se manca il prodotto la politica non deve essere chiamata. Disegna la sequenza e motiva perché il prodotto usato qui ha un contratto diverso da quello dell'esercizio precedente.
+
+6. **Quando introdurre un pattern.** Un programma locale conserva pochi prodotti in una lista, applica una sola tariffa di spedizione e stampa la ricevuta su console. Non sono previste altre destinazioni o modalità di archiviazione.
+
+   Scegli due pattern del capitolo e, per ciascuno, proponi una modifica concreta dei requisiti che ne giustifichi l'uso. Confronta soluzione diretta e soluzione con pattern indicando classi aggiunte, dipendenze e modifica resa più semplice. Concludi se lo introdurresti nella versione attuale e motiva la decisione. Non serve implementare infrastruttura per requisiti ancora assenti.
 
 ---
 
@@ -8245,12 +8554,31 @@ Salvare dati in JSON significa scrivere e rileggere un file di testo. Questo met
 
 ### Esercizi
 
-1. **Formato JSON di una rubrica.** Definisci `ContactData(String name, String email, String phone, boolean favorite)` e `AddressBookData(String owner, List<ContactData> contacts)`. `phone` è facoltativo e, quando manca, è rappresentato da `null`; gli altri testi devono essere non nulli e non blank. Scrivi prima un documento JSON con un proprietario e tre contatti, uno senza telefono, poi i record Java corrispondenti. La lista dei contatti può essere vuota e va protetta con copia difensiva; il caso in cui la proprietà manca sarà affrontato nell'esercizio 5. Spiega la corrispondenza fra record, oggetti JSON, lista, array e valori primitivi.
-2. **Round trip della rubrica.** Usa i record dell'esercizio 1: costruisci una rubrica, serializzala in una stringa JSON con Jackson e ricostruiscila con `readValue()`. Confronta i dati tramite l'uguaglianza dei record, senza aspettarti gli stessi riferimenti. Inserisci un nome accentato, un nome contenente virgolette e un telefono `null`. Il contenuto deve essere conservato e gli escape devono essere prodotti dalla libreria.
-3. **File della rubrica.** Crea `ContactFile` con `ObjectMapper` e `Path` ricevuti dal costruttore e metodi `save(AddressBookData data)` e `AddressBookData load()` che propagano `IOException`. Usa il formato dell'esercizio 1 e fai passare tutte le letture e scritture da questa classe. Nel chiamante distingui file assente, contenuto JSON non leggibile da Jackson e altri errori di I/O, ordinando i `catch` dal caso più specifico al più generale. Verifica prima il salvataggio e la rilettura riusciti, poi un percorso inesistente e un file con una parentesi mancante.
-4. **Sintassi e struttura dei dati.** Parti da una rubrica JSON valida dell'esercizio 1 e crea tre copie, modificando un solo elemento in ciascuna: sostituisci l'array `contacts` con il numero `7`; sostituisci il booleano `favorite` di un contatto con l'oggetto `{ "value": true }`; elimina una parentesi di chiusura. Per ogni file prevedi se il problema riguarda sintassi JSON o conversione verso i record, poi prova la lettura e annota l'eccezione effettiva. Non usare una stringa numerica come errore garantito: le conversioni automatiche possono accettarla.
-5. **Proprietà assente e array vuoto.** Completa la validazione di `AddressBookData`: per questo formato `contacts` assente o esplicitamente `null` è un errore, mentre `contacts: []` è una rubrica valida senza contatti. Centralizza il vincolo nel costruttore compatto del record, insieme alla copia difensiva, così vale anche per oggetti creati direttamente in Java. Prepara tre documenti per i tre casi e verifica gli esiti. Quando Jackson segnala l'errore, esamina anche la causa che avvolge l'errore di validazione.
-6. **Più rubriche e versione del formato.** Definisci `AddressBooksData(int version, List<AddressBookData> addressBooks)`. La versione supportata è soltanto 1 e la lista deve essere non nulla, senza elementi nulli e protetta con una copia. Salva e rileggi un contenitore con due rubriche usando il tipo del record in `readValue()`, senza una deserializzazione diretta in `List` raw. Prova anche lista vuota e versione 2, che deve essere rifiutata dal costruttore del contenitore.
+Gli esercizi costruiscono progressivamente il salvataggio di una rubrica. Usa la versione di Jackson e gli import indicati nel capitolo; conserva esempi di file validi e invalidi in percorsi distinti.
+
+1. **Definire il formato della rubrica.** Crea `ContactData(String name, String email, String phone, boolean favorite)` e `AddressBookData(String owner, List<ContactData> contacts)`. Nome, email e proprietario devono essere non nulli e non blank; per questa rubrica non è richiesta un'ulteriore validazione dell'email. Il telefono è facoltativo: può essere `null`, altrimenti deve essere non blank.
+
+   La lista deve essere non nulla, priva di elementi nulli e conservata con copia difensiva non modificabile; può essere vuota. Proteggi i vincoli nei costruttori dei record, con `IllegalArgumentException` per dati invalidi. Scrivi a mano un JSON con un proprietario e tre contatti, uno con telefono `null`, e indica la corrispondenza fra ogni valore JSON e il tipo Java. Verifica anche la costruzione diretta di una rubrica vuota e il rifiuto di un contatto invalido.
+
+2. **Andata e ritorno in memoria.** Costruisci una rubrica con i record dell'esercizio 1, serializzala in una stringa JSON e rileggila con Jackson usando `AddressBookData.class`. Usa un nome accentato, un nome con virgolette, un telefono nullo e valori diversi di `favorite`.
+
+   Verifica l'uguaglianza dei record dopo la lettura e l'indipendenza dei riferimenti della rubrica e della lista. Lascia produrre gli escape alla libreria. Prova anche una lista vuota. Il controllo deve confrontare i dati, senza dipendere da spaziatura o ordine testuale delle proprietà nel JSON.
+
+3. **Salvataggio su file.** Crea `ContactFile`, che riceve `ObjectMapper` e `Path` dal costruttore, con `save(AddressBookData data)` e `AddressBookData load()`. Fai passare da questa classe le letture e scritture della rubrica.
+
+   Usa `Files.newBufferedReader()` e `Files.newBufferedWriter()` in try-with-resources e passa lettore o scrittore a Jackson. Il percorso deve avere una cartella già esistente; il salvataggio sostituisce il contenuto del solo file indicato. Lascia propagare gli errori di I/O e di conversione al chiamante, che mostra un messaggio senza presentare dati non caricati come una rubrica vuota. Verifica salvataggio e rilettura, file assente e JSON con parentesi mancante. Annota classe e causa delle eccezioni effettive della versione usata.
+
+4. **Sintassi, struttura e vincoli.** Parti da un JSON valido e prepara copie indipendenti con: parentesi finale mancante; `contacts` uguale al numero `7`; nome di un contatto blank; proprietà `contacts` assente; `contacts: null`; `contacts: []`.
+
+   Prima delle prove indica se il documento sia sintatticamente valido e se rappresenti una rubrica ammessa dal contratto dell'esercizio 1. Esegui le letture, confronta gli esiti e ispeziona anche la causa degli errori di costruzione dei record. L'array vuoto deve essere accettato, lista assente o nulla rifiutata. Evita di usare come errore certo una stringa numerica dove è atteso un numero, perché la libreria può applicare conversioni automatiche.
+
+5. **Separare dati salvati e stato dell'applicazione.** Crea `AddressBookSession` con rubrica corrente, percorso del file e flag di modifiche non salvate. Il JSON deve contenere soltanto `AddressBookData`; non deve conservare percorso o flag.
+
+   Una modifica dei contatti sostituisce il record e imposta il flag; un salvataggio riuscito lo azzera, un salvataggio fallito lo lascia attivo. Dopo una lettura riuscita la sessione contiene i dati caricati e non ha modifiche pendenti. Dimostra modifica → salvataggio → lettura e una scrittura su percorso con cartella inesistente. Verifica il contenuto effettivo del JSON e che un fallimento non venga segnalato come successo.
+
+6. **Versione del formato.** Definisci `AddressBooksData(int version, List<AddressBookData> addressBooks)` per salvare più rubriche. La sola versione supportata è 1; la lista è non nulla, senza elementi nulli e protetta con copia difensiva. Dati invalidi → `IllegalArgumentException`.
+
+   Salva e rileggi due rubriche usando il tipo del record contenitore, poi prova lista vuota e versione 2. Quest'ultima deve essere rifiutata anche costruendo il record direttamente in Java. Spiega perché riconoscere una versione non equivale a implementare una migrazione e perché leggere una `List` raw perderebbe informazioni sul tipo degli elementi.
 
 ---
 
@@ -8708,10 +9036,23 @@ Per interfacce ridimensionabili conviene affidare posizione e dimensioni ai layo
 
 ### Esercizi
 
-1. **Preventivo di una tipografia.** Crea una finestra con campi per numero di copie e prezzo per copia in euro, una `CheckBox` **Rilegatura**, un pulsante **Calcola** e una label per risultato o errore. Il totale è copie × prezzo; la rilegatura aggiunge 2 euro per ciascuna copia. Sono ammesse copie intere positive e prezzo positivo, digitato con il punto decimale. La classe di calcolo è indipendente da JavaFX e rifiuta valori non validi con `IllegalArgumentException`; l'handler distingue campi vuoti, testo non numerico e valori non ammessi. Verifica 10 copie a 0.50 euro: totale 5 euro senza rilegatura e 25 con rilegatura, poi input zero e testo `abc`. Scrivi test della classe di calcolo e scegli un layout che separi dati, azione ed esito.
-2. **Convertitore di unità.** Crea una finestra con quantità, `ComboBox` per scegliere **km → miglia** oppure **kg → libbre**, pulsante **Converti** e risultato. Le formule sono `miglia = km / 1.609344` e `libbre = kg * 2.2046226218`; accetta quantità non negative. L'handler legge la scelta corrente e delega a una classe senza JavaFX. Distingui scelta assente, campo vuoto, testo non numerico e quantità negativa. Verifica 1.609344 km → circa 1 miglio e 1 kg → circa 2.2046 libbre.
-3. **Modulo di registrazione.** Realizza una schermata con nome, email, fascia d'età **meno di 18**, **18–64**, **65 o più**, accettazione delle condizioni e pulsante **Registra**. I `RadioButton` appartengono a un solo `ToggleGroup`. Al clic richiedi nome non blank, email con una sola `@` e testo prima e dopo, una fascia scelta e condizioni accettate. Questa è una validazione didattica dell'email. Mostra un riepilogo solo se l'intero modulo è valido, altrimenti indica i dati da correggere. Disegna prima la disposizione e motiva l'uso dei layout. Verifica modulo valido, fascia assente e condizioni non accettate.
-4. **Azzeramento e chiusura della finestra.** Estendi il preventivo dell'esercizio 1 con **Azzera**, che svuota input e messaggi e deseleziona la rilegatura. Conta soltanto i calcoli riusciti; azzerare non cancella il conteggio della sessione. In `stop()` stampa quel conteggio sulla console. Usa messaggi temporanei per osservare costruzione della finestra, clic e chiusura. Con due calcoli validi, un input errato e un azzeramento, alla chiusura il conteggio deve essere 2.
+Per gli input numerici usa il punto decimale e rifiuta valori non finiti, oltre ai vincoli delle singole consegne. Mantieni calcoli e validazione dei valori in classi indipendenti da JavaFX; gli handler gestiscono lettura, conversione del testo e messaggi. Per i risultati in euro mostra due cifre decimali.
+
+1. **Preventivo di una copisteria.** Crea una finestra con numero di copie, prezzo per copia, opzione **Rilegatura**, pulsante **Calcola** ed esito. La rilegatura aggiunge 2 euro per copia; totale = copie × (prezzo + eventuale rilegatura).
+
+   Sono ammesse copie intere positive e prezzo positivo. La classe `PrintQuoteCalculator` offre `double calculate(int copies, double unitPrice, boolean binding)` e rifiuta valori invalidi con `IllegalArgumentException`. L'interfaccia distingue campi vuoti, formato non numerico e valori non ammessi, eliminando eventuali risultati precedenti quando segnala un errore. Verifica 10 copie a 0.50 → 5 euro senza rilegatura e 25 con rilegatura; prova zero, negativo e `abc`. Scrivi test della classe di calcolo e scegli un layout leggibile anche ridimensionando la finestra.
+
+2. **Convertitore di unità.** Realizza quantità, scelta **km → miglia** oppure **kg → libbre**, **Converti** e risultato con unità. Usa `miglia = km / 1.609344` e `libbre = kg * 2.2046226218`; sono ammesse quantità non negative.
+
+   Non selezionare inizialmente un'unità: il clic senza scelta deve produrre un messaggio. Gestisci inoltre campo vuoto, formato errato e valore negativo. Delega le formule a una classe senza JavaFX. Verifica 1.609344 km → circa 1 miglio, 1 kg → circa 2.2046 libbre e zero in entrambe le modalità. Un errore non deve lasciare visibile un vecchio risultato come se fosse corrente.
+
+3. **Iscrizione a un evento.** Crea un modulo con nome, email, tre fasce d'età (**meno di 18**, **18–64**, **65 o più**), accettazione delle condizioni e **Registra**. Usa un unico `ToggleGroup` per le fasce.
+
+   Richiedi nome non blank, email con una sola `@` e testo prima e dopo, fascia selezionata e condizioni accettate. La verifica dell'email è limitata a questa regola didattica. In caso di errore indica i campi da correggere; con modulo valido mostra un riepilogo senza cancellare i dati inseriti. Prova modulo valido, nome blank, fascia assente e condizioni non accettate. Consegna uno schizzo del layout e motiva i contenitori usati.
+
+4. **Gestire una sessione di preventivi.** Estendi la copisteria dell'esercizio 1 con **Azzera**, che svuota campi ed esiti e deseleziona la rilegatura. Conserva un conteggio dei soli calcoli riusciti e mostralo in una label; l'azzeramento del modulo non lo cancella.
+
+   Aggiorna il conteggio soltanto dopo un calcolo valido. In `stop()` stampalo sulla console. Prova due calcoli riusciti, un input errato e un azzeramento: il conteggio deve rimanere 2 anche alla chiusura. Individua quali dati appartengono al modulo corrente e quali all'intera sessione dell'applicazione.
 
 ## Proprietà osservabili e binding
 
@@ -9078,11 +9419,25 @@ Anche questo esempio si prova sostituendo il contenuto di `Main.java`; il `build
 
 ### Esercizi
 
-1. **Password e conferma.** Crea due `PasswordField`, per password e conferma, una label dei requisiti, un pulsante **Conferma** e un'area di esito. Un listener sulla password aggiorna lunghezza e presenza di una cifra; una password accettabile ha almeno 8 caratteri e almeno una cifra. Usa un binding per disabilitare il pulsante quando almeno un campo è vuoto. Al clic controlla i requisiti e la corrispondenza dei due valori. Verifica campo vuoto, password debole, conferma diversa e password valida. Spiega la differenza fra aggiornare un messaggio tramite listener e mantenere una condizione tramite binding.
-2. **Volume osservabile.** Crea uno `Slider` da 0 a 100 inizialmente a 50, una label del valore arrotondato all'intero e **Muto**, che imposta lo slider a zero. Collega la label allo slider con un binding. Un listener stampa `"Volume alto"` soltanto quando il valore passa da minore di 80 a maggiore o uguale a 80, senza ripetere il messaggio per cambiamenti che restano sopra soglia. Verifica 50 → 85 → 90 → 70 → 80 e poi **Muto**: la label segue tutti i cambiamenti e il messaggio compare due volte.
-3. **Elenco di attività aggiornato dalla lista.** Crea `TaskRow(String title)` e un editor con campo titolo, **Aggiungi**, **Rimuovi** e `ListView<TaskRow>` collegata a una `ObservableList<TaskRow>`. Elimina gli spazi iniziali e finali dal titolo; rifiuta testo vuoto e duplicati ignorando maiuscole e minuscole. Mostra nella lista il titolo dell'attività. La rimozione agisce soltanto sull'elemento selezionato; senza selezione mostra un messaggio. Verifica che `" Studiare "` e `"studiare"` non creino due righe e che aggiunta e rimozione aggiornino il controllo modificando la lista.
-4. **Aggiornare la tabella dei libri.** Riprendi la `TableView<BookRow>` del capitolo. Aggiungi campi per titolo, autore e copie, **Aggiungi**, **Rimuovi** e **Aggiorna copie**. Richiedi titolo e autore non blank e copie intere non negative; rimozione e aggiornamento richiedono una selezione. Poiché `BookRow` è immutabile, aggiorna le copie sostituendo il record alla posizione selezionata con `ObservableList.set()`, conservando titolo e autore. Verifica inserimento, modifica da 3 a 0 copie e rimozione, senza ricreare la tabella, e gestisci selezione assente e quantità invalida.
-5. **Due viste dello stesso nome.** Simula un pannello con due sezioni, **Profilo** e **Intestazione**, ciascuna con un campo modificabile che rappresenta lo stesso nome visualizzato. Collega le due proprietà testo bidirezionalmente: scrivere in una sezione deve aggiornare l'altra. Aggiungi una label di anteprima in maiuscolo derivata con binding unidirezionale o listener. Verifica la modifica da entrambi i campi e spiega perché l'anteprima è un valore derivato, non una terza sorgente modificabile.
+1. **Riepilogo di un acquisto con binding.** Crea uno `Spinner<Integer>` per quantità da 1 a 20 e una `CheckBox` **Confezione regalo**. Il prezzo è 5 euro per pezzo e la confezione aggiunge 2 euro all'intero acquisto.
+
+   Collega una label del totale alle proprietà dei controlli con un binding; non aggiungere un pulsante di calcolo. Verifica quantità 1 → 5 euro, 3 → 15 e 3 con confezione → 17. Cambiare una qualunque scelta deve aggiornare subito il totale. Spiega quali sono le sorgenti e quale la proprietà derivata.
+
+2. **Volume e attraversamento di una soglia.** Crea `Slider` da 0 a 100 inizialmente a 50, label del valore arrotondato e pulsante **Muto** che imposti zero. Collega la label tramite binding.
+
+   Un listener segnala «Volume alto» soltanto passando da un valore sotto 80 a uno almeno pari a 80. La sequenza 50 → 85 → 90 → 70 → 80 deve produrre due segnalazioni; **Muto** deve aggiornare la label senza segnalazione. Esegui anche modifiche da codice per verificare che il comportamento dipenda dalle proprietà e non soltanto dagli eventi del mouse.
+
+3. **Elenco di attività.** Crea un editor con campo titolo, **Aggiungi**, **Rimuovi**, messaggio e `ListView<String>` collegata a una `ObservableList<String>`. Prima dell'inserimento elimina gli spazi iniziali e finali; rifiuta titolo vuoto e duplicati ignorando maiuscole e minuscole.
+
+   Rimuovi soltanto l'elemento selezionato e segnala l'assenza di selezione. Verifica `" Studiare "` e `"studiare"` → una sola voce, aggiunta di una seconda attività e rimozione della prima. Aggiorna il controllo modificando la lista osservabile. Disabilita **Rimuovi** tramite binding quando manca la selezione.
+
+4. **Modificare una tabella di libri.** Riprendi `TableView<BookRow>` del capitolo e aggiungi campi per titolo, autore e copie, **Aggiungi**, **Rimuovi** e **Aggiorna copie**. Richiedi testi non blank e copie intere non negative. In questa versione sono ammesse righe con lo stesso titolo e autore.
+
+   Le ultime due operazioni richiedono una selezione. Per aggiornare le copie sostituisci il record immutabile alla posizione selezionata tramite `ObservableList.set()`, conservando titolo e autore. Prova inserimento, modifica 3 → 0, valore negativo, selezione assente e rimozione. La tabella deve aggiornarsi senza essere ricreata.
+
+5. **Due editor dello stesso nome.** Una finestra contiene le sezioni **Profilo** e **Intestazione**, ciascuna con un campo modificabile per lo stesso nome visualizzato. Collega bidirezionalmente le proprietà testo e aggiungi una label di anteprima in maiuscolo, derivata con binding o listener.
+
+   Definisci un valore iniziale comune e verifica modifica e cancellazione del testo da entrambi i campi. Non usare due listener che si assegnino reciprocamente il valore. Spiega perché i due campi siano modificabili mentre l'anteprima dipende dal nome e non debba diventare una terza sorgente.
 
 ## Operazioni lunghe e thread in JavaFX
 
@@ -9414,11 +9769,25 @@ La chiamata `cancel()` cambia lo stato del task e prova a interrompere il thread
 
 ### Esercizi
 
-1. Esegui i due programmi completi del capitolo e compila una tabella osservativa: aggiornamento della barra, testo digitato durante il lavoro, risposta del pulsante **Annulla**, possibilità di spostare la finestra e thread sul quale gira il ciclo. Ogni differenza deve essere collegata a una specifica parte del codice.
-2. **Ricerca di numeri primi in background.** Crea una finestra con limite intero, **Avvia**, barra di progresso, risultato e un campo di testo indipendente dal calcolo. Un nuovo `Task<Integer>` per ogni avvio esamina i numeri da 2 al limite incluso e restituisce quanti sono primi. Il testo va convertito nell'handler; un limite minore di 2 viene rifiutato dentro `call()` con `IllegalArgumentException`. Aggiorna il progresso come numeri esaminati su `limite - 1`, senza accedere ai controlli dal task. Durante il lavoro disabilita **Avvia**, poi ripristinalo su successo o errore. Verifica limite 10 → 4 primi e prova un limite abbastanza grande da osservare che il campo indipendente resta utilizzabile.
-3. **Annullamento e stato del task.** Estendi l'esercizio 2 con **Annulla**. Conserva il task corrente, controlla `isCancelled()` durante la ricerca e interrompi prontamente anche eventuali cicli interni lunghi. **Avvia** è disabilitato durante il lavoro; **Annulla** è abilitato soltanto mentre il task corrente è in esecuzione. Su successo, annullamento o errore ripristina i pulsanti, elimina il riferimento al task concluso e mostra un esito distinto, senza presentare un conteggio parziale come risultato completo. Prova un completamento, un annullamento, un limite 1 che fa fallire `call()` e un nuovo avvio dopo ciascun esito.
-4. **Successo ed errore di un caricamento simulato.** Crea un `Task<Integer>` che simuli cinque file con una breve attesa per ciascuno e aggiorni il progresso dopo ogni caricamento completato. Una variabile scelta prima dell'avvio abilita il guasto: in quel caso, prima di completare il terzo file, lancia `IOException` con il nome del file nel messaggio. `setOnFailed()` mostra l'errore e non il risultato; `setOnSucceeded()` mostra il numero 5 soltanto quando tutti i file sono completati. Prova entrambe le modalità creando ogni volta un nuovo task. Non servono file reali.
-5. **Quale thread usare.** Per ciascuna operazione indica dove eseguirla e quali eventuali risultati riportare sul JavaFX Application Thread: cambiare una label; ordinare dieci stringhe corte; leggere un file di dimensione ignota; attendere una risposta di rete; calcolare una semplice conversione di temperatura; generare miniature di migliaia di immagini. Distingui le modifiche ai controlli dal lavoro che può essere lento. Per i casi incerti indica che cosa misureresti per decidere: non è richiesta una soglia numerica universale.
+1. **Osservare il blocco dell'interfaccia.** Esegui i due programmi completi del capitolo e prova a digitare nel campo di testo e ad annullare durante il lavoro. Registra in una tabella aggiornamento della barra, risposta ai comandi e thread che esegue il ciclo.
+
+   Aggiungi temporaneamente il nome del thread alle stampe nei punti significativi e collega ogni osservazione al codice. Distingui gli aggiornamenti richiesti nel ciclo da quelli che l'interfaccia riesce effettivamente a mostrare. Non usare la sola possibilità di spostare la finestra come prova di reattività: parte della gestione può dipendere dal sistema grafico.
+
+2. **Contare numeri primi in background.** Crea limite intero, **Avvia**, progresso, esito e un campo di testo indipendente dal calcolo. Per ogni avvio costruisci un nuovo `Task<Integer>` che conti i primi da 2 al limite incluso.
+
+   Converti il testo nell'handler e rifiuta limite minore di 2 dentro `call()` con `IllegalArgumentException`, così da gestire anche il fallimento del task. Il task usa una copia del limite e non legge o modifica i controlli. Aggiorna il progresso in base ai numeri esaminati; per la verifica dei divisori evita prodotti di interi che possano traboccare. Disabilita **Avvia** durante il lavoro e ripristinalo su successo o errore. Prova limiti 2 → 1 primo, 10 → 4, 100 → 25 e un limite che consenta di osservare la reattività del campo di testo.
+
+3. **Annullare e ripartire.** Estendi l'esercizio precedente con **Annulla** e un riferimento al task corrente. Richiedi la cancellazione e controlla `isCancelled()` nel ciclo esterno e negli eventuali cicli interni lunghi.
+
+   Impedisci avvii sovrapposti e consenti l'annullamento soltanto quando esiste un lavoro attivo. Su successo, fallimento o annullamento ripristina i comandi, elimina il riferimento concluso e mostra un esito distinto. Un conteggio parziale non è un risultato completo. Verifica completamento, annullamento, limite 1 che fallisce nel task e nuovo avvio dopo ogni esito. Non riutilizzare un task già avviato.
+
+4. **Caricamento con errore riproducibile.** Simula cinque file con un `Task<Integer>` e una breve attesa per file. Un'opzione dell'interfaccia, acquisita prima dell'avvio, provoca un guasto prima di completare il terzo file: lancia `IOException` con il nome del file nel messaggio.
+
+   Aggiorna il progresso dopo ogni file completato. In caso di successo mostra 5; su errore mostra la causa senza indicare il lavoro come completato. Prova entrambe le modalità con task nuovi. Se la finestra viene chiusa durante il lavoro, richiedi l'annullamento e fai terminare il thread, gestendo correttamente anche l'interruzione dell'attesa. Non servono file reali.
+
+5. **Decidere dove eseguire il lavoro.** Valuta aggiornamento di una label, ordinamento di dieci stringhe, lettura di un file di dimensione ignota, attesa di una risposta di rete e generazione di migliaia di miniature.
+
+   Per ogni caso indica thread adatto, dati da acquisire prima dell'avvio e risultati da riportare sul JavaFX Application Thread. Scegli una delle operazioni lunghe e disegna il flusso da clic a esito, includendo errore e annullamento. Per operazioni dal costo incerto specifica che cosa misureresti per decidere.
 
 ## Costruire l'interfaccia con FXML
 
@@ -9574,11 +9943,21 @@ FXML è utile quando la struttura dell'interfaccia è abbastanza estesa da merit
 
 ### Esercizi
 
-1. **Separare vista e controller.** Riprendi il calcolatore di preventivo degli esercizi JavaFX, con copie, prezzo per copia e rilegatura da 2 euro per copia. Se non lo hai svolto, realizza prima quella versione usando i requisiti della sua consegna. Sposta la struttura dei controlli in FXML e gli handler in un controller, conservando la classe di calcolo senza dipendenze da JavaFX. Consegna struttura delle cartelle, file FXML e classi di avvio, controller e calcolo. Ripeti i casi 10 copie a 0.50 euro con e senza rilegatura e i controlli di input: comportamento e test del calcolo devono restare invariati.
-2. **Estendere il convertitore FXML del capitolo.** Riprendi `temperature-view.fxml`, `TemperatureController` e `TemperatureConverter`. Aggiungi una `ComboBox` per **Celsius → Fahrenheit** e **Fahrenheit → Celsius**, selezionando inizialmente la prima, **Azzera** e una label separata per gli errori. Se necessario aggiungi la formula inversa alla classe di calcolo. **Azzera** svuota input ed esiti e ripristina la scelta iniziale. Definisci `fx:id` solo per i controlli usati dal controller e collega i due pulsanti tramite `onAction`. Verifica 0 °C → 32 °F, 212 °F → 100 °C e testo non numerico.
-3. **Errori di collegamento fra FXML e controller.** Parti dal convertitore funzionante mostrato nel capitolo e prepara tre copie indipendenti: cambia `fx:id="input"` in `fx:id="wrongInput"`; cambia `onAction="#convert"` in `onAction="#missingHandler"`; cambia `fx:controller` con il nome di una classe inesistente. Prima della prova prevedi se l'errore emergerà al caricamento o al clic. Avvia ogni copia, premi il pulsante se la finestra compare, annota la causa e correggi il file FXML. Non assumere che un `fx:id` sbagliato impedisca sempre il caricamento: può lasciare nullo un campo del controller.
-4. **Cambiare disposizione mantenendo il controller.** Usa il convertitore funzionante del capitolo. Scrivi due viste FXML con gli stessi controlli, `fx:id`, `fx:controller` e `onAction`: una li dispone verticalmente in `VBox`, l'altra mette etichette e campi su righe di `GridPane`. Carica ciascuna vista con lo stesso controller e ripeti una conversione valida e una non valida. Confronta i file e indica quali cambiamenti riguardano solo la disposizione.
-5. **Una modifica con Scene Builder.** Se Scene Builder è disponibile, apri il convertitore FXML e aggiungi una label statica con l'indicazione delle unità, senza `fx:id` o handler. Salva, esamina il testo modificato e avvia il progetto normalmente, controllando che la conversione funzioni ancora. Se non è disponibile, esegui la stessa modifica sul file FXML e verifica caricamento e comportamento. Non è necessario rimuovere automaticamente le proprietà generate dall'editor.
+1. **Portare il preventivo in FXML.** Riprendi il preventivo della copisteria della sezione «Applicazioni grafiche con JavaFX»: copie positive, prezzo positivo, rilegatura di 2 euro per copia. Usa la stessa `PrintQuoteCalculator` e gli stessi casi di verifica.
+
+   Sposta layout e controlli in FXML e lettura degli input e handler in un controller. La classe di avvio deve caricare la risorsa e mostrare la scena. Consegna struttura delle cartelle, FXML e classi. Verifica totali 5 e 25 euro per 10 copie da 0.50 e gestione degli input invalidi; riesegui i test del calcolo. La classe di calcolo deve continuare a essere utilizzabile senza avviare JavaFX.
+
+2. **Estendere il convertitore del capitolo.** Usa `temperature-view.fxml`, `TemperatureController` e `TemperatureConverter`. Aggiungi scelta Celsius → Fahrenheit o Fahrenheit → Celsius, **Azzera** e una label separata per gli errori. La scelta iniziale è Celsius → Fahrenheit.
+
+   Inizializza le scelte nel controller e collega gli eventi tramite FXML. **Azzera** svuota input ed esiti e ripristina la scelta iniziale. Verifica 0 °C → 32 °F, 212 °F → 100 °C, campo vuoto e testo non numerico. Quando c'è un errore, rimuovi il vecchio risultato. Mantieni entrambe le formule nella classe di calcolo.
+
+3. **Diagnosticare collegamenti errati.** Parti dal convertitore originale funzionante del capitolo e crea tre varianti indipendenti: `fx:id="input"` diventa `fx:id="wrongInput"`; `onAction="#convert"` diventa `onAction="#missingHandler"`; `fx:controller` indica una classe inesistente.
+
+   Prevedi se il problema emergerà al caricamento o al clic, poi esegui ciascuna variante e annota la causa effettiva nella catena delle eccezioni. Correggi una variante alla volta e verifica il recupero del comportamento. Un `fx:id` sbagliato può lasciare nullo il campo senza impedire il caricamento: collega questa possibilità all'istruzione del controller che usa il campo.
+
+4. **Due disposizioni per lo stesso comportamento.** Prepara due viste del convertitore con uguali controlli, `fx:id`, controller e handler: una verticale con `VBox`, l'altra su righe con `GridPane`. Usa lo stesso controller per caricare entrambe, in due avvii distinti.
+
+   Prova conversione valida, input errato e ridimensionamento. Confronta i file e identifica le modifiche puramente strutturali. Se usi Scene Builder, esamina anche il FXML salvato dall'editor e verifica che gli identificatori e i collegamenti siano conservati; l'uso dell'editor è facoltativo.
 
 ## Stilizzare l'interfaccia con CSS
 
@@ -9715,11 +10094,27 @@ Il CSS di JavaFX non sostituisce i layout. Può impostare proprietà grafiche, p
 
 ### Esercizi
 
-1. **Stile del convertitore.** Riprendi il convertitore FXML mostrato nel capitolo. Crea un foglio di stile per titolo, campo di input, pulsante **Converti** e area del risultato: usa classi riutilizzabili e l'ID `result` per quell'unica area. Collega il file dalle risorse e non usare `setStyle()` nel Java. Verifica che le regole raggiungano i controlli previsti e che conversione e gestione degli errori continuino a funzionare. Non è richiesto costruire un nuovo modulo di registrazione.
-2. **Stile che segue l'esito.** Estendi il convertitore dell'esercizio 1 usando classi `result`, `error` e `success`: `result` resta sempre, mentre le altre due sono alternative. All'avvio non deve esserci nessuna classe di esito; dopo un errore usa `error`, dopo una conversione valida `success`. L'handler rimuove entrambe le classi di esito prima di applicare quella richiesta. Verifica `abc` → errore, `20` → successo, `abc` → errore e controlla che non compaiano duplicati o classi incompatibili.
-3. **Stati del pulsante.** Sul convertitore aggiungi regole CSS per `:hover`, `:focused` e `:disabled` del pulsante principale, con differenze visibili. Usa un binding per disabilitare **Converti** quando il campo è vuoto. Prova puntatore sopra il pulsante, focus tramite tastiera e campo svuotato: ciascuno stato deve essere osservabile senza modificare il sorgente durante la prova. Verifica anche quali regole prevalgano quando più stati sono attivi.
-4. **Classi, ID e selettori combinati.** Considera una label con ID `result` e classe `result`, un pulsante con classe predefinita `button` e classe aggiunta `primary` e un secondo pulsante con ID `button` ma senza classe `primary`. Per i selettori `.result`, `#result`, `.button.primary` e `#button.primary`, prevedi quali nodi vengano selezionati e verifica con colori temporanei. Poi aggiungi `primary` al secondo pulsante e ripeti la prova. Spiega perché `#button.primary` è un selettore valido, ma richiede contemporaneamente quell'ID e quella classe.
-5. **Tema chiaro e scuro.** Prepara due fogli CSS per lo stesso convertitore, usando gli stessi selettori e mantenendo uguali spaziature e dimensioni. Cambia colori di sfondo, testo, pulsante ed esiti. Aggiungi **Cambia tema**, che sostituisce il foglio applicato alla scena senza ricostruire i controlli o accumulare fogli. Verifica che input, risultato e focus restino conservati passando da un tema all'altro e che una nuova conversione funzioni in entrambi.
+Gli esercizi estendono il convertitore FXML del capitolo. Mantieni formule e validazione indipendenti dalle scelte di stile e conserva il progetto funzionante dopo ogni modifica.
+
+1. **Un foglio di stile per il convertitore.** Crea un CSS nelle risorse e collegalo alla scena. Definisci aspetto di titolo, campi, pulsante principale e risultato usando classi riutilizzabili; assegna un ID a un elemento unico che richieda una regola specifica.
+
+   Scegli colori, spaziature e dimensioni leggibili e rimuovi gli stili inline equivalenti. Verifica caricamento del CSS, conversione valida, errore e ridimensionamento. Indica quali proprietà influenzano l'aspetto e quali scelte di disposizione restano responsabilità dei layout.
+
+2. **Aspetto coerente con l'esito.** Nel convertitore usa una classe permanente `result` e le classi alternative `error` e `success`. All'avvio il risultato è neutro; un input invalido mostra errore, una conversione valida mostra successo. Distingui gli esiti anche tramite testo, oltre che con il colore.
+
+   Esegui `abc` → `20` → `abc` e controlla che lo stile segua ogni nuovo esito senza classi duplicate o incompatibili. Se è presente **Azzera**, deve ripristinare lo stato neutro. Mantieni i valori visivi nel CSS e lascia al controller la scelta dello stato.
+
+3. **Stati interattivi riconoscibili.** Definisci regole per `:hover`, `:focused` e `:disabled` del pulsante **Converti**. Disabilitalo con binding quando il campo è vuoto.
+
+   Verifica campo vuoto, testo inserito, puntatore sul pulsante e focus ottenuto con Tab. Il focus deve restare riconoscibile anche quando il mouse è altrove. Osserva il risultato quando più stati coincidono e motiva la priorità delle regole. Tutti gli stati devono essere raggiungibili usando l'applicazione, senza cambiare il sorgente fra le prove.
+
+4. **Capire quale regola viene applicata.** Prepara due pulsanti con classe `primary`, assegnando soltanto al primo ID `convertButton`. Definisci una regola `.button`, una `.primary` e una `#convertButton` che assegnino colori di sfondo diversi.
+
+   Prevedi e verifica il colore finale di ciascun pulsante, poi modifica l'ordine delle due regole di classe e ripeti. Aggiungi `.button.primary` e confrontane la priorità con `.primary`. Spiega il risultato usando selettori, specificità e ordine delle regole; rimuovi i colori sperimentali quando hai concluso.
+
+5. **Tema chiaro e scuro.** Crea due fogli con gli stessi selettori e dimensioni, ma palette differenti per sfondo, testo, controlli ed esiti. Un comando cambia il tema sostituendo il foglio dell'applicazione applicato alla scena, senza ricostruire i controlli o accumulare copie degli stylesheet.
+
+   Prova cambio di tema con input già compilato, dopo un risultato valido e dopo un errore. Testo, scelta di conversione ed esito devono essere conservati e leggibili; una nuova conversione deve funzionare in entrambi i temi. Controlla anche lo stato disabilitato e il focus da tastiera.
 
 ---
 
