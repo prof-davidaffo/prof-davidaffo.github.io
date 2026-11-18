@@ -32,7 +32,7 @@ Cosa fa il programma? ******____******
 
 ## Contatore o Indice
 
-Il contatore/indice serve per scorrere una succesisone di vaori in modo sistematico. Può anche essere usato per contare o come indice di un array/lista.
+Il contatore/indice serve per scorrere una succesisone di valori in modo sistematico. Può anche essere usato per contare o come indice di un array/lista.
 
 ```
 n = int(input("Di che numero vuoi la tabellina?:"))

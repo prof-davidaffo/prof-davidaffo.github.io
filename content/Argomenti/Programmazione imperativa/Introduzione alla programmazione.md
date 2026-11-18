@@ -1615,7 +1615,44 @@ while (condizione) {
     // Blocco di codice da ripetere
 }
 ```
-##### Esempio: chiedere il numero 5 finché non viene inserito
+##### Esempio: consumare un credito disponibile
+
+Finché il credito è positivo, il programma consuma un'unità alla volta. Se il credito iniziale è già zero, non deve consumare nulla e il ciclo viene saltato.
+
+```cpp
+#include <iostream>
+using namespace std;
+
+int main() {
+    int credito = 3;
+    while (credito > 0) {
+        cout << "Credito disponibile: " << credito << endl;
+        credito--;
+    }
+    cout << "Credito esaurito." << endl;
+    return 0;
+}
+```
+
+Versione C:
+
+```c
+#include <stdio.h>
+
+int main(void) {
+    int credito = 3;
+    while (credito > 0) {
+        printf("Credito disponibile: %d\n", credito);
+        credito--;
+    }
+    printf("Credito esaurito.\n");
+    return 0;
+}
+```
+
+#### Il ciclo `do-while` (ciclo post-condizionale)
+Il ciclo `do-while` esegue il blocco **almeno una volta**, poiché la condizione viene valutata **dopo** l’esecuzione del blocco.
+##### Il problema: chiedere il numero 5 con `while`
 ```cpp
 #include <iostream>
 using namespace std;
@@ -1623,7 +1660,7 @@ int main() {
     int numero = 3;
     while (numero != 5) {
         cout << "Inserisci il numero 5: ";
-        cin >> numero;
+        if (!(cin >> numero)) return 1;
     }
     cout << "Finalmente!" << endl;
     return 0;
@@ -1645,10 +1682,10 @@ int main(void) {
     return 0;
 }
 ```
-> [!warning] Nota
-> In questo esempio ho inizializzato la variabile numero a 3 per essere sicuro di entrare nel ciclo (poiché alla prima iterazione `3 != 5` è vero). Se non inizializzo la variabile, alcuni linguaggi di programmazione la inizializzano automaticamente a 0, altri a 1, altri con numeri completamente casuali a seconda dell'indirizzo di memoria. Prova con diversi linguaggi di programmazione e prova a stampare una variabile non inizializzata per vedere cosa succede!
-#### Il ciclo `do-while` (ciclo post-condizionale)
-Il ciclo `do-while` esegue il blocco **almeno una volta**, poiché la condizione viene valutata **dopo** l’esecuzione del blocco.
+Qui `numero` viene inizializzato a 3 solo per rendere vera la condizione al primo controllo e poter chiedere almeno un valore. Se fosse inizializzato a 5, la richiesta non verrebbe eseguita. Non possiamo nemmeno lasciare `numero` non inizializzato: in C e C++ leggerne il valore prima di assegnargliene uno produce un comportamento indefinito.
+
+Il ciclo `do-while` risolve questo problema: permette di chiedere il numero prima di controllarlo, senza assegnare un valore iniziale inventato.
+
 #### Sintassi
 ```cpp
 do {
@@ -1663,7 +1700,7 @@ int main() {
     int numero;
     do {
         cout << "Inserisci il numero 5: ";
-        cin >> numero;
+        if (!(cin >> numero)) return 1;
     } while (numero != 5);
     cout << "Finalmente!" << endl;
     return 0;
@@ -1686,7 +1723,7 @@ int main(void) {
 }
 ```
 > [!warning] Nota
-> Come puoi notare, l'esempio è simile a prima, ma questa volta non necessito di inizializzare la variabile. Perché?
+> La variabile non ha bisogno di un valore iniziale fittizio: riceve un valore con l'input prima che la condizione venga valutata.
 ##### Quando usare `while` e `do-while`
 * Usa `while` quando **la condizione deve essere verificata prima** dell’esecuzione (può anche non entrare mai nel ciclo).
 * Usa `do-while` quando **il codice deve essere eseguito almeno una volta** prima del controllo (es. richiesta di input, accesso a un menu).

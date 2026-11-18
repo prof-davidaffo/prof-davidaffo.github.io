@@ -1248,172 +1248,558 @@ Quando una variabile indica un oggetto, ci sono tre operazioni diverse da non co
 2. creare una copia superficiale dell'oggetto;
 3. creare una copia profonda dell'oggetto.
 
-Il primo caso è quello già incontrato con `BankAccount`. Per distinguere copia superficiale e profonda introdurremo poi un oggetto che contiene un altro oggetto modificabile.
+Costruiamo una piccola applicazione che rappresenta una persona e il suo indirizzo. Useremo le stesse classi in tutti i passaggi, aggiungendo un metodo alla volta. In questo modo potremo osservare sia l'identità della persona sia quella dell'indirizzo contenuto al suo interno.
+
+L'applicazione è formata da tre file nella stessa cartella: `Address.java`, `Person.java` e `Main.java`. Per concentrarci sulle copie, assumiamo che nome, indirizzo, città e via siano sempre non nulli. A ogni passaggio sostituiamo i file indicati con la nuova versione completa; quelli non indicati rimangono quelli del passaggio precedente.
 
 #### 1. Copiare il riferimento
 
-L'assegnazione copia il riferimento contenuto nella variabile, non l'oggetto:
+Partiamo da `Address`, che conserva città e via e permette di modificarle. È quindi un oggetto **mutabile**.
 
-```text
-first  ──┐
-         ├──> BankAccount { balance = 0 }
-second ──┘
-```
-
-Il primo esempio richiede soltanto queste istruzioni:
+Il file `Address.java`:
 
 ```java
-BankAccount first = new BankAccount("Ada");
-BankAccount second = first;
+public class Address {
+    private String city;
+    private String street;
 
-second.deposit(100);
+    public Address(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
 
-System.out.println(first == second);
-System.out.println(first.getBalance());
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+}
+```
+
+`Person` conserva un nome e un riferimento a un indirizzo. Il costruttore riceve una `String` e un `Address` e ne memorizza i riferimenti nei campi `name` e `address`, senza creare copie. `setName()` cambia il nome della persona; `getCity()` legge la città e `moveTo()` modifica città e via chiamando i metodi dell'indirizzo. `getAddress()` ci permetterà di confrontare direttamente i riferimenti agli indirizzi.
+
+Il file `Person.java`:
+
+```java
+public class Person {
+    private String name;
+    private Address address;
+
+    public Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void moveTo(String city, String street) {
+        address.setCity(city);
+        address.setStreet(street);
+    }
+}
+```
+
+Creiamo una persona e assegniamo il suo riferimento a una seconda variabile. Confrontiamo i riferimenti prima di modificare nome e indirizzo attraverso `alias`.
+
+Il file `Main.java`:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Person original = new Person("Ada",
+                new Address("Genova", "Via Garibaldi"));
+        Person alias = original;
+
+        System.out.println("Stessa persona: " + (original == alias));
+        System.out.println("Stesso indirizzo: "
+                + (original.getAddress() == alias.getAddress()));
+
+        alias.setName("Luca");
+        alias.moveTo("Milano", "Via Torino");
+
+        System.out.println("Originale: " + original.getName()
+                + ", " + original.getCity()
+                + ", " + original.getAddress().getStreet());
+        System.out.println("Seconda variabile: " + alias.getName()
+                + ", " + alias.getCity()
+                + ", " + alias.getAddress().getStreet());
+    }
+}
+```
+
+Per compilare ed eseguire questa versione e quelle successive, usiamo:
+
+```text
+javac Address.java Person.java Main.java
+java Main
 ```
 
 L'output è:
 
 ```text
-true
-100
+Stessa persona: true
+Stesso indirizzo: true
+Originale: Luca, Milano, Via Torino
+Seconda variabile: Luca, Milano, Via Torino
 ```
 
-Esiste un solo `BankAccount`. `first` e `second` sono due riferimenti allo stesso oggetto, cioè due alias: per questo `first == second` restituisce `true`. Questa non è una copia superficiale, perché non è stato creato alcun nuovo oggetto.
+L'assegnazione `Person alias = original` copia il riferimento, non l'oggetto. Esistono una sola persona e un solo indirizzo:
+
+```text
+original ──┐
+           ├──> Person { name = "Luca" } ──> Address { city = "Milano", street = "Via Torino" }
+alias    ──┘
+```
+
+`original` e `alias` sono due **alias** dello stesso oggetto: per questo `original == alias` restituisce `true`. La chiamata `alias.moveTo("Milano", "Via Torino")` modifica l'indirizzo della persona raggiunta da entrambe le variabili. Anche `alias.setName("Luca")` agisce sulla stessa persona: il nuovo nome è visibile attraverso entrambe le variabili. Questa non è una copia superficiale, perché l'assegnazione non ha creato alcun nuovo oggetto.
 
 #### 2. Creare una copia superficiale
 
-Per osservare una vera copia superficiale serve un oggetto che ne contenga un altro modificabile. Supponiamo che `Person` abbia un campo `address` di tipo `Address`. Il solo metodo che ci interessa in questo momento è:
+Vogliamo ora creare una seconda persona. Aggiungiamo a `Person` il metodo `shallowCopy()`: costruisce un nuovo oggetto `Person`, passando al costruttore i riferimenti `name` e `address` già presenti nell'originale.
+
+La versione completa di `Person.java` diventa:
 
 ```java
-Person shallowCopy() {
-    return new Person(address);
+public class Person {
+    private String name;
+    private Address address;
+
+    public Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void moveTo(String city, String street) {
+        address.setCity(city);
+        address.setStreet(street);
+    }
+
+    public Person shallowCopy() {
+        return new Person(name, address);
+    }
 }
 ```
 
-Il costruttore crea una nuova `Person`, ma riceve lo stesso oggetto `Address` contenuto nell'originale.
-
-Una **copia superficiale**, o *shallow copy*, crea un secondo oggetto `Person`, ma gli assegna lo stesso riferimento `address` dell'originale:
-
-```text
-original  ──> Person ──┐
-                       ├──> Address { city = "Genova" }
-shallow   ──> Person ──┘
-```
-
-Il secondo esempio usa `shallowCopy()`:
+`Address.java` rimane invariato. Sostituiamo `Main.java` per provare la nuova operazione:
 
 ```java
-Person original = new Person(new Address("Genova"));
-Person shallow = original.shallowCopy();
+public class Main {
+    public static void main(String[] args) {
+        Person original = new Person("Ada",
+                new Address("Genova", "Via Garibaldi"));
+        Person shallow = original.shallowCopy();
 
-shallow.moveTo("Milano");
+        System.out.println("Stessa persona: " + (original == shallow));
+        System.out.println("Stesso indirizzo: "
+                + (original.getAddress() == shallow.getAddress()));
 
-System.out.println(original.getCity()); // Milano
-```
+        shallow.setName("Luca");
+        shallow.moveTo("Milano", "Via Torino");
 
-`original` e `shallow` sono due persone distinte, come mostra il diagramma, ma contengono lo stesso indirizzo. Per questo la modifica eseguita attraverso `shallow` viene letta come `"Milano"` anche attraverso `original`.
-
-#### 3. Creare una copia profonda
-
-Per la copia profonda, `Person` deve invece costruire anche un nuovo indirizzo:
-
-```java
-Person deepCopy() {
-    return new Person(
-            new Address(address.getCity()));
+        System.out.println("Originale: " + original.getName()
+                + ", " + original.getCity()
+                + ", " + original.getAddress().getStreet());
+        System.out.println("Seconda variabile: " + shallow.getName()
+                + ", " + shallow.getCity()
+                + ", " + shallow.getAddress().getStreet());
+    }
 }
-```
-
-Una **copia profonda**, o *deep copy*, crea un secondo oggetto `Person` e anche un secondo oggetto `Address`:
-
-```text
-original  ──> Person ──> Address { city = "Genova" }
-
-deep      ──> Person ──> Address { city = "Genova" }
-```
-
-Il terzo esempio usa `deepCopy()`:
-
-```java
-Person original = new Person(new Address("Genova"));
-Person deep = original.deepCopy();
-
-deep.moveTo("Roma");
-
-System.out.println(original == deep);
-System.out.println(original.getCity());
-System.out.println(deep.getCity());
 ```
 
 L'output è:
 
 ```text
-false
-Genova
-Roma
+Stessa persona: false
+Stesso indirizzo: true
+Originale: Ada, Milano, Via Torino
+Seconda variabile: Luca, Milano, Via Torino
 ```
 
-Anche in questo caso le persone sono due oggetti distinti. Questa volta, però, possiedono indirizzi indipendenti: modificare quello raggiunto da `deep` non modifica quello raggiunto da `original`.
+Una **copia superficiale**, o *shallow copy*, crea una nuova persona, ma copia i valori dei campi `name` e `address`, cioè i riferimenti alla stringa del nome e all'indirizzo esistente. Dopo la modifica abbiamo:
 
-Una copia profonda non deve duplicare indiscriminatamente ogni oggetto. Gli oggetti immutabili, come `String`, possono essere condivisi; vanno copiati gli oggetti mutabili che devono cambiare in modo indipendente.
+```text
+original ──> Person { name = "Ada" } ───┐
+                                        ├──> Address { city = "Milano", street = "Via Torino" }
+shallow  ──> Person { name = "Luca" } ──┘
+```
 
-#### Il metodo `clone()`
+Il primo confronto restituisce `false`: le persone sono distinte. Il secondo restituisce `true`: l'indirizzo è condiviso. `shallow.moveTo("Milano", "Via Torino")` modifica proprio quell'indirizzo, quindi anche `original.getCity()` legge `"Milano"`.
 
-La classe `Object`, dalla quale derivano tutte le classi, dichiara il metodo `clone()`. La sua implementazione crea un nuovo oggetto e copia il valore di ciascun campo come farebbe un'assegnazione:
+Il nome si comporta diversamente dall’indirizzo: `shallow.setName("Luca")` riassegna il campo `name` della nuova persona, mentre quello dell’originale resta `"Ada"`. La stringa inizialmente condivisa non viene modificata. Per l’indirizzo, invece, `moveTo()` modifica l’oggetto condiviso.
+
+#### 3. Creare una copia profonda
+
+Per rendere indipendente l'indirizzo della copia dobbiamo creare anche un secondo indirizzo. Aggiungiamo `deepCopy()` a `Person`, mantenendo il metodo precedente per poter confrontare le due operazioni.
+
+La versione completa di `Person.java` diventa:
+
+```java
+public class Person {
+    private String name;
+    private Address address;
+
+    public Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void moveTo(String city, String street) {
+        address.setCity(city);
+        address.setStreet(street);
+    }
+
+    public Person shallowCopy() {
+        return new Person(name, address);
+    }
+
+    public Person deepCopy() {
+        return new Person(name,
+                new Address(address.getCity(), address.getStreet()));
+    }
+}
+```
+
+In `deepCopy()`, `new Address(address.getCity(), address.getStreet())` crea un indirizzo con la stessa città e la stessa via dell'originale; `new Person(...)` crea la persona che lo conterrà. `Address.java` rimane invariato.
+
+Sostituiamo `Main.java`. Ogni esecuzione riparte da Genova, così la prova non dipende dalle modifiche del passaggio precedente:
+
+```java
+public class Main {
+    public static void main(String[] args) {
+        Person original = new Person("Ada",
+                new Address("Genova", "Via Garibaldi"));
+        Person deep = original.deepCopy();
+
+        System.out.println("Stessa persona: " + (original == deep));
+        System.out.println("Stesso indirizzo: "
+                + (original.getAddress() == deep.getAddress()));
+
+        deep.setName("Luca");
+        deep.moveTo("Roma", "Via del Corso");
+
+        System.out.println("Originale: " + original.getName()
+                + ", " + original.getCity()
+                + ", " + original.getAddress().getStreet());
+        System.out.println("Seconda variabile: " + deep.getName()
+                + ", " + deep.getCity()
+                + ", " + deep.getAddress().getStreet());
+    }
+}
+```
+
+L'output è:
+
+```text
+Stessa persona: false
+Stesso indirizzo: false
+Originale: Ada, Genova, Via Garibaldi
+Seconda variabile: Luca, Roma, Via del Corso
+```
+
+Una **copia profonda**, o *deep copy*, crea una nuova persona e duplica anche l'indirizzo mutabile che deve essere indipendente:
+
+```text
+original ──> Person { name = "Ada" } ──> Address { city = "Genova", street = "Via Garibaldi" }
+
+deep     ──> Person { name = "Luca" } ──> Address { city = "Roma", street = "Via del Corso" }
+```
+
+Entrambi i confronti restituiscono `false`. La chiamata `deep.moveTo("Roma", "Via del Corso")` modifica soltanto l'indirizzo della copia; l'originale rimane a Genova.
+
+Una copia profonda non deve duplicare indiscriminatamente ogni oggetto. I campi `city` e `street` dei due indirizzi possono inizialmente riferirsi alle stesse stringhe, perché le stringhe sono immutabili. Lo stesso vale per il campo `name` delle persone. I setter assegnano un nuovo riferimento al campo del rispettivo oggetto: non modificano la stringa condivisa. Vanno invece copiati gli oggetti mutabili che devono cambiare in modo indipendente.
+
+#### 4. Usare `clone()` per una copia superficiale
+
+Finora abbiamo costruito le copie esplicitamente con `new`. Java offre anche il metodo `clone()`, dichiarato dalla classe `Object`, dalla quale derivano tutte le classi. La sua implementazione copia il valore di ciascun campo in un nuovo oggetto:
 
 - i valori primitivi vengono copiati;
 - i riferimenti vengono copiati, ma gli oggetti ai quali rimandano non vengono copiati.
 
-`Object.clone()` produce quindi una **copia superficiale**. Più precisamente, è la chiamata a `super.clone()` senza altre operazioni a lasciare condivisi gli oggetti interni.
-
-Per usare questo meccanismo, una classe deve implementare l'interfaccia `Cloneable` e rendere pubblico `clone()`, che in `Object` è `protected`:
+Il solo `super.clone()` produce quindi una **copia superficiale**. Proviamolo sulla stessa applicazione: `Address.java` rimane invariato e `Person.java` diventa:
 
 ```java
-final class Person implements Cloneable {
+public class Person implements Cloneable {
+    private String name;
     private Address address;
 
+    public Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void moveTo(String city, String street) {
+        address.setCity(city);
+        address.setStreet(street);
+    }
+
+    public Person shallowCopy() {
+        return new Person(name, address);
+    }
+
+    public Person deepCopy() {
+        return new Person(name,
+                new Address(address.getCity(), address.getStreet()));
+    }
+
     @Override
-    public Person clone()
-            throws CloneNotSupportedException {
+    public Person clone() throws CloneNotSupportedException {
         return (Person) super.clone();
     }
 }
 ```
 
-Sono omessi il costruttore e gli altri metodi, che qui non servono. `Cloneable` non dichiara metodi: segnala a `Object.clone()` che la copia è consentita. Il cast serve perché `super.clone()` restituisce un riferimento di tipo `Object`. La dichiarazione `throws CloneNotSupportedException` riguarda le eccezioni controllate e verrà spiegata nel capitolo dedicato.
+Le novità sono nella dichiarazione della classe e nell'ultimo metodo:
 
-Questo non limita `clone()` alle copie superficiali. La classe può partire dalla copia prodotta da `super.clone()` e sostituire i riferimenti agli oggetti mutabili con riferimenti a loro copie.
+- `implements Cloneable` segnala a `Object.clone()` che la copia è consentita. `Cloneable` è un'interfaccia che non dichiara metodi; le interfacce saranno approfondite più avanti.
+- `@Override` indica che stiamo ridefinendo un metodo ereditato. Lo rendiamo `public` per poterlo chiamare da `Main`, perché in `Object` è `protected`.
+- `super.clone()` richiama l'implementazione ereditata da `Object`, che crea la copia senza eseguire il costruttore di `Person`. Il cast `(Person)` permette di trattare il risultato, dichiarato di tipo `Object`, come una `Person`.
+- `throws CloneNotSupportedException` dichiara una possibile eccezione controllata. Per ora la riportiamo anche nel `main` che chiama `clone()`; il suo significato verrà approfondito nel capitolo sulle eccezioni.
 
-Supponiamo che anche `Address` implementi `Cloneable`. Poiché il suo unico campo è una `String` immutabile, per copiarlo basta:
+Sostituiamo `Main.java` per chiamare `clone()`:
 
 ```java
-@Override
-public Address clone()
-        throws CloneNotSupportedException {
-    return (Address) super.clone();
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Person original = new Person("Ada",
+                new Address("Genova", "Via Garibaldi"));
+        Person copy = original.clone();
+
+        System.out.println("Stessa persona: " + (original == copy));
+        System.out.println("Stesso indirizzo: "
+                + (original.getAddress() == copy.getAddress()));
+
+        copy.setName("Luca");
+        copy.moveTo("Milano", "Via Torino");
+
+        System.out.println("Originale: " + original.getName()
+                + ", " + original.getCity()
+                + ", " + original.getAddress().getStreet());
+        System.out.println("Seconda variabile: " + copy.getName()
+                + ", " + copy.getCity()
+                + ", " + copy.getAddress().getStreet());
+    }
 }
 ```
 
-`Person` può allora ridefinire `clone()` in questo modo:
+L'output è:
+
+```text
+Stessa persona: false
+Stesso indirizzo: true
+Originale: Ada, Milano, Via Torino
+Seconda variabile: Luca, Milano, Via Torino
+```
+
+Il risultato coincide con quello di `shallowCopy()`: nuova persona, stesso indirizzo. Il nome `clone()` non garantisce da solo una copia profonda.
+
+#### 5. Rendere profonda la copia con `clone()`
+
+Possiamo partire dalla copia superficiale prodotta da `super.clone()` e sostituire il riferimento all'indirizzo con quello di una sua copia. Facciamo in modo che anche `Address` possa essere clonato.
+
+Il file `Address.java`:
 
 ```java
-@Override
-public Person clone()
-        throws CloneNotSupportedException {
-    Person copy = (Person) super.clone();
-    copy.address = address.clone();
-    return copy;
+public class Address implements Cloneable {
+    private String city;
+    private String street;
+
+    public Address(String city, String street) {
+        this.city = city;
+        this.street = street;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    @Override
+    public Address clone() throws CloneNotSupportedException {
+        return (Address) super.clone();
+    }
 }
 ```
 
-La prima istruzione crea la nuova `Person`, inizialmente con lo stesso riferimento `address`. La seconda clona l'indirizzo e sostituisce quel riferimento nella copia. Il risultato è una **deep copy**: persona e indirizzo sono entrambi distinti.
+Per `Address` basta `super.clone()`: i suoi campi `city` e `street` sono riferimenti a stringhe immutabili, che possono essere condivise. Il nuovo `Address` avrà comunque campi indipendenti, ai quali `setCity()` e `setStreet()` potranno assegnare altri riferimenti.
 
-In questa implementazione `address` non è `final`, perché dopo `super.clone()` il riferimento contenuto nella copia deve essere sostituito.
+In `Person` cambiamo il corpo di `clone()`. La classe completa è:
 
-Se `Address` contenesse a sua volta altri oggetti mutabili, il suo `clone()` potrebbe copiarli nello stesso modo. In un oggetto composto da molte parti, la copia profonda può quindi restare breve: ogni classe si occupa di clonare direttamente i propri campi mutabili.
+```java
+public class Person implements Cloneable {
+    private String name;
+    private Address address;
 
-Quando in un progetto una semplice chiamata a `clone()` produce una deep copy, significa che quel comportamento è già stato implementato nelle classi coinvolte o in una libreria. Java non può stabilirlo automaticamente per qualsiasi oggetto, perché alcuni riferimenti devono essere copiati mentre altri possono essere condivisi intenzionalmente.
+    public Person(String name, Address address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public String getCity() {
+        return address.getCity();
+    }
+
+    public void moveTo(String city, String street) {
+        address.setCity(city);
+        address.setStreet(street);
+    }
+
+    public Person shallowCopy() {
+        return new Person(name, address);
+    }
+
+    public Person deepCopy() {
+        return new Person(name,
+                new Address(address.getCity(), address.getStreet()));
+    }
+
+    @Override
+    public Person clone() throws CloneNotSupportedException {
+        Person copy = (Person) super.clone();
+        copy.address = address.clone();
+        return copy;
+    }
+}
+```
+
+La prima istruzione di `Person.clone()` crea una nuova persona con lo stesso riferimento `address` dell'originale. La seconda clona l'indirizzo e assegna il nuovo riferimento al campo della **copia**. È importante scrivere `copy.address = ...`: dobbiamo sostituire l'indirizzo della nuova persona.
+
+In questa implementazione `address` non è `final`, perché dopo `super.clone()` dobbiamo sostituire il riferimento contenuto nella copia.
+
+Completiamo la versione finale con `Main.java`:
+
+```java
+public class Main {
+    public static void main(String[] args) throws CloneNotSupportedException {
+        Person original = new Person("Ada",
+                new Address("Genova", "Via Garibaldi"));
+        Person copy = original.clone();
+
+        System.out.println("Stessa persona: " + (original == copy));
+        System.out.println("Stesso indirizzo: "
+                + (original.getAddress() == copy.getAddress()));
+
+        copy.setName("Luca");
+        copy.moveTo("Roma", "Via del Corso");
+
+        System.out.println("Originale: " + original.getName()
+                + ", " + original.getCity()
+                + ", " + original.getAddress().getStreet());
+        System.out.println("Seconda variabile: " + copy.getName()
+                + ", " + copy.getCity()
+                + ", " + copy.getAddress().getStreet());
+    }
+}
+```
+
+L'output è:
+
+```text
+Stessa persona: false
+Stesso indirizzo: false
+Originale: Ada, Genova, Via Garibaldi
+Seconda variabile: Luca, Roma, Via del Corso
+```
+
+La chiamata `original.clone()` è la stessa del passaggio precedente, ma ora produce una **deep copy**: persona e indirizzo sono entrambi distinti. Il comportamento profondo dipende dal codice che abbiamo scritto nei metodi `clone()`.
+
+Se `Address` contenesse a sua volta altri oggetti mutabili, il suo `clone()` potrebbe copiarli nello stesso modo. In un oggetto composto da molte parti, la copia profonda può quindi restare breve: ogni classe si occupa di clonare i propri campi mutabili che devono essere indipendenti.
+
+Quando una semplice chiamata a `clone()` produce una deep copy in un progetto, significa che quel comportamento è già stato implementato nelle classi coinvolte o in una libreria. Java non può stabilirlo automaticamente per qualsiasi oggetto: alcuni riferimenti devono essere copiati, altri possono essere condivisi intenzionalmente. I metodi espliciti come `shallowCopy()` e `deepCopy()` restano alternative valide quando rendono più chiaro che cosa viene duplicato.
 
 ### Assegnare un nuovo riferimento
 
